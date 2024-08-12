@@ -1,3 +1,8 @@
+# DESCRIZIONE
+
+Questa è una semplice SPA per la generazione di un curriculum vitae sotto forma di sito web.
+L'intera applicazione è realizzata con l'uso di ReactJS. Per la parte di backend mi sono affidato a Firebase che gestisce l'autenticazione ed un database NOSQL che contiene i vari dati presenti in un classico currilucm vitae.
+
 # SEZIONI
 
 1. INTRO
@@ -46,6 +51,26 @@
    3. Indirizzo
    4. Profilo linkedin
 
+# TECNOLOGIE USATE
+
+Frontend:Vite + ReactJS + Chakra UI
+
+Backend: Firebase
+
+CMS: custom realizzato con le tecnologie sopracitate
+
+Design/ Prototipazione : Figma
+
+Server: VPS personale (si pensa al passaggio su aws o google cloud in secondo momento)
+
+CI/CD: Github repo privato e poi sarà pubblico
+
+# AUTENTICAZIONE
+
+Ho utilizzato il servizio di Autenticazione di [Firebase](https://firebase.google.com/docs/auth?hl=it)
+
+# DETTAGLI IMPLEMANTITIVI
+
 # MAGGIORI DETTAGLI
 
 La sezione intro conterrà una breve descrizione su di me. Ci sarà una foto profilo; queste info saranno scritte direttamente dentro il tema
@@ -58,19 +83,12 @@ Le skills saranno realizzate con il componente tag
 
 Per la sezione contatti i dati saranno prelevati da database, preceduti da icona e cliccabili.
 
-# TECNOLOGIE USATE
+# GRAFICA
 
-Frontend: ReactJS + Chakra UI
+# SICUREZZA
 
-Backend: Nodejs (o PHP) + Firebase
-
-CMS: custom realizzato con le tecnologie sopracitate
-
-Design/ Prototipazione : Figma
-
-Server: VPS personale (si pensa al passaggio su aws o google cloud in secondo momento)
-
-CI/CD: Github repo privato e poi sarà pubblico
+Ho utilizzato [Synk](https://snyk.io/) per verificare la presenza di vulnerabilità conosciute nel file package.json.
+Successivamente ho fixato manualmente i bug.
 
 # API
 
@@ -123,16 +141,3 @@ CI/CD: Github repo privato e poi sarà pubblico
   - Elimina un contatto
 - admin/contact/get
   - Restituisce tutti i titoli di studio
-
-# AUTENTICAZIONE
-
-Ho utilizzato il servizio di Autenticazione di [Firebase](https://firebase.google.com/docs/auth?hl=it)
-
-# DETTAGLI IMPLEMANTITIVI
-
-# GRAFICA
-
-# SICUREZZA
-
-Ho utilizzato [Synk](https://snyk.io/) per verificare la presenza di vulnerabilità conosciute nel file package.json.
-Successivamente ho fixato manualmente i bug.
