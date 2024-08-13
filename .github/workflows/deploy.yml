@@ -10,8 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Checkout del codice dal repository con la versione aggiornata
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
+    # Aggiungi altri step necessari, ad esempio per configurare l'accesso SSH
+
+    # Esecuzione dello script deploy.sh
     - name: Run deploy script
       run: ./deploy.sh
