@@ -1,21 +1,31 @@
-name: Deploy to VPS
+name: Deploy
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  deploy:
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout del codice dal repository con la versione aggiornata
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v1
 
-    # Aggiungi altri step necessari, ad esempio per configurare l'accesso SSH
+    - name: Copy repository contents via scp
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "."
+        target: "/var/www/mywebsite"
 
-    # Esecuzione dello script deploy.sh
-    - name: Run deploy script
-      run: ./deploy.sh
+    - name: Executing remote command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: ls
