@@ -10,29 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Install SSH keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: Connect and pull latest code
-        run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ${{ secrets.WORK_DIR }}
-            git checkout ${{ secrets.MAIN_BRANCH }}
-            git pull
-            exit
-          EOF
-
       - name: Upload build.sh script
         uses: actions/upload-artifact@v3
         with:
           name: build-script
-          path: build.sh
+          path: ./build.sh
 
       - name: Download build.sh script on the server
         run: |
+          # Download build.sh from the artifact to the GitHub runner
+          actions/download-artifact@v3
+
+          # Copy the build.sh script to the server
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa build.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
 
       - name: Execute build.sh script on the server
