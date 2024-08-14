@@ -23,9 +23,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Checkout code from GitHub
-        uses: actions/checkout@v3
-
       - name: Connect to Server and Pull Latest Changes
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
 
@@ -33,7 +30,7 @@ jobs:
         run: rm -rf ~/.ssh
 
       - name: Run build
-        working-directory: /var/www/gianlucabarranca.it/public_html/cv-gen-app # Specifica il percorso dove si trova il progetto
+        working-directory: /var/www/gianlucabarranca.it/public_html/cv-gen-app/ # Specifica il percorso dove si trova il progetto
         run: npm run build
 
       - name: Restart server or services (optional)
