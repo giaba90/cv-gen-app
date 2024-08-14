@@ -22,6 +22,6 @@ jobs:
       - name: cleanup
         run: rm -rf ~/.ssh
       - name: install dependency
-        run: npm install
+        run: cd ${{ secrets.WORK_DIR }} && npm install
       - name: run build
         run: vite build
