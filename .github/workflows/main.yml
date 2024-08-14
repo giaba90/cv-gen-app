@@ -28,11 +28,11 @@ jobs:
         run: rm -rf ~/.ssh
 
       - name: Install dependencies
-        working-directory: ${{ secrets.WORK_DIR }} # Specifica il percorso dove si trova il progetto
+        working-directory: /var/www/gianlucabarranca.it/public_html/cv-gen-app # Specifica il percorso dove si trova il progetto
         run: npm install
 
       - name: Run build
-        working-directory: ${{ secrets.WORK_DIR }} # Specifica il percorso dove si trova il progetto
+        working-directory: /var/www/gianlucabarranca.it/public_html/cv-gen-app # Specifica il percorso dove si trova il progetto
         run: npm run build
 
       - name: Restart server or services (optional)
