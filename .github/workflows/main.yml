@@ -25,12 +25,13 @@ jobs:
           name: build-script
           path: ./build.sh
 
-      - name: Download build.sh script on the server
-        run: |
-          # Download build.sh from the artifact to the GitHub runner
-          actions/download-artifact@v3
+      - name: Download build.sh script from artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-script
 
-          # Copy the build.sh script to the server
+      - name: Copy build.sh script to the server
+        run: |
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa build.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
 
       - name: Execute build.sh script on the server
