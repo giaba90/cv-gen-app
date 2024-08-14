@@ -1,3 +1,5 @@
+name: Build and Deploy Application
+
 on:
   push:
     branches:
@@ -5,21 +7,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  run_pull:
-    name: run pull
+  deploy:
+    name: Deploy to Server
     runs-on: ubuntu-latest
 
     steps:
-      - name: install ssh keys
-        # check this thread to understand why its needed:
-        # https://stackoverflow.com/a/70447517
+      - name: Install SSH keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-      - name: connect and pull
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Checkout code from GitHub
+        uses: actions/checkout@v3
+
+      - name: Connect to Server and Pull Latest Changes
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
-      - name: cleanup
+
+      - name: Cleanup SSH keys
         run: rm -rf ~/.ssh
-      - name: run build
-        run: vite build
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ secrets.WORK_DIR }} # directory on the VPS where your code is located
+
+      - name: Run build
+        run: npm run build
+        working-directory: ${{ secrets.WORK_DIR }} # directory on the VPS where your code is located
+
+      - name: Restart server or services (optional)
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && pm2 restart all || systemctl restart myservice"
