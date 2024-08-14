@@ -22,6 +22,8 @@ jobs:
       - name: cleanup
         run: rm -rf ~/.ssh
       - name: install dependency
-        run: cd ${{ secrets.WORK_DIR }} && npm install
+        run: | 
+        cd /var/www/gianlucabarranca.it/public_html/cv-gen-app 
+        npm install
       - name: run build
         run: vite build
