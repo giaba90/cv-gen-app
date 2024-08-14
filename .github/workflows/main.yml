@@ -10,21 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: install ssh keys
-        # check this thread to understand why it's needed:
-        # https://stackoverflow.com/a/70447517
+      - name: Install SSH keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: connect and pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull"
-
-      - name: cleanup
-        run: rm -rf ~/.ssh
-
-      - name: run build script
+      - name: Connect and pull latest code
         run: |
-          chmod +x ./build.sh
-          ./build.sh
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ${{ secrets.WORK_DIR }}
+            git checkout ${{ secrets.MAIN_BRANCH }}
+            git pull
+            exit
+          EOF
+
+      - name: Upload build.sh script
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-script
+          path: build.sh
+
+      - name: Download build.sh script on the server
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa build.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
+
+      - name: Execute build.sh script on the server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ${{ secrets.WORK_DIR }}
+            chmod +x build.sh
+            ./build.sh
+            exit
+          EOF
+
+      - name: Cleanup
+        run: rm -rf ~/.ssh
