@@ -32,10 +32,6 @@ jobs:
       - name: Cleanup SSH keys
         run: rm -rf ~/.ssh
 
-      - name: Install dependencies
-        working-directory: /var/www/gianlucabarranca.it/public_html/cv-gen-app # Specifica il percorso dove si trova il progetto
-        run: npm install
-
       - name: Run build
         working-directory: /var/www/gianlucabarranca.it/public_html/cv-gen-app # Specifica il percorso dove si trova il progetto
         run: npm run build
