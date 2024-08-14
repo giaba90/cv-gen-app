@@ -28,12 +28,12 @@ jobs:
         run: rm -rf ~/.ssh
 
       - name: Install dependencies
+        working-directory: ${{ secrets.WORK_DIR }} # Specifica il percorso dove si trova il progetto
         run: npm install
-        working-directory: ${{ secrets.WORK_DIR }} # directory on the VPS where your code is located
 
       - name: Run build
+        working-directory: ${{ secrets.WORK_DIR }} # Specifica il percorso dove si trova il progetto
         run: npm run build
-        working-directory: ${{ secrets.WORK_DIR }} # directory on the VPS where your code is located
 
       - name: Restart server or services (optional)
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && pm2 restart all || systemctl restart myservice"
