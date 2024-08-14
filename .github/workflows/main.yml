@@ -21,7 +21,5 @@ jobs:
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
       - name: cleanup
         run: rm -rf ~/.ssh
-      - name: install dependency
-        run: cd /var/www/gianlucabarranca.it/public_html/cv-gen-app && npm install
       - name: run build
         run: vite build
