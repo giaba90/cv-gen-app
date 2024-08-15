@@ -20,7 +20,7 @@ sudo apt-get install -y nodejs
 node -v
 npm -v
 
-echo "Aggiornamento completato!"
+echo "Aggiornamento di Nodejs completato!"
 
 # 3. Esegui il build della webapp con Vite
 echo "Building the webapp using Vite..."
@@ -30,6 +30,7 @@ npm run build
 
 # 4. Sposta il contenuto delle cartelle indietro di una directory
 echo "Sposta il contenuto della cartella dist/ nella root del sito"
+rm -r ../assets/*
 mv dist/* ../
 
 # 5. Conferma lo spostamento riuscito

@@ -6,7 +6,7 @@ on:
 
 jobs:
   run_pull:
-    name: run pull
+    name: CI/CD Workflow
     runs-on: ubuntu-latest
 
     steps:
