@@ -63,7 +63,7 @@ Design/ Prototipazione : Figma
 
 Server: VPS personale (si pensa al passaggio su aws o google cloud in secondo momento)
 
-CI/CD: Github repo privato e poi sarà pubblico
+CI/CD: Github Actions + VPS
 
 # AUTENTICAZIONE
 
