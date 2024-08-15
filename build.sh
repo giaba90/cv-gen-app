@@ -10,6 +10,8 @@ if ! [ -x "$(command -v npm)" ]; then
 fi
 
 # 2. Esegui il build della webapp con Vite
+echo "Mostra la versione di node"
+node -v
 echo "Building the webapp using Vite..."
 npm install
 npm run build
