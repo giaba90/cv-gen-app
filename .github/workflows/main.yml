@@ -13,14 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.20.4" # Sostituisci con la versione di Node.js più recente
-
-      - name: Install dependencies
-        run: npm install --no-optional
-
       - name: Install SSH keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
