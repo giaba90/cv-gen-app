@@ -39,7 +39,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd ${{ secrets.WORK_DIR }}
             chmod +x build.sh
-            ./build.sh
+           sh ./build.sh
             exit
           EOF
 
