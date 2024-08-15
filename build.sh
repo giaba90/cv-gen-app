@@ -5,7 +5,7 @@ set -e
 
 # 1. Verifica che npm sia installato
 if ! [ -x "$(command -v npm)" ]; then
-  echo 'Error: npm is not installed.' >&2
+  echo 'Error: npm non è installato.' >&2
   exit 1
 fi
 
@@ -16,10 +16,9 @@ npm run build
 
 
 # 5. Sposta il contenuto delle cartelle indietro di una directory
-echo "Moving the contents of $FOLDER1 and $FOLDER2 one directory up..."
+echo "Sposta il contenuto della cartella dist/ nella root del sito"
 mv dist/* ../
 
-
 # 6. Conferma lo spostamento riuscito
-echo "Successfully moved the contents."
+echo "Contenuto spostato con successo."
 
