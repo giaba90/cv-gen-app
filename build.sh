@@ -10,19 +10,17 @@ if ! [ -x "$(command -v npm)" ]; then
 fi
 
 # 2. Aggiorna node
-# Rimuovi la vecchia versione di Node.js (opzionale)
-apt remove nodejs
+echo "Aggiornamento di Node.js..."
 
-# Aggiungi il repository di Node.js per la versione 18.x
-curl -fsSL https://deb.nodesource.com/setup_18.x | -E bash -
+# Aggiungi il repository ufficiale NodeSource e installa l'ultima versione LTS
+curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
-# Installa Node.js
-apt install -y nodejs
-
-# Verifica la versione di Node.js e npm
+# Mostra le versioni di Node.js e npm aggiornate
 node -v
 npm -v
 
+echo "Aggiornamento completato!"
 
 # 3. Esegui il build della webapp con Vite
 echo "Building the webapp using Vite..."
