@@ -1,4 +1,5 @@
 import { signOut, getAuth } from "firebase/auth";
+import ContactForm from "../Components/Backend/ContactForm";
 
 export function Admin() {
     const auth = getAuth();
@@ -14,7 +15,7 @@ export function Admin() {
         <div>
             <h1>This is the Admin page</h1>
             <br />
-            {/* */}
+            <ContactForm />
             <br /><br />
             <button
                 onClick={() => {
