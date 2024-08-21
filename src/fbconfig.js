@@ -1,3 +1,6 @@
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
 const apiKey = import.meta.env.VITE_REACT_APP_API_KEY; // Usa import.meta.env per Vite
 
 const fbconfig = {
@@ -9,4 +12,8 @@ const fbconfig = {
     appId: "1:382177596464:web:03f124741dcbc3506c89f5"
 };
 
-export default fbconfig;
+const app = initializeApp(fbconfig);
+const db = getFirestore(app);
+
+export { db };
+
