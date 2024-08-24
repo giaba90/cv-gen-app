@@ -1,7 +1,15 @@
 // src/components/CourseList.js
-import { useState, useEffect } from 'react';
-import { db } from '../../fbconfig';
-import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore';
+import { useState, useEffect } from "react";
+import { db } from "../../fbconfig";
+import {
+    doc,
+    collection,
+    query,
+    orderBy,
+    onSnapshot,
+    deleteDoc,
+    updateDoc,
+} from "firebase/firestore";
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
@@ -11,9 +19,9 @@ const CourseList = () => {
     const [formData, setFormData] = useState({}); // Stato per i dati del corso da modificare
 
     useEffect(() => {
-        const educationRef = doc(db, 'db', 'education');
-        const coursesCollectionRef = collection(educationRef, 'courses');
-        const q = query(coursesCollectionRef, orderBy('createdAt', 'desc'));
+        const educationRef = doc(db, "db", "education");
+        const coursesCollectionRef = collection(educationRef, "courses");
+        const q = query(coursesCollectionRef, orderBy("end", "desc"));
 
         const unsubscribe = onSnapshot(
             q,
@@ -27,8 +35,8 @@ const CourseList = () => {
                 setLoading(false);
             },
             (err) => {
-                console.error('Errore durante il recupero dei corsi:', err);
-                setError('Errore durante il recupero dei corsi');
+                console.error("Errore durante il recupero dei corsi:", err);
+                setError("Errore durante il recupero dei corsi");
                 setLoading(false);
             }
         );
@@ -38,10 +46,10 @@ const CourseList = () => {
 
     const handleDelete = async (id) => {
         try {
-            const educationRef = doc(db, 'db', 'education');
-            const courseDocRef = doc(educationRef, 'courses', id);
+            const educationRef = doc(db, "db", "education");
+            const courseDocRef = doc(educationRef, "courses", id);
             await deleteDoc(courseDocRef);
-            console.log('Corso eliminato con successo!');
+            console.log("Corso eliminato con successo!");
         } catch (err) {
             console.error("Errore durante l'eliminazione del corso:", err);
             setError("Errore durante l'eliminazione del corso");
@@ -61,10 +69,10 @@ const CourseList = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const educationRef = doc(db, 'db', 'education');
-            const courseDocRef = doc(educationRef, 'courses', editingCourseId);
+            const educationRef = doc(db, "db", "education");
+            const courseDocRef = doc(educationRef, "courses", editingCourseId);
             await updateDoc(courseDocRef, formData);
-            console.log('Corso aggiornato con successo!');
+            console.log("Corso aggiornato con successo!");
             setEditingCourseId(null);
             setFormData({});
         } catch (err) {
@@ -102,47 +110,47 @@ const CourseList = () => {
                                     <input
                                         type="text"
                                         name="title"
-                                        value={formData.title || ''}
+                                        value={formData.title || ""}
                                         onChange={handleChange}
                                         placeholder="Titolo del corso"
                                     />
                                     <input
                                         type="text"
                                         name="school"
-                                        value={formData.school || ''}
+                                        value={formData.school || ""}
                                         onChange={handleChange}
                                         placeholder="Nome della scuola"
                                     />
                                     <input
                                         type="date"
                                         name="start"
-                                        value={formData.start || ''}
+                                        value={formData.start || ""}
                                         onChange={handleChange}
                                     />
                                     <input
                                         type="date"
                                         name="end"
-                                        value={formData.end || ''}
+                                        value={formData.end || ""}
                                         onChange={handleChange}
                                     />
                                     <input
                                         type="text"
                                         name="description"
-                                        value={formData.description || ''}
+                                        value={formData.description || ""}
                                         onChange={handleChange}
                                         placeholder="Descrizione"
                                     />
                                     <input
                                         type="url"
                                         name="link"
-                                        value={formData.link || ''}
+                                        value={formData.link || ""}
                                         onChange={handleChange}
                                         placeholder="Link"
                                     />
                                     <input
                                         type="url"
                                         name="website"
-                                        value={formData.website || ''}
+                                        value={formData.website || ""}
                                         onChange={handleChange}
                                         placeholder="Sito web"
                                     />
@@ -159,13 +167,31 @@ const CourseList = () => {
                                     <p>Data Fine: {course.end}</p>
                                     <p>{course.description}</p>
                                     <p>
-                                        Link: <a href={course.link} target="_blank" rel="noopener noreferrer">{course.link}</a>
+                                        Link:{" "}
+                                        <a
+                                            href={course.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {course.link}
+                                        </a>
                                     </p>
                                     <p>
-                                        Sito Web: <a href={course.website} target="_blank" rel="noopener noreferrer">{course.website}</a>
+                                        Sito Web:{" "}
+                                        <a
+                                            href={course.website}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {course.website}
+                                        </a>
                                     </p>
-                                    <button onClick={() => handleEditClick(course)}>Modifica</button>
-                                    <button onClick={() => handleDelete(course.id)}>Elimina</button>
+                                    <button onClick={() => handleEditClick(course)}>
+                                        Modifica
+                                    </button>
+                                    <button onClick={() => handleDelete(course.id)}>
+                                        Elimina
+                                    </button>
                                 </>
                             )}
                         </li>

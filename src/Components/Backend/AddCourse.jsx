@@ -58,7 +58,7 @@ const AddCourse = () => {
                     <input
                         type="text"
                         value={title}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => setTitle(e.target.value)}
                         required
                     />
                 </div>{" "}
