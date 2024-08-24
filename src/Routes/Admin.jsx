@@ -1,5 +1,5 @@
 import { signOut, getAuth } from "firebase/auth";
-import JobList from "../components/BackendJobList";
+import JobList from "../components/Backend/JobList";
 import AddJob from "../components/Backend/AddJob";
 export function Admin() {
     const auth = getAuth();
