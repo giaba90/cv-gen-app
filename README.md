@@ -71,6 +71,10 @@ Ho utilizzato il servizio di Autenticazione di [Firebase](https://firebase.googl
 
 # DETTAGLI IMPLEMANTITIVI
 
+Le api key sono state messe in singole variabili di ambienti di lavoro in un file .env
+
+All'interno di un file yml è stata inserita la procedura che al push di una modifica sul branch main , builda un copia statica dell'interno sito su una vps privata.
+
 # MAGGIORI DETTAGLI
 
 La sezione intro conterrà una breve descrizione su di me. Ci sarà una foto profilo; queste info saranno scritte direttamente dentro il tema
@@ -83,61 +87,9 @@ Le skills saranno realizzate con il componente tag
 
 Per la sezione contatti i dati saranno prelevati da database, preceduti da icona e cliccabili.
 
-# GRAFICA
-
 # SICUREZZA
 
 Ho utilizzato [Synk](https://snyk.io/) per verificare la presenza di vulnerabilità conosciute nel file package.json.
 Successivamente ho fixato manualmente i bug.
 
-# API
-
-**Education**
-
-- admin/education/create
-  - Crea un nuovo titolo di studio
-- admin/education/edit/:id
-  - Modifica un titolo di studio
-- admin/education/delete/:id
-  - Elimina un titolo di studio
-- admin/education/get
-  - Restituisce tutti i titoli di studio
-- admin/education/get/:id
-  - Restituisce un singolo titolo di studio
-
-**Experience**
-
-- admin/experience/create
-  - Crea una nuova esperienza
-- admin/experience/edit/:id
-  - Modifica una esperienza
-- admin/experience/delete/:id
-  - Elimina una esperienza
-- admin/experience/get
-  - Restituisce tutti l’esperienze
-- admin/experience/get/:id
-  - Restituisce una singola esperienza
-
-**Projects**
-
-- admin/project/create
-  - Crea un nuovo progetto
-- admin/project/edit/:id
-  - Modifica un progetto
-- admin/project/delete/:id
-  - Elimina un progetto
-- admin/project/get
-  - Restituisce tutti i progetti
-- admin/project/get/:id
-  - Restituisce un singolo progetto
-
-**Contact detail**
-
-- admin/contact/create
-  - Crea un nuovo contatto
-- admin/contact/edit/:id
-  - Modifica un contatto
-- admin/contact/delete/:id
-  - Elimina un contatto
-- admin/contact/get
-  - Restituisce tutti i titoli di studio
+# GRAFICA
