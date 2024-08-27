@@ -39,40 +39,41 @@ const AddReference = () => {
                 uploadTask.on(
                     'state_changed',
                     (snapshot) => {
-                        // Progresso del caricamento
+                        // Progresso del caricamento può essere gestito qui
                     },
                     (error) => {
                         setError(`Errore durante il caricamento dell'immagine: ${error.message}`);
                         setUploading(false);
                     },
                     async () => {
-                        photoURL = await getDownloadURL(uploadTask.snapshot.ref);
-
-                        // Aggiunta del documento alla raccolta 'ref' in Firestore
-                        await addDoc(collection(doc(db, 'db', 'reference'), 'ref'), {
-                            job_title: formData.job_title,
-                            description: formData.description,
-                            name: formData.name,
-                            photo: photoURL,
-                        });
-
-                        setUploading(false);
-                        setFormData({ job_title: '', description: '', name: '', photo: null });
-                        setSuccessMessage('Recensione caricata con successo!');
+                        try {
+                            photoURL = await getDownloadURL(uploadTask.snapshot.ref);
+                            await addDoc(collection(doc(db, 'db', 'reference'), 'ref'), {
+                                job_title: formData.job_title,
+                                description: formData.description,
+                                name: formData.name,
+                                photo: photoURL,
+                            });
+                            setSuccessMessage('Recensione caricata con successo!');
+                        } catch (error) {
+                            setError(`Errore durante l'aggiunta del documento: ${error.message}`);
+                        } finally {
+                            setUploading(false);
+                            setFormData({ job_title: '', description: '', name: '', photo: null });
+                        }
                     }
                 );
             } else {
-                // Se non c'è nessuna foto, aggiungi il documento direttamente
+                // Se non c'è una foto, aggiungi il documento senza il campo immagine
                 await addDoc(collection(doc(db, 'db', 'reference'), 'ref'), {
                     job_title: formData.job_title,
                     description: formData.description,
                     name: formData.name,
                     photo: '',
                 });
-
+                setSuccessMessage('Recensione caricata con successo!');
                 setUploading(false);
                 setFormData({ job_title: '', description: '', name: '', photo: null });
-                setSuccessMessage('Recensione caricata con successo!');
             }
         } catch (err) {
             console.error('Errore durante il caricamento dei dati:', err);
@@ -113,7 +114,7 @@ const AddReference = () => {
                 />
                 <input
                     type="file"
-                    name="photo del cliente"
+                    name="photo"
                     accept="image/*"
                     onChange={handleChange}
                 />
