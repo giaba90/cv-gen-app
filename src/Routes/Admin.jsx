@@ -1,4 +1,7 @@
 import { signOut, getAuth } from "firebase/auth";
+import AddSkill from "../Components/Backend/AddSkill";
+import SkillList from "../Components/Backend/SkillList";
+
 export function Admin() {
     const auth = getAuth();
 
@@ -12,6 +15,9 @@ export function Admin() {
     return (
         <div>
             <h1>This is the Admin page</h1>
+            <br />
+            <AddSkill></AddSkill>
+            <SkillList></SkillList>
             <button
                 onClick={() => {
                     handleSignOut();
