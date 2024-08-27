@@ -58,7 +58,7 @@ const AddReference = () => {
 
                         setUploading(false);
                         setFormData({ job_title: '', description: '', name: '', photo: null });
-                        setSuccessMessage('Recensione caricato con successo!');
+                        setSuccessMessage('Recensione caricata con successo!');
                     }
                 );
             } else {
@@ -72,7 +72,7 @@ const AddReference = () => {
 
                 setUploading(false);
                 setFormData({ job_title: '', description: '', name: '', photo: null });
-                setSuccessMessage('Recensione caricato con successo!');
+                setSuccessMessage('Recensione caricata con successo!');
             }
         } catch (err) {
             console.error('Errore durante il caricamento dei dati:', err);
