@@ -1,4 +1,7 @@
 import { signOut, getAuth } from "firebase/auth";
+import AddSkill from "../Components/Backend/AddSkill";
+import SkillList from "../Components/Backend/SkillList";
+
 import AddReference from "../Components/Backend/AddReference";
 import ReferenceList from "../Components/Backend/ReferenceList";
 import AddProjects from "../Components/Backend/AddProjetcs";
@@ -27,6 +30,9 @@ export function Admin() {
             <br />
             <AddReference></AddReference>
             <ReferenceList></ReferenceList>
+            <br />
+            <AddSkill></AddSkill>
+            <SkillList></SkillList>
             <br />
             <ProjectList></ProjectList>
             <AddProjects></AddProjects>
