@@ -36,7 +36,7 @@ export function Signin() {
                     onChange={(e) => {
                         setPassword(e.target.value);
                     }}
-                    type="text"
+                    type="password"
                     placeholder="Password"
                 />
                 <button
