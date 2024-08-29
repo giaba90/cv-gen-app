@@ -1,4 +1,9 @@
 import { signOut, getAuth } from "firebase/auth";
+import CourseList from "../Components/Backend/CourseList";
+import AddCourse from "../Components/Backend/AddCourse";
+import ContactForm from "../Components/Backend/ContactForm";
+import ContactDetail from "../Components/Backend/ContactDetail";
+
 import JobList from "../components/Backend/JobList";
 import AddJob from "../components/Backend/AddJob";
 export function Admin() {
@@ -14,6 +19,15 @@ export function Admin() {
     return (
         <div>
             <h1>This is the Admin page</h1>
+            <br></br>
+            <CourseList></CourseList>
+            <br />
+            <AddCourse></AddCourse>
+            <br />
+            <br />
+            <ContactForm />
+            <ContactDetail />
+            <br /><br />
             <br />
             <JobList></JobList>
             <AddJob></AddJob>
