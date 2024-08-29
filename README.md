@@ -34,22 +34,23 @@ L'intera applicazione è realizzata con l'uso di ReactJS. Per la parte di backen
    6. Principali attività
    7. Skills (collegato alle sezioni skills, progetti)
 4. COMPETENZE (skills)
-   1. Nome
+   1. Nome della competenza
 5. PROGETTI (projects)
    1. Titolo
    2. Descrizione
    3. Link a github
    4. Skills (collegato alle sezioni skills, competenze)
 6. RECENSIONI (reference)
-   1. Foto
-   2. Nome
-   3. Qualifica
-   4. Descrizione
+   1. Foto del cliente
+   2. Nome del cliente
+   3. Qualifica del clente
+   4. Testo recensione
 7. CONTATTI (contact)
    1. E-mail
    2. Telefono
    3. Indirizzo
    4. Profilo linkedin
+   5. Foto profilo
 
 # TECNOLOGIE USATE
 
