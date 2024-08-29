@@ -1,10 +1,11 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthContext } from './Context/AuthContext'
-import { Protected } from './Routes/Protected'
-import { Signin } from './Routes/Signin'
-import { Homepage } from './Routes/HomePage'
-import { Admin } from './Routes/Admin'
+import { Homepage } from './Pages/Frontend/HomePage'
+import { Protected } from './Pages/Frontend/Protected'
+import { Signin } from './Pages/Backend/Signin'
+import { Admin } from './Pages/Backend/Admin'
+
 
 function App() {
   const router = createBrowserRouter([
