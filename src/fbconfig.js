@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from 'firebase/storage';
 
 const apiKey = import.meta.env.VITE_REACT_APP_API_KEY; // Usa import.meta.env per Vite
 
@@ -14,6 +15,6 @@ const fbconfig = {
 
 const app = initializeApp(fbconfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-export { db };
-
+export { db, storage }; 
