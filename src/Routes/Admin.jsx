@@ -4,6 +4,8 @@ import AddCourse from "../Components/Backend/AddCourse";
 import ContactForm from "../Components/Backend/ContactForm";
 import ContactDetail from "../Components/Backend/ContactDetail";
 
+import JobList from "../components/Backend/JobList";
+import AddJob from "../components/Backend/AddJob";
 export function Admin() {
     const auth = getAuth();
 
@@ -26,6 +28,9 @@ export function Admin() {
             <ContactForm />
             <ContactDetail />
             <br /><br />
+            <br />
+            <JobList></JobList>
+            <AddJob></AddJob>
             <button
                 onClick={() => {
                     handleSignOut();
