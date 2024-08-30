@@ -1,5 +1,6 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { ChakraProvider } from '@chakra-ui/react'
 import { AuthContext } from './Context/AuthContext'
 import { Homepage } from './Pages/Frontend/HomePage'
 import { Protected } from './Pages/Frontend/Protected'
@@ -11,6 +12,8 @@ import Project from './Pages/Backend/Project'
 import Reference from './Pages/Backend/Reference'
 import Contact from './Pages/Backend/Contact'
 import Skill from './Pages/Backend/Skill'
+
+import theme from './theme'
 
 function App() {
   const router = createBrowserRouter([
@@ -53,9 +56,11 @@ function App() {
   ])
 
   return (
-    <AuthContext>
-      <RouterProvider router={router}></RouterProvider>
-    </AuthContext>
+    <ChakraProvider theme={theme}>
+      <AuthContext>
+        <RouterProvider router={router}></RouterProvider>
+      </AuthContext>
+    </ChakraProvider>
   )
 }
 
