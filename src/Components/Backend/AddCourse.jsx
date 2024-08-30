@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
     Box,
     Button,
+    CloseButton,
     FormControl,
     FormLabel,
     Input,
@@ -12,7 +13,9 @@ import {
     ModalBody,
     ModalFooter,
     Text,
+    Textarea,
     VStack,
+    HStack,
     useDisclosure,
 } from "@chakra-ui/react";
 import { doc, collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -77,10 +80,15 @@ const AddCourse = () => {
             <Button colorScheme="teal" onClick={onOpen}>
                 Aggiungi Corso
             </Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} size="xl" onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Aggiungi Corso</ModalHeader>
+                    <ModalHeader>
+                        <HStack spacing={80}>
+                            <Text>Aggiungi Corso</Text>
+                            <CloseButton onClick={onClose} />
+                        </HStack>
+                    </ModalHeader>
                     <ModalBody>
                         <form onSubmit={handleSubmit}>
                             <VStack spacing={4}>
@@ -101,27 +109,38 @@ const AddCourse = () => {
                                     />
                                 </FormControl>
                                 <FormControl isRequired>
-                                    <FormLabel>Descrizione:</FormLabel>
+                                    <FormLabel>Sito Web:</FormLabel>
                                     <Input
-                                        type="text"
+                                        type="url"
+                                        value={website}
+                                        onChange={(e) => setWebsite(e.target.value)}
+                                    />
+                                </FormControl>
+                                <HStack spacing={48}>
+                                    <FormControl>
+                                        <FormLabel>Data Inizio:</FormLabel>
+                                        <Input
+                                            type="date"
+                                            value={start}
+                                            onChange={(e) => setStart(e.target.value)}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel>Data Fine:</FormLabel>
+                                        <Input
+                                            type="date"
+                                            value={end}
+                                            onChange={(e) => setEnd(e.target.value)}
+                                        />
+                                    </FormControl>
+                                </HStack>
+                                <FormControl isRequired>
+                                    <FormLabel>Descrizione:</FormLabel>
+                                    <Textarea
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
-                                    />
-                                </FormControl>
-                                <FormControl>
-                                    <FormLabel>Data Inizio:</FormLabel>
-                                    <Input
-                                        type="date"
-                                        value={start}
-                                        onChange={(e) => setStart(e.target.value)}
-                                    />
-                                </FormControl>
-                                <FormControl>
-                                    <FormLabel>Data Fine:</FormLabel>
-                                    <Input
-                                        type="date"
-                                        value={end}
-                                        onChange={(e) => setEnd(e.target.value)}
+                                        placeholder="Inserisci una descrizione dettagliata"
+                                        size="md"
                                     />
                                 </FormControl>
                                 <FormControl>
@@ -130,14 +149,6 @@ const AddCourse = () => {
                                         type="url"
                                         value={link}
                                         onChange={(e) => setLink(e.target.value)}
-                                    />
-                                </FormControl>
-                                <FormControl isRequired>
-                                    <FormLabel>Sito Web:</FormLabel>
-                                    <Input
-                                        type="url"
-                                        value={website}
-                                        onChange={(e) => setWebsite(e.target.value)}
                                     />
                                 </FormControl>
                                 <Button
@@ -160,9 +171,7 @@ const AddCourse = () => {
                                 {status}
                             </Text>
                         )}
-                        <Button variant="ghost" onClick={onClose}>
-                            Chiudi
-                        </Button>
+
                     </ModalFooter>
                 </ModalContent>
             </Modal>
