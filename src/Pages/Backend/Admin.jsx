@@ -25,24 +25,7 @@ export function Admin() {
     return (
         <div>
             <h1>This is the Admin page</h1>
-            <br />
-            <AddReference></AddReference>
-            <ReferenceList></ReferenceList>
-            <br />
-            <AddSkill></AddSkill>
-            <SkillList></SkillList>
-            <br />
-            <ProjectList></ProjectList>
-            <AddProjects></AddProjects>
-            <br />
-            <CourseList></CourseList>
-            <AddCourse></AddCourse>
-            <br />
-            <ContactForm />
-            <ContactDetail />
-            <br />
-            <JobList></JobList>
-            <AddJob></AddJob>
+
             <button
                 onClick={() => {
                     handleSignOut();
