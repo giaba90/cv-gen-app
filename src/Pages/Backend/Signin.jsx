@@ -41,7 +41,7 @@ export function Signin() {
             borderRadius="md"
             bg="white">
             <Heading as="h1" mb="6" textAlign="center">
-                Sign In
+                Login
             </Heading>
             <VStack spacing="4" as="form" onSubmit={handleSignIn}>
                 <FormControl id="email" isInvalid={!!error}>
@@ -71,7 +71,7 @@ export function Signin() {
                 </FormControl>
 
                 <Button type="submit" colorScheme="teal" width="full">
-                    Sign In
+                    Entra
                 </Button>
             </VStack>
 

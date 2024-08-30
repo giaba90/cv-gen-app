@@ -5,8 +5,10 @@ export default function Course() {
         <div>
             <h1>This is the Course page !</h1>
             <br /><br />
-            <CourseList></CourseList>
             <AddCourse></AddCourse>
+            <br></br>
+            {/*  <CourseList></CourseList>*/}
+
         </div>
     );
 }

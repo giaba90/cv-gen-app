@@ -1,8 +1,25 @@
 import { useState } from "react";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Text,
+    VStack,
+    useDisclosure,
+} from "@chakra-ui/react";
 import { doc, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../fbconfig"; // Importa il db configurato
 
 const AddCourse = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [start, setStart] = useState("");
@@ -11,9 +28,12 @@ const AddCourse = () => {
     const [link, setLink] = useState("");
     const [website, setWebsite] = useState("");
     const [status, setStatus] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setStatus("");
 
         try {
             // Riferimento al documento 'education' nella raccolta principale
@@ -24,13 +44,13 @@ const AddCourse = () => {
 
             // Aggiungi un nuovo documento alla raccolta 'courses'
             await addDoc(coursesCollectionRef, {
-                title: title,
-                description: description,
-                start: start,
-                end: end,
-                school: school,
-                link: link,
-                website: website,
+                title,
+                description,
+                start,
+                end,
+                school,
+                link,
+                website,
                 createdAt: serverTimestamp(), // Aggiungi un timestamp al documento
             });
 
@@ -43,80 +63,110 @@ const AddCourse = () => {
             setSchool("");
             setLink("");
             setWebsite("");
+            onClose(); // Chiudi il modal dopo il successo
         } catch (error) {
             console.error("Errore durante l'inserimento del corso:", error);
             setStatus("Errore durante l'inserimento del corso");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div>
-            <h1>Aggiungi Corso</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Titolo di studio:</label>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </div>{" "}
-                <div>
-                    <label>Scuola o Università:</label>
-                    <input
-                        type="text"
-                        value={school}
-                        onChange={(e) => setSchool(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Descrizione:</label>
-                    <input
-                        type="text"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Data Inizio:</label>
-                    <input
-                        type="date"
-                        value={start}
-                        onChange={(e) => setStart(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Data Fine:</label>
-                    <input
-                        type="date"
-                        value={end}
-                        onChange={(e) => setEnd(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Link:</label>
-                    <input
-                        type="url"
-                        value={link}
-                        onChange={(e) => setLink(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Sito Web:</label>
-                    <input
-                        type="url"
-                        value={website}
-                        onChange={(e) => setWebsite(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Aggiungi Corso</button>
-            </form>
-            {status && <p>{status}</p>}
-        </div>
+        <Box p={4}>
+            <Button colorScheme="teal" onClick={onOpen}>
+                Aggiungi Corso
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Aggiungi Corso</ModalHeader>
+                    <ModalBody>
+                        <form onSubmit={handleSubmit}>
+                            <VStack spacing={4}>
+                                <FormControl isRequired>
+                                    <FormLabel>Titolo di studio:</FormLabel>
+                                    <Input
+                                        type="text"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel>Scuola o Università:</FormLabel>
+                                    <Input
+                                        type="text"
+                                        value={school}
+                                        onChange={(e) => setSchool(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel>Descrizione:</FormLabel>
+                                    <Input
+                                        type="text"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl>
+                                    <FormLabel>Data Inizio:</FormLabel>
+                                    <Input
+                                        type="date"
+                                        value={start}
+                                        onChange={(e) => setStart(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl>
+                                    <FormLabel>Data Fine:</FormLabel>
+                                    <Input
+                                        type="date"
+                                        value={end}
+                                        onChange={(e) => setEnd(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl>
+                                    <FormLabel>Link:</FormLabel>
+                                    <Input
+                                        type="url"
+                                        value={link}
+                                        onChange={(e) => setLink(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel>Sito Web:</FormLabel>
+                                    <Input
+                                        type="url"
+                                        value={website}
+                                        onChange={(e) => setWebsite(e.target.value)}
+                                    />
+                                </FormControl>
+                                <Button
+                                    colorScheme="teal"
+                                    type="submit"
+                                    isLoading={loading}
+                                    loadingText="Caricamento..."
+                                >
+                                    Salva Corso
+                                </Button>
+                            </VStack>
+                        </form>
+                    </ModalBody>
+                    <ModalFooter>
+                        {status && (
+                            <Text
+                                mt={4}
+                                color={status.includes("Errore") ? "red.500" : "green.500"}
+                            >
+                                {status}
+                            </Text>
+                        )}
+                        <Button variant="ghost" onClick={onClose}>
+                            Chiudi
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </Box>
     );
 };
 
