@@ -1,15 +1,8 @@
 // src/components/CourseList.js
 import { useState, useEffect } from "react";
 import { db } from "../../../fbconfig" // Importa il db configurato
-import {
-    doc,
-    collection,
-    query,
-    orderBy,
-    onSnapshot,
-    deleteDoc,
-    updateDoc,
-} from "firebase/firestore";
+import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
+import Menu from "../Menu/Menu";
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
@@ -97,108 +90,112 @@ const CourseList = () => {
     }
 
     return (
+
+
         <div>
             <h1>Elenco dei Corsi</h1>
-            {courses.length === 0 ? (
-                <p>Nessun corso disponibile.</p>
-            ) : (
-                <ul>
-                    {courses.map((course) => (
-                        <li key={course.id}>
-                            {editingCourseId === course.id ? (
-                                <form onSubmit={handleUpdate}>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={formData.title || ""}
-                                        onChange={handleChange}
-                                        placeholder="Titolo del corso"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="school"
-                                        value={formData.school || ""}
-                                        onChange={handleChange}
-                                        placeholder="Nome della scuola"
-                                    />
-                                    <input
-                                        type="date"
-                                        name="start"
-                                        value={formData.start || ""}
-                                        onChange={handleChange}
-                                    />
-                                    <input
-                                        type="date"
-                                        name="end"
-                                        value={formData.end || ""}
-                                        onChange={handleChange}
-                                    />
-                                    <input
-                                        type="text"
-                                        name="description"
-                                        value={formData.description || ""}
-                                        onChange={handleChange}
-                                        placeholder="Descrizione"
-                                    />
-                                    <input
-                                        type="url"
-                                        name="link"
-                                        value={formData.link || ""}
-                                        onChange={handleChange}
-                                        placeholder="Link"
-                                    />
-                                    <input
-                                        type="url"
-                                        name="website"
-                                        value={formData.website || ""}
-                                        onChange={handleChange}
-                                        placeholder="Sito web"
-                                    />
-                                    <button type="submit">Salva</button>
-                                    <button type="button" onClick={handleCancelEdit}>
-                                        Annulla
-                                    </button>
-                                </form>
-                            ) : (
-                                <>
-                                    <h2>{course.title}</h2>
-                                    <p>Scuola: {course.school}</p>
-                                    <p>Data Inizio: {course.start}</p>
-                                    <p>Data Fine: {course.end}</p>
-                                    <p>{course.description}</p>
-                                    <p>
-                                        Link:{" "}
-                                        <a
-                                            href={course.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {course.link}
-                                        </a>
-                                    </p>
-                                    <p>
-                                        Sito Web:{" "}
-                                        <a
-                                            href={course.website}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {course.website}
-                                        </a>
-                                    </p>
-                                    <button onClick={() => handleEditClick(course)}>
-                                        Modifica
-                                    </button>
-                                    <button onClick={() => handleDelete(course.id)}>
-                                        Elimina
-                                    </button>
-                                </>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+            {
+                courses.length === 0 ? (
+                    <p>Nessun corso disponibile.</p>
+                ) : (
+                    <ul>
+                        {courses.map((course) => (
+                            <li key={course.id}>
+                                {editingCourseId === course.id ? (
+                                    <form onSubmit={handleUpdate}>
+                                        <input
+                                            type="text"
+                                            name="title"
+                                            value={formData.title || ""}
+                                            onChange={handleChange}
+                                            placeholder="Titolo del corso"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="school"
+                                            value={formData.school || ""}
+                                            onChange={handleChange}
+                                            placeholder="Nome della scuola"
+                                        />
+                                        <input
+                                            type="date"
+                                            name="start"
+                                            value={formData.start || ""}
+                                            onChange={handleChange}
+                                        />
+                                        <input
+                                            type="date"
+                                            name="end"
+                                            value={formData.end || ""}
+                                            onChange={handleChange}
+                                        />
+                                        <input
+                                            type="text"
+                                            name="description"
+                                            value={formData.description || ""}
+                                            onChange={handleChange}
+                                            placeholder="Descrizione"
+                                        />
+                                        <input
+                                            type="url"
+                                            name="link"
+                                            value={formData.link || ""}
+                                            onChange={handleChange}
+                                            placeholder="Link"
+                                        />
+                                        <input
+                                            type="url"
+                                            name="website"
+                                            value={formData.website || ""}
+                                            onChange={handleChange}
+                                            placeholder="Sito web"
+                                        />
+                                        <button type="submit">Salva</button>
+                                        <button type="button" onClick={handleCancelEdit}>
+                                            Annulla
+                                        </button>
+                                    </form>
+                                ) : (
+                                    <>
+                                        <h2>{course.title}</h2>
+                                        <p>Scuola: {course.school}</p>
+                                        <p>Data Inizio: {course.start}</p>
+                                        <p>Data Fine: {course.end}</p>
+                                        <p>{course.description}</p>
+                                        <p>
+                                            Link:{" "}
+                                            <a
+                                                href={course.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {course.link}
+                                            </a>
+                                        </p>
+                                        <p>
+                                            Sito Web:{" "}
+                                            <a
+                                                href={course.website}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {course.website}
+                                            </a>
+                                        </p>
+                                        <button onClick={() => handleEditClick(course)}>
+                                            Modifica
+                                        </button>
+                                        <button onClick={() => handleDelete(course.id)}>
+                                            Elimina
+                                        </button>
+                                    </>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+
+                )
+            }</div>
     );
 };
 
