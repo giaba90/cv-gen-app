@@ -1,7 +1,8 @@
-import { Button, Flex, Heading, Spacer, HStack, } from "@chakra-ui/react";
+import { Button, Flex, Spacer, HStack, } from "@chakra-ui/react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Link } from '@chakra-ui/react'
 import { signOut, getAuth } from "firebase/auth";
 
-export default function Menu() {
+export default function Menu({ children }) {
     const auth = getAuth();
 
     async function handleSignOut() {
@@ -20,14 +21,20 @@ export default function Menu() {
             borderColor="gray.200"
             alignItems="center"
         >
-            <Heading as="h1" size="lg">
-                Admin Panel
-            </Heading>
+            <Breadcrumb>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href='/admin'>Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem isCurrentPage>
+                    <BreadcrumbLink href='#'>{children}</BreadcrumbLink>
+                </BreadcrumbItem>
+            </Breadcrumb>
             <Spacer />
             <HStack spacing={4}>
-                <Button colorScheme="teal" variant="ghost">
-                    Dashboard
-                </Button>
+                <Link href="/">
+                    <Button colorScheme="teal" variant="ghost">
+                        Vai al sito
+                    </Button></Link>
                 <Button colorScheme="red" variant="ghost" onClick={handleSignOut}>
                     Esci
                 </Button>
