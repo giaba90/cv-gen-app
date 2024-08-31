@@ -1,14 +1,43 @@
-import { Box, Grid, Image, Text } from "@chakra-ui/react";
+import { Box, Grid, Text } from "@chakra-ui/react";
+import { Icon } from '@chakra-ui/react'
+import { FaAddressBook, FaBriefcase, FaComments, FaBookOpenReader, FaMedapps, FaMicrochip } from "react-icons/fa6";
 import Menu from "../../Components/Backend/Menu/Menu";
 
 export default function Admin() {
+
+    const listVoice = [
+        {
+            name: "Istruzione e Formazione",
+            icon: FaBookOpenReader
+        },
+        {
+            name: "Esprienza Lavorativa",
+            icon: FaBriefcase
+        },
+        {
+            name: "Progetti",
+            icon: FaMedapps
+        },
+        {
+            name: "Skills",
+            icon: FaMicrochip
+        },
+        {
+            name: "Recensioni",
+            icon: FaComments
+        },
+        {
+            name: "Contatti",
+            icon: FaAddressBook
+        }
+    ];
 
     return (
         <Box>
             <Menu></Menu>
             <Box p={6}>
                 <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-                    {[...Array(6)].map((_, index) => (
+                    {listVoice.map((el, index) => (
                         <Box
                             key={index}
                             borderWidth="1px"
@@ -17,16 +46,10 @@ export default function Admin() {
                             bg="white"
                             boxShadow="md"
                         >
-                            <Image
-                                src={`https://via.placeholder.com/300?text=Image+${index + 1}`}
-                                alt={`Image ${index + 1}`}
-                                objectFit="cover"
-                                width="100%"
-                                height="200px"
-                            />
+                            <Icon mt={6} boxSize={24} as={el.icon} />
                             <Box p={4}>
                                 <Text fontWeight="bold" fontSize="xl" textAlign="center">
-                                    Titolo {index + 1}
+                                    {el.name}
                                 </Text>
                             </Box>
                         </Box>
