@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { db, storage } from '../../fbconfig';
+import { db, storage } from "../../../fbconfig" // Importa il db configurato
 import { doc, collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 

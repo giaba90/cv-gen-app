@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { doc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../fbconfig';
+import { db } from "../../../fbconfig" // Importa il db configurato
 
 const AddProjects = () => {
     const [title, setTitle] = useState('');

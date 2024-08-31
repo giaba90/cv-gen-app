@@ -1,5 +1,5 @@
-import AddReference from "../../Components/Backend/AddReference";
-import ReferenceList from "../../Components/Backend/ReferenceList";
+import AddReference from "../../Components/Backend/Reference/AddReference";
+import ReferenceList from "../../Components/Backend/Reference/ReferenceList";
 
 export default function Reference() {
 

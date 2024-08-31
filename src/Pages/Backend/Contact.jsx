@@ -1,5 +1,5 @@
-import ContactForm from "../../Components/Backend/ContactForm";
-import ContactDetail from "../../Components/Backend/ContactDetail";
+import ContactForm from "../../Components/Backend/Contact/ContactForm";
+import ContactDetail from "../../Components/Backend/Contact/ContactDetail";
 
 export default function Contact() {
 

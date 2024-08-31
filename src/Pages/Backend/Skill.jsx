@@ -1,5 +1,5 @@
-import AddSkill from "../../Components/Backend/AddSkill";
-import SkillList from "../../Components/Backend/SkillList";
+import AddSkill from "../../Components/Backend/Skill/AddSkill";
+import SkillList from "../../Components/Backend/Skill/SkillList";
 
 export default function Skill() {
 

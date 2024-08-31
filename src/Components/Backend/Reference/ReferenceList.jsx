@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db } from '../../fbconfig';
+import { db } from "../../../fbconfig" // Importa il db configurato
 import { doc, collection, onSnapshot } from 'firebase/firestore';
 
 const ReferenceList = () => {

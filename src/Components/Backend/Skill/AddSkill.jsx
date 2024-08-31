@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { db } from '../../fbconfig'; // Assicurati che il percorso sia corretto
+import { db } from "../../../fbconfig" // Importa il db configurato
 import { doc, collection, addDoc } from 'firebase/firestore';
 
 const AddSkill = () => {

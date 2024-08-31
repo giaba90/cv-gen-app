@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../fbconfig';  // Importa il db configurato
+import { db } from "../../../fbconfig" // Importa il db configurato
 
 const ContactDetail = () => {
     const [contactData, setContactData] = useState(null);

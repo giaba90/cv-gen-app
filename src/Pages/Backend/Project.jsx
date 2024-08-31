@@ -1,5 +1,5 @@
-import ProjectList from "../../Components/Backend/ProjectsList";
-import AddProjects from "../../Components/Backend/AddProjetcs";
+import ProjectList from "../../Components/Backend/Project/ProjectsList";
+import AddProjects from "../../Components/Backend/Project/AddProjetcs";
 
 export default function Project() {
 

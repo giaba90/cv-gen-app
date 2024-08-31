@@ -1,38 +1,38 @@
-import { signOut, getAuth } from "firebase/auth";
-import AddSkill from "../../Components/Backend/AddSkill";
-import SkillList from "../../Components/Backend/SkillList";
-import AddReference from "../../Components/Backend/AddReference";
-import ReferenceList from "../../Components/Backend/ReferenceList";
-import AddProjects from "../../Components/Backend/AddProjetcs";
-import ProjectList from "../../Components/Backend/ProjectsList";
-import CourseList from "../../Components/Backend/CourseList";
-import AddCourse from "../../Components/Backend/AddCourse";
-import ContactForm from "../../Components/Backend/ContactForm";
-import ContactDetail from "../../Components/Backend/ContactDetail";
-import JobList from "../../Components/Backend/JobList";
-import AddJob from "../../Components/Backend/AddJob";
+import { Box, Grid, Image, Text } from "@chakra-ui/react";
+import Menu from "../../Components/Backend/Menu/Menu";
 
-export function Admin() {
-    const auth = getAuth();
+export default function Admin() {
 
-    async function handleSignOut() {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.log(error);
-        }
-    }
     return (
-        <div>
-            <h1>This is the Admin page</h1>
-
-            <button
-                onClick={() => {
-                    handleSignOut();
-                }}
-            >
-                Sign Out
-            </button>
-        </div>
+        <Box>
+            <Menu></Menu>
+            <Box p={6}>
+                <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+                    {[...Array(6)].map((_, index) => (
+                        <Box
+                            key={index}
+                            borderWidth="1px"
+                            borderRadius="lg"
+                            overflow="hidden"
+                            bg="white"
+                            boxShadow="md"
+                        >
+                            <Image
+                                src={`https://via.placeholder.com/300?text=Image+${index + 1}`}
+                                alt={`Image ${index + 1}`}
+                                objectFit="cover"
+                                width="100%"
+                                height="200px"
+                            />
+                            <Box p={4}>
+                                <Text fontWeight="bold" fontSize="xl" textAlign="center">
+                                    Titolo {index + 1}
+                                </Text>
+                            </Box>
+                        </Box>
+                    ))}
+                </Grid>
+            </Box>
+        </Box>
     );
 }

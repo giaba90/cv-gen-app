@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../../fbconfig'; // Importa il db e lo storage configurati
+import { db, storage } from "../../../fbconfig"; // Importa il db configurato
 
 const ContactForm = () => {
     const [address, setAddress] = useState('');

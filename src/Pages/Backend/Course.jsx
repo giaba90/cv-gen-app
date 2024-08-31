@@ -1,5 +1,5 @@
-import CourseList from "../../Components/Backend/CourseList";
-import AddCourse from "../../Components/Backend/AddCourse";
+import CourseList from "../../Components/Backend/Course/CourseList";
+import AddCourse from "../../Components/Backend/Course/AddCourse";
 export default function Course() {
     return (
         <div>

@@ -19,7 +19,7 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { doc, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../fbconfig"; // Importa il db configurato
+import { db } from "../../../fbconfig" // Importa il db configurato
 
 const AddCourse = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();

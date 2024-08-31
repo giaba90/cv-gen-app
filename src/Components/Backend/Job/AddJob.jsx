@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { doc, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../fbconfig"; // Importa il db configurato
-
+import { db } from "../../../fbconfig" // Importa il db configurato
 const AddJob = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

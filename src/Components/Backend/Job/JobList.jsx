@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db } from '../../fbconfig';
+import { db } from "../../../fbconfig" // Importa il db configurato
 import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore';
 
 const JobList = () => {

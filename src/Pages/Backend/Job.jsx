@@ -1,5 +1,5 @@
-import JobList from "../../Components/Backend/JobList";
-import AddJob from "../../Components/Backend/AddJob";
+import JobList from "../../Components/Backend/Job/JobList";
+import AddJob from "../../Components/Backend/Job/AddJob";
 
 export default function Job() {
 
