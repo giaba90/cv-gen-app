@@ -25,14 +25,14 @@ export default function Menu({ children }) {
                 <BreadcrumbItem>
                     <BreadcrumbLink href='/admin'>Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink href='#'>{children}</BreadcrumbLink>
-                </BreadcrumbItem>
+                {children && (<BreadcrumbItem isCurrentPage>
+                    <BreadcrumbLink color="teal" href='#'>{children}</BreadcrumbLink>
+                </BreadcrumbItem>)}
             </Breadcrumb>
             <Spacer />
             <HStack spacing={4}>
                 <Link href="/">
-                    <Button colorScheme="teal" variant="ghost">
+                    <Button>
                         Vai al sito
                     </Button></Link>
                 <Button colorScheme="red" variant="ghost" onClick={handleSignOut}>
