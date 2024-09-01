@@ -1,15 +1,29 @@
-// src/components/CourseList.js
 import { useState, useEffect } from "react";
-import { db } from "../../../fbconfig" // Importa il db configurato
+import {
+    Box,
+    Button,
+    Divider,
+    FormControl,
+    FormLabel,
+    Input,
+    Link,
+    Text,
+    Flex,
+    VStack,
+    HStack,
+    Spinner,
+    useToast,
+} from "@chakra-ui/react";
+import { db } from "../../../fbconfig"; // Importa il db configurato
 import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
-import Menu from "../Menu/Menu";
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [editingCourseId, setEditingCourseId] = useState(null); // Stato per gestire la modifica del corso
-    const [formData, setFormData] = useState({}); // Stato per i dati del corso da modificare
+    const [editingCourseId, setEditingCourseId] = useState(null);
+    const [formData, setFormData] = useState({});
+    const toast = useToast();
 
     useEffect(() => {
         const educationRef = doc(db, "db", "education");
@@ -23,7 +37,6 @@ const CourseList = () => {
                     id: doc.id,
                     ...doc.data(),
                 }));
-
                 setCourses(coursesData);
                 setLoading(false);
             },
@@ -42,7 +55,12 @@ const CourseList = () => {
             const educationRef = doc(db, "db", "education");
             const courseDocRef = doc(educationRef, "courses", id);
             await deleteDoc(courseDocRef);
-            console.log("Corso eliminato con successo!");
+            toast({
+                title: "Corso eliminato con successo!",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
         } catch (err) {
             console.error("Errore durante l'eliminazione del corso:", err);
             setError("Errore durante l'eliminazione del corso");
@@ -50,13 +68,13 @@ const CourseList = () => {
     };
 
     const handleEditClick = (course) => {
-        setEditingCourseId(course.id); // Imposta lo stato per identificare il corso in modifica
-        setFormData(course); // Imposta i dati correnti del corso nel modulo di modifica
+        setEditingCourseId(course.id);
+        setFormData(course);
     };
 
     const handleCancelEdit = () => {
-        setEditingCourseId(null); // Annulla la modifica
-        setFormData({}); // Resetta i dati del modulo
+        setEditingCourseId(null);
+        setFormData({});
     };
 
     const handleUpdate = async (e) => {
@@ -65,7 +83,12 @@ const CourseList = () => {
             const educationRef = doc(db, "db", "education");
             const courseDocRef = doc(educationRef, "courses", editingCourseId);
             await updateDoc(courseDocRef, formData);
-            console.log("Corso aggiornato con successo!");
+            toast({
+                title: "Corso aggiornato con successo!",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
             setEditingCourseId(null);
             setFormData({});
         } catch (err) {
@@ -82,120 +105,138 @@ const CourseList = () => {
     };
 
     if (loading) {
-        return <p>Caricamento in corso...</p>;
+        return (
+            <Flex justify="center" align="center" h="100vh">
+                <Spinner size="xl" />
+            </Flex>
+        );
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return (
+            <Text color="red.500" textAlign="center">
+                {error}
+            </Text>
+        );
     }
 
     return (
-
-
-        <div>
-            <h1>Elenco dei Corsi</h1>
-            {
-                courses.length === 0 ? (
-                    <p>Nessun corso disponibile.</p>
-                ) : (
-                    <ul>
-                        {courses.map((course) => (
-                            <li key={course.id}>
-                                {editingCourseId === course.id ? (
-                                    <form onSubmit={handleUpdate}>
-                                        <input
+        <Box p={4}>
+            {courses.length === 0 ? (
+                <Text>Nessun corso disponibile.</Text>
+            ) : (
+                <VStack spacing={4} align="stretch">
+                    {courses.map((course) => (
+                        <Box key={course.id} >
+                            {editingCourseId === course.id ? (
+                                <form onSubmit={handleUpdate}>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Titolo del corso</FormLabel>
+                                        <Input
                                             type="text"
                                             name="title"
                                             value={formData.title || ""}
                                             onChange={handleChange}
-                                            placeholder="Titolo del corso"
                                         />
-                                        <input
+                                    </FormControl>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Nome della scuola</FormLabel>
+                                        <Input
                                             type="text"
                                             name="school"
                                             value={formData.school || ""}
                                             onChange={handleChange}
-                                            placeholder="Nome della scuola"
                                         />
-                                        <input
+                                    </FormControl>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Data Inizio</FormLabel>
+                                        <Input
                                             type="date"
                                             name="start"
                                             value={formData.start || ""}
                                             onChange={handleChange}
                                         />
-                                        <input
+                                    </FormControl>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Data Fine</FormLabel>
+                                        <Input
                                             type="date"
                                             name="end"
                                             value={formData.end || ""}
                                             onChange={handleChange}
                                         />
-                                        <input
+                                    </FormControl>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Descrizione</FormLabel>
+                                        <Input
                                             type="text"
                                             name="description"
                                             value={formData.description || ""}
                                             onChange={handleChange}
-                                            placeholder="Descrizione"
                                         />
-                                        <input
+                                    </FormControl>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Link</FormLabel>
+                                        <Input
                                             type="url"
                                             name="link"
                                             value={formData.link || ""}
                                             onChange={handleChange}
-                                            placeholder="Link"
                                         />
-                                        <input
+                                    </FormControl>
+                                    <FormControl mb={3}>
+                                        <FormLabel>Sito web</FormLabel>
+                                        <Input
                                             type="url"
                                             name="website"
                                             value={formData.website || ""}
                                             onChange={handleChange}
-                                            placeholder="Sito web"
                                         />
-                                        <button type="submit">Salva</button>
-                                        <button type="button" onClick={handleCancelEdit}>
+                                    </FormControl>
+                                    <HStack spacing={3}>
+                                        <Button colorScheme="teal" type="submit">
+                                            Salva
+                                        </Button>
+                                        <Button colorScheme="red" onClick={handleCancelEdit}>
                                             Annulla
-                                        </button>
-                                    </form>
-                                ) : (
-                                    <>
-                                        <h2>{course.title}</h2>
-                                        <p>Scuola: {course.school}</p>
-                                        <p>Data Inizio: {course.start}</p>
-                                        <p>Data Fine: {course.end}</p>
-                                        <p>{course.description}</p>
-                                        <p>
-                                            Link:{" "}
-                                            <a
-                                                href={course.link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                {course.link}
-                                            </a>
-                                        </p>
-                                        <p>
-                                            Sito Web:{" "}
-                                            <a
-                                                href={course.website}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                {course.website}
-                                            </a>
-                                        </p>
-                                        <button onClick={() => handleEditClick(course)}>
-                                            Modifica
-                                        </button>
-                                        <button onClick={() => handleDelete(course.id)}>
-                                            Elimina
-                                        </button>
-                                    </>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                                        </Button>
+                                    </HStack>
+                                </form>
+                            ) : (
+                                <>
+                                    <HStack>
+                                        <Text fontWeight="bold" fontSize="lg">
+                                            {course.title}
+                                        </Text>
+                                        <Text fontWeight='bold' fontSize='md' color='teal'>{course.start} - {course.end}</Text>
+                                    </HStack>
+                                    <VStack align='start'>
+                                        <Text as='i'>
+                                            <Link href={course.website} >{course.school}</Link>
+                                        </Text>
+                                        <Text align='left' pt={2} pb={2}>{course.description}</Text>
+                                    </VStack>
+                                    <HStack>
+                                        <Text>Link:{" "}</Text><Link href={course.link}> {course.link}</Link>
+                                    </HStack>
 
-                )
-            }</div>
+                                    <HStack spacing={3} mt={3}>
+                                        <Button colorScheme="blue" onClick={() => handleEditClick(course)}>
+                                            Modifica
+                                        </Button>
+                                        <Button colorScheme="red" onClick={() => handleDelete(course.id)}>
+                                            Elimina
+                                        </Button>
+                                    </HStack>
+                                </>
+                            )}
+                            <Divider colorScheme="teal" mt="4" size="lg" />
+                        </Box>
+
+                    ))}
+                </VStack>
+            )}
+        </Box>
     );
 };
 

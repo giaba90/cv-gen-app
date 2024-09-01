@@ -46,13 +46,10 @@ export default function Admin() {
                     {listVoice.map((el, index) => (
                         <Box
                             key={index}
-                            borderWidth="1px"
-                            borderRadius="lg"
                             overflow="hidden"
-                            bg="white"
-                            boxShadow="md"
+                            bg="trasparent"
                         >
-                            <Icon mt={6} boxSize={24} as={el.icon} />
+                            <Icon color='teal' mt={6} boxSize={24} as={el.icon} />
                             <Box p={4}>
                                 <Text fontWeight="bold" fontSize="xl" textAlign="center">
                                     <Link href={el.path}> {el.name}</Link>
