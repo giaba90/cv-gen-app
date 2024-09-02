@@ -1,8 +1,21 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Divider, FormControl, FormLabel, Input, Link, Text, Flex, VStack, HStack, Spinner, useToast, } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    Link,
+    Text,
+    Flex,
+    VStack,
+    HStack,
+    Spinner,
+    useToast,
+} from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { db } from "../../../fbconfig"; // Importa il db configurato
-import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc, } from "firebase/firestore";
+import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
@@ -11,6 +24,7 @@ const CourseList = () => {
     const [editingCourseId, setEditingCourseId] = useState(null);
     const [formData, setFormData] = useState({});
     const toast = useToast();
+
     useEffect(() => {
         const educationRef = doc(db, "db", "education");
         const coursesCollectionRef = collection(educationRef, "courses");
@@ -33,6 +47,7 @@ const CourseList = () => {
         );
         return () => unsubscribe();
     }, []);
+
     const handleDelete = async (id) => {
         try {
             const educationRef = doc(db, "db", "education");
@@ -49,14 +64,17 @@ const CourseList = () => {
             setError("Errore durante l'eliminazione del corso");
         }
     };
+
     const handleEditClick = (course) => {
         setEditingCourseId(course.id);
         setFormData(course);
     };
+
     const handleCancelEdit = () => {
         setEditingCourseId(null);
         setFormData({});
     };
+
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
@@ -76,12 +94,23 @@ const CourseList = () => {
             setError("Errore durante l'aggiornamento del corso");
         }
     };
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         });
     };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     if (loading) {
         return (
             <Flex justify="center" align="center" h="100vh">
@@ -89,142 +118,145 @@ const CourseList = () => {
             </Flex>
         );
     }
+
     if (error) {
         return (
             <Text color="red.500" textAlign="center">
-                {" "}
-                {error}{" "}
+                {error}
             </Text>
         );
     }
+
     return (
         <Box>
-            {" "}
             {courses.length === 0 ? (
-                <Text> Nessun corso disponibile. </Text>
+                <Text>Nessun corso disponibile.</Text>
             ) : (
                 <VStack spacing={4} align="stretch">
-                    {" "}
                     {courses.map((course) => (
                         <Box key={course.id}>
-                            {" "}
                             {editingCourseId === course.id ? (
                                 <form onSubmit={handleUpdate}>
                                     <FormControl mb={3}>
-                                        <FormLabel> Titolo del corso </FormLabel>{" "}
+                                        <FormLabel>Titolo del corso</FormLabel>
                                         <Input
                                             type="text"
                                             name="title"
                                             value={formData.title || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <FormControl mb={3}>
-                                        <FormLabel> Nome della scuola </FormLabel>{" "}
+                                        <FormLabel>Nome della scuola</FormLabel>
                                         <Input
                                             type="text"
                                             name="school"
                                             value={formData.school || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <FormControl mb={3}>
-                                        <FormLabel> Data Inizio </FormLabel>{" "}
+                                        <FormLabel>Data Inizio</FormLabel>
                                         <Input
                                             type="date"
                                             name="start"
                                             value={formData.start || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <FormControl mb={3}>
-                                        <FormLabel> Data Fine </FormLabel>{" "}
+                                        <FormLabel>Data Fine</FormLabel>
                                         <Input
                                             type="date"
                                             name="end"
                                             value={formData.end || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <FormControl mb={3}>
-                                        <FormLabel> Descrizione </FormLabel>{" "}
+                                        <FormLabel>Descrizione</FormLabel>
                                         <Input
                                             type="text"
                                             name="description"
                                             value={formData.description || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <FormControl mb={3}>
-                                        <FormLabel> Link </FormLabel>{" "}
+                                        <FormLabel>Link</FormLabel>
                                         <Input
                                             type="url"
                                             name="link"
                                             value={formData.link || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <FormControl mb={3}>
-                                        <FormLabel> Sito web </FormLabel>{" "}
+                                        <FormLabel>Sito web</FormLabel>
                                         <Input
                                             type="url"
                                             name="website"
                                             value={formData.website || ""}
                                             onChange={handleChange}
-                                        />{" "}
-                                    </FormControl>{" "}
+                                        />
+                                    </FormControl>
                                     <HStack spacing={3}>
                                         <Button colorScheme="teal" type="submit">
-                                            Salva{" "}
-                                        </Button>{" "}
+                                            Salva
+                                        </Button>
                                         <Button colorScheme="red" onClick={handleCancelEdit}>
-                                            Annulla{" "}
-                                        </Button>{" "}
-                                    </HStack>{" "}
+                                            Annulla
+                                        </Button>
+                                    </HStack>
                                 </form>
                             ) : (
                                 <>
-                                    <Flex borderTop='1px' borderColor='teal' pt={4} flexDirection='column'>
-                                        <Box display='flex' flexDirection='row' justifyContent='space-between'>
+                                    <Flex borderTop="1px" borderColor="teal" pt={4} flexDirection="column">
+                                        <Box display="flex" flexDirection="row" justifyContent="space-between">
                                             <HStack>
                                                 <Text fontWeight="bold" fontSize="md" color="teal">
-                                                    {" "}
-                                                    {course.start} - {course.end}{" "}
-                                                </Text>{" "}
+                                                    {formatDate(course.start)} - {formatDate(course.end)}
+                                                </Text>
                                                 <Text fontWeight="bold" fontSize="lg">
-                                                    {" "}
-                                                    {course.title}{" "}
-                                                </Text>{" "}
+                                                    {course.title}
+                                                </Text>
                                             </HStack>
                                             <HStack>
                                                 <Button onClick={() => handleEditClick(course)}>
                                                     <EditIcon />
-                                                </Button>{" "}
+                                                </Button>
                                                 <Button onClick={() => handleDelete(course.id)}>
                                                     <DeleteIcon />
-                                                </Button>{" "}
-                                            </HStack>{" "}
+                                                </Button>
+                                            </HStack>
                                         </Box>
 
                                         <VStack align="start">
                                             <Text as="i">
-                                                <Link href={course.website}> {course.school} </Link>{" "}
-                                            </Text>{" "}
+                                                <Link href={course.website}>{course.school}</Link>
+                                            </Text>
 
                                             <Text align="left" pt={2} pb={2}>
-                                                {" "}
-                                                {course.description}{" "}
-                                            </Text>{" "}
-                                            {course.link && (<Text><b>Link:</b> <Link as='i' href={course.link}> {course.link}</Link></Text>
-                                            )}</VStack>{" "}
+                                                {course.description}
+                                            </Text>
+                                            {course.link && (
+                                                <Text>
+                                                    <b>Link:</b>{" "}
+                                                    <Link as="i" href={course.link}>
+                                                        {course.link}
+                                                    </Link>
+                                                </Text>
+                                            )}
+                                        </VStack>
                                     </Flex>
                                 </>
-                            )}{" "}
+                            )}
                         </Box>
-                    ))}{" "}
+                    ))}
                 </VStack>
-            )}{" "}
+            )}
         </Box>
     );
 };
+
 export default CourseList;
