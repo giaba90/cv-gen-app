@@ -76,7 +76,7 @@ const AddCourse = () => {
     };
 
     return (
-        <Box p={4}>
+        <Box>
             <Button colorScheme="teal" onClick={onOpen}>
                 Aggiungi Corso
             </Button>
