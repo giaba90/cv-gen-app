@@ -5,7 +5,6 @@ import {
     FormControl,
     FormLabel,
     FormErrorMessage,
-    FormHelperText,
     Input,
     Button,
     Box,
@@ -45,14 +44,13 @@ export function Signin() {
             </Heading>
             <VStack spacing="4" as="form" onSubmit={handleSignIn}>
                 <FormControl id="email" isInvalid={!!error}>
-                    <FormLabel>Email address</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <Input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                    <FormHelperText>We'll never share your email.</FormHelperText>
                 </FormControl>
 
                 <FormControl id="password" isInvalid={!!error}>

@@ -1,7 +1,7 @@
-import { Box, Grid, Text, Link } from "@chakra-ui/react";
+import { Container, Box, Grid, Text, Link } from "@chakra-ui/react";
 import { Icon } from '@chakra-ui/react'
 import { FaAddressBook, FaBriefcase, FaComments, FaBookOpenReader, FaMedapps, FaMicrochip } from "react-icons/fa6";
-import Menu from "../../Components/Backend/Menu/Menu";
+import TopBar from '../../Components/Backend/Menu/TopBar';
 
 export default function Admin() {
 
@@ -13,7 +13,7 @@ export default function Admin() {
         },
         {
             path: "/admin/job",
-            name: "Esprienza Lavorativa",
+            name: "Esperienze Lavorative",
             icon: FaBriefcase
         },
         {
@@ -39,15 +39,15 @@ export default function Admin() {
     ];
 
     return (
-        <Box>
-            <Menu></Menu>
-            <Box p={6}>
+        <>
+            <TopBar />
+            <Container maxW='container.lg'>
                 <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                     {listVoice.map((el, index) => (
                         <Box
                             key={index}
                             overflow="hidden"
-                            bg="trasparent"
+                            textAlign="center"
                         >
                             <Icon color='teal' mt={6} boxSize={24} as={el.icon} />
                             <Box p={4}>
@@ -58,7 +58,9 @@ export default function Admin() {
                         </Box>
                     ))}
                 </Grid>
-            </Box>
-        </Box>
+
+            </Container>
+        </>
+
     );
 }
