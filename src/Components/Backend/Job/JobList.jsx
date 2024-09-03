@@ -1,6 +1,29 @@
-import { useState, useEffect } from 'react';
-import { db } from "../../../fbconfig" // Importa il db configurato
-import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore';
+import { useState, useEffect } from "react";
+import {
+    Box,
+    Button,
+    Flex,
+    Input,
+    List,
+    ListItem,
+    Spinner,
+    Text,
+    VStack,
+    HStack,
+    Link,
+    FormControl,
+} from "@chakra-ui/react";
+import { EditIcon, DeleteIcon, CheckIcon } from "@chakra-ui/icons";
+import { db } from "../../../fbconfig"; // Importa il db configurato
+import {
+    doc,
+    collection,
+    query,
+    orderBy,
+    onSnapshot,
+    deleteDoc,
+    updateDoc,
+} from "firebase/firestore";
 
 const JobList = () => {
     const [jobs, setJobs] = useState([]);
@@ -10,9 +33,9 @@ const JobList = () => {
     const [formData, setFormData] = useState({}); // Stato per i dati del lavoro da modificare
 
     useEffect(() => {
-        const experienceRef = doc(db, 'db', 'experience');
-        const jobsCollectionRef = collection(experienceRef, 'jobs');
-        const q = query(jobsCollectionRef, orderBy('createdAt', 'desc'));
+        const experienceRef = doc(db, "db", "experience");
+        const jobsCollectionRef = collection(experienceRef, "jobs");
+        const q = query(jobsCollectionRef, orderBy("createdAt", "desc"));
 
         const unsubscribe = onSnapshot(
             q,
@@ -26,8 +49,8 @@ const JobList = () => {
                 setLoading(false);
             },
             (err) => {
-                console.error('Errore durante il recupero dei lavori:', err);
-                setError('Errore durante il recupero dei lavori');
+                console.error("Errore durante il recupero dei lavori:", err);
+                setError("Errore durante il recupero dei lavori");
                 setLoading(false);
             }
         );
@@ -37,10 +60,10 @@ const JobList = () => {
 
     const handleDelete = async (id) => {
         try {
-            const experienceRef = doc(db, 'db', 'experience');
-            const JobDocRef = doc(experienceRef, 'jobs', id);
+            const experienceRef = doc(db, "db", "experience");
+            const JobDocRef = doc(experienceRef, "jobs", id);
             await deleteDoc(JobDocRef);
-            console.log('lavoro eliminato con successo!');
+            console.log("Lavoro eliminato con successo!");
         } catch (err) {
             console.error("Errore durante l'eliminazione del lavoro:", err);
             setError("Errore durante l'eliminazione del lavoro");
@@ -52,20 +75,14 @@ const JobList = () => {
         setFormData(Job); // Imposta i dati correnti del lavoro nel modulo di modifica
     };
 
-    const handleCancelEdit = () => {
-        setEditingJobId(null); // Annulla la modifica
-        setFormData({}); // Resetta i dati del modulo
-    };
-
-    const handleUpdate = async (e) => {
-        e.preventDefault();
+    const handleSaveClick = async () => {
         try {
-            const experienceRef = doc(db, 'db', 'experience');
-            const JobDocRef = doc(experienceRef, 'jobs', editingJobId);
+            const experienceRef = doc(db, "db", "experience");
+            const JobDocRef = doc(experienceRef, "jobs", editingJobId);
             await updateDoc(JobDocRef, formData);
-            console.log('Lavoro aggiornato con successo!');
-            setEditingJobId(null);
-            setFormData({});
+            console.log("Lavoro aggiornato con successo!");
+            setEditingJobId(null); // Disattiva la modalità di modifica
+            setFormData({}); // Resetta i dati del modulo
         } catch (err) {
             console.error("Errore durante l'aggiornamento del lavoro:", err);
             setError("Errore durante l'aggiornamento del lavoro");
@@ -79,86 +96,149 @@ const JobList = () => {
         });
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     if (loading) {
-        return <p>Caricamento in corso...</p>;
+        return <Spinner size="xl" label="Caricamento in corso..." />;
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return <Text color="red.500">{error}</Text>;
     }
 
     return (
-        <div>
-            <h1>Elenco dei Lavori</h1>
+        <Box>
             {jobs.length === 0 ? (
-                <p>Nessun lavoro disponibile.</p>
+                <Text>Nessun lavoro disponibile.</Text>
             ) : (
-                <ul>
+                <List spacing={3}>
                     {jobs.map((Job) => (
-                        <li key={Job.id}>
-                            {editingJobId === Job.id ? (
-                                <form onSubmit={handleUpdate}>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={formData.title || ''}
-                                        onChange={handleChange}
-                                        placeholder="Titolo del lavoro"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="company"
-                                        value={formData.company || ''}
-                                        onChange={handleChange}
-                                        placeholder="Nome della società"
-                                    />
-                                    <input
-                                        type="date"
-                                        name="start"
-                                        value={formData.start || ''}
-                                        onChange={handleChange}
-                                    />
-                                    <input
-                                        type="date"
-                                        name="end"
-                                        value={formData.end || ''}
-                                        onChange={handleChange}
-                                    />
-                                    <input
-                                        type="text"
-                                        name="description"
-                                        value={formData.description || ''}
-                                        onChange={handleChange}
-                                        placeholder="Descrizione"
-                                    />
-                                    <input
-                                        type="url"
-                                        name="website"
-                                        value={formData.website || ''}
-                                        onChange={handleChange}
-                                        placeholder="Sito web"
-                                    />
-                                    <button type="submit">Salva</button>
-                                    <button type="button" onClick={handleCancelEdit}>
-                                        Annulla
-                                    </button>
-                                </form>
-                            ) : (
-                                <>
-                                    <h2>{Job.title}</h2>
-                                    <p>Società: <a href={Job.website} target="_blank" rel="noopener noreferrer">{Job.company}</a></p>
-                                    <p>Data Inizio: {Job.start}</p>
-                                    <p>Data Fine: {Job.end}</p>
-                                    <p>{Job.description}</p>
-                                    <button onClick={() => handleEditClick(Job)}>Modifica</button>
-                                    <button onClick={() => handleDelete(Job.id)}>Elimina</button>
-                                </>
-                            )}
-                        </li>
+                        <ListItem key={Job.id}>
+                            <Box>
+                                {editingJobId === Job.id ? (
+                                    <>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                name="title"
+                                                value={formData.title || ""}
+                                                onChange={handleChange}
+                                                placeholder="Titolo del lavoro"
+                                                mb={2}
+                                            />
+                                        </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                name="company"
+                                                value={formData.company || ""}
+                                                onChange={handleChange}
+                                                placeholder="Nome della società"
+                                                mb={2}
+                                            />
+                                        </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                type="date"
+                                                name="start"
+                                                value={formData.start || ""}
+                                                onChange={handleChange}
+                                                mb={2}
+                                            />
+                                        </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                type="date"
+                                                name="end"
+                                                value={formData.end || ""}
+                                                onChange={handleChange}
+                                                mb={2}
+                                            />
+                                        </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                name="description"
+                                                value={formData.description || ""}
+                                                onChange={handleChange}
+                                                placeholder="Descrizione"
+                                                mb={2}
+                                            />
+                                        </FormControl>
+                                        <FormControl>
+                                            <Input
+                                                type="url"
+                                                name="website"
+                                                value={formData.website || ""}
+                                                onChange={handleChange}
+                                                placeholder="Sito web"
+                                                mb={2}
+                                            />
+                                        </FormControl>
+                                        <HStack spacing={3} mt={2}>
+                                            <Button
+                                                leftIcon={<CheckIcon />}
+                                                colorScheme="teal"
+                                                onClick={handleSaveClick}
+                                            >
+                                                Salva
+                                            </Button>
+                                            <Button
+                                                variant="outline"
+                                                onClick={() => setEditingJobId(null)}
+                                            >
+                                                Annulla
+                                            </Button>
+                                        </HStack>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Flex borderTop="1px" borderColor="teal" pt={4} flexDirection="column">
+                                            <Box display="flex" flexDirection="row" justifyContent="space-between">
+                                                <HStack>
+                                                    <Text fontWeight="bold" fontSize="md" color="teal">
+                                                        {formatDate(Job.start)} - {formatDate(Job.end)}
+                                                    </Text>
+                                                    <Text fontWeight="bold" fontSize="lg">
+                                                        {Job.title}
+                                                    </Text>
+                                                </HStack>
+                                                <HStack>
+                                                    <Button onClick={() => handleEditClick(Job)}>
+                                                        <EditIcon />
+                                                    </Button>
+                                                    <Button onClick={() => handleDelete(Job.id)}>
+                                                        <DeleteIcon />
+                                                    </Button>
+                                                </HStack>
+                                            </Box>
+
+                                            <VStack align="start">
+                                                <Text as="i">
+                                                    <Link href={Job.website}>{Job.company}</Link>
+                                                </Text>
+
+                                                <Text align="left" pt={2} pb={2}>
+                                                    {Job.description}
+                                                </Text>
+
+                                            </VStack>
+                                        </Flex>
+                                    </>
+                                )}
+                            </Box>
+                        </ListItem>
                     ))}
-                </ul>
+                </List>
             )}
-        </div>
+        </Box>
     );
 };
 
