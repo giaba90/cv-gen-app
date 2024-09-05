@@ -92,5 +92,3 @@ Per la sezione contatti i dati saranno prelevati da database, preceduti da icona
 
 Ho utilizzato [Synk](https://snyk.io/) per verificare la presenza di vulnerabilità conosciute nel file package.json.
 Successivamente ho fixato manualmente i bug.
-
-# GRAFICA
