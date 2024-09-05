@@ -81,8 +81,8 @@ const ProjectList = () => {
 
   return (
     <Container maxW="container.xl">
-      <Flex justifyContent="space-between" alignItems="center" mb={6}>
-        <Heading size="xl">Progetti</Heading>
+      <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+        <Heading size="lg">Elenco progetti</Heading>
         <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
           Aggiungi progetto
         </Button>

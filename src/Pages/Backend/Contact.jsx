@@ -1,13 +1,19 @@
 import ContactList from "../../Components/Backend/Contact/ContactList";
-import { Box, Container } from '@chakra-ui/react';
+import { Box, Container, Flex } from '@chakra-ui/react';
+import Footer from '../../Components/Backend/Footer/Footer';
+import Header from '../../Components/Backend/Header/Header';
 
 export default function Contact() {
 
     return (
-        <Container maxW='container.lg' alignItems='start' display='flex' flexDirection='column'>
+        <Flex flexDirection="column" minHeight="100vh">
+        <Header />
+        <Container maxW='container.lg' flex="1">
             <Box display='flex' flexDirection='row' width='100%' justifyContent='space-between' alignItems='center'>
                 <ContactList />
             </Box>
         </Container>
+        <Footer />
+        </Flex>
     );
 }

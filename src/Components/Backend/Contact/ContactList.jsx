@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
 import { db } from "../../../fbconfig";
 import {
-    Box, VStack, Text, Heading, Image, Link, Button, Flex, useToast,
+    VStack, Text, Heading, Image, Link, Button, Flex, useToast,
     List, ListItem, IconButton, Stack, 
     Spinner, Alert, AlertIcon, useDisclosure, Modal, ModalOverlay,
     ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-    FormControl, FormLabel, Input
+    FormControl, FormLabel, Input, Container
 } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
@@ -98,9 +98,9 @@ const ContactList = () => {
     }
 
     return (
-        <Box>
-             <Flex justifyContent="space-between" alignItems="center" mb={4}>
-                <Heading size="lg">Contatti</Heading>
+        <Container maxW="container.xl">
+             <Flex justifyContent="space-between" alignItems="center" mb={4} mt={4}>
+                <Heading size="lg">Elenco contatti</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
                     Aggiungi contatto
                 </Button>
@@ -186,7 +186,7 @@ const ContactList = () => {
                     </form>
                 </ModalContent>
             </Modal>
-        </Box>
+        </Container>
     );
 };
 

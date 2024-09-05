@@ -3,8 +3,8 @@ import {
     Box, VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack,
     List, ListItem, Divider, Textarea,
-    useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
-    ModalBody, ModalCloseButton, Badge
+    useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, 
+    ModalBody, ModalCloseButton, Badge, Container
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { db } from "../../../fbconfig";
@@ -74,9 +74,9 @@ const CourseList = () => {
     if (loading) return <Spinner size="xl" />;
 
     return (
-        <Box>
-            <Flex justifyContent="space-between" alignItems="center" mb={4}>
-                <Heading size="lg">Corsi</Heading>
+        <Container maxW="container.xl">
+      <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg">Elenco corsi</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
                     Aggiungi corso
                 </Button>
@@ -164,7 +164,7 @@ const CourseList = () => {
                     </form>
                 </ModalContent>
             </Modal>
-        </Box>
+        </Container>
     );
 };
 

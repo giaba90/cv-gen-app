@@ -1,47 +1,47 @@
-import { Container, Box, Grid, Text, Link } from "@chakra-ui/react";
+import { Container, Box, Grid, Text, Link, Flex } from "@chakra-ui/react";
 import { Icon } from '@chakra-ui/react'
 import { FaAddressBook, FaBriefcase, FaComments, FaBookOpenReader, FaMedapps, FaMicrochip } from "react-icons/fa6";
-import TopBar from '../../Components/Backend/Menu/TopBar';
-
+import Footer from '../../Components/Backend/Footer/Footer';
+import Header from '../../Components/Backend/Header/Header';
 export default function Admin() {
 
     const listVoice = [
         {
-            path: "/admin/course",
+            path: "/admin/istruzione",
             name: "Istruzione e Formazione",
             icon: FaBookOpenReader
         },
         {
-            path: "/admin/job",
+            path: "/admin/esperienze",
             name: "Esperienze Lavorative",
             icon: FaBriefcase
         },
         {
-            path: "/admin/project",
+            path: "/admin/progetti",
             name: "Progetti",
             icon: FaMedapps
         },
         {
-            path: "/admin/skill",
-            name: "Skills",
+            path: "/admin/competenze",
+            name: "Competenze",
             icon: FaMicrochip
         },
         {
-            path: "/admin/reference",
+            path: "/admin/recensioni",
             name: "Recensioni",
             icon: FaComments
         },
         {
-            path: "/admin/contact",
+            path: "/admin/contatti",
             name: "Contatti",
             icon: FaAddressBook
         }
     ];
 
     return (
-        <>
-            <TopBar />
-            <Container maxW='container.lg'>
+        <Flex flexDirection="column" minHeight="100vh">
+            <Header />
+            <Container maxW='container.lg' flex="1">
                 <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                     {listVoice.map((el, index) => (
                         <Box
@@ -58,9 +58,8 @@ export default function Admin() {
                         </Box>
                     ))}
                 </Grid>
-
             </Container>
-        </>
-
+            <Footer />
+        </Flex>
     );
 }
