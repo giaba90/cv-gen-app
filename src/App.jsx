@@ -26,27 +26,27 @@ function App() {
       element: <Protected><Admin /></Protected>
     },
     {
-      path: "/admin/course",
+      path: "/admin/istruzione",
       element: <Protected><Course /></Protected>
     },
     {
-      path: "/admin/job",
+      path: "/admin/esperienze",
       element: <Protected><Job /></Protected>
     },
     {
-      path: "/admin/project",
+      path: "/admin/progetti",
       element: <Protected><Project /></Protected>
     },
     {
-      path: "/admin/reference",
+      path: "/admin/recensioni",
       element: <Protected><Reference /></Protected>
     },
     {
-      path: "/admin/skill",
+      path: "/admin/competenze",
       element: <Protected><Skill /></Protected>
     },
     {
-      path: "/admin/contact",
+      path: "/admin/contatti",
       element: <Protected><Contact /></Protected>
     },
     {
