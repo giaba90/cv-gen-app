@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 import {
     Box, VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
-    FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack, Container,
+    FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack,
     List, ListItem, Divider, Textarea,
     useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
     ModalBody, ModalCloseButton, Badge
 } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon, CheckIcon, CloseIcon, ExternalLinkIcon, AddIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { db } from "../../../fbconfig";
 import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
-import AddCourse from "./AddCourse";
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingCourse, setEditingCourse] = useState(null);
+    const [formData, setFormData] = useState({});
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -48,15 +47,10 @@ const CourseList = () => {
         }
     };
 
-    const handleEditClick = (course) => {
-        setEditingCourse(course);
-        onOpen();
-    };
-
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            await updateDoc(doc(db, "db", "education", "courses", editingCourse.id), editingCourse);
+            await updateDoc(doc(db, "db", "education", "courses", formData.id), formData);
             toast({ title: "Course updated successfully", status: "success", isClosable: true });
             onClose();
         } catch (err) {
@@ -65,8 +59,12 @@ const CourseList = () => {
         }
     };
 
-    const handleChange = (e) => setEditingCourse({ ...editingCourse, [e.target.name]: e.target.value });
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+    const handleEditClick = (course) => {
+        setFormData(course);
+        onOpen();
+    };
     const formatDate = (dateString) => {
         if (!dateString) return "";
         const date = new Date(dateString);
@@ -79,9 +77,11 @@ const CourseList = () => {
         <Box>
             <Flex justifyContent="space-between" alignItems="center" mb={4}>
                 <Heading size="lg">Corsi</Heading>
-                <AddCourse></AddCourse>
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
+                    Add Job
+                </Button>
             </Flex>
-                {courses.length === 0 ? (
+            {courses.length === 0 ? (
                 <Alert status="info">
                     <AlertIcon />
                     No courses available.
@@ -127,31 +127,31 @@ const CourseList = () => {
                             <VStack spacing={4}>
                                 <FormControl>
                                     <FormLabel>Course Title</FormLabel>
-                                    <Input name="title" value={editingCourse?.title || ""} onChange={handleChange} />
+                                    <Input name="title" value={formData?.title || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>School Name</FormLabel>
-                                    <Input name="school" value={editingCourse?.school || ""} onChange={handleChange} />
+                                    <Input name="school" value={formData?.school || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Start Date</FormLabel>
-                                    <Input type="date" name="start" value={editingCourse?.start || ""} onChange={handleChange} />
+                                    <Input type="date" name="start" value={formData?.start || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>End Date</FormLabel>
-                                    <Input type="date" name="end" value={editingCourse?.end || ""} onChange={handleChange} />
+                                    <Input type="date" name="end" value={formData?.end || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Description</FormLabel>
-                                    <Textarea name="description" value={editingCourse?.description || ""} onChange={handleChange} />
+                                    <Textarea name="description" value={formData?.description || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Link</FormLabel>
-                                    <Input name="link" value={editingCourse?.link || ""} onChange={handleChange} />
+                                    <Input name="link" value={formData?.link || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Website</FormLabel>
-                                    <Input name="website" value={editingCourse?.website || ""} onChange={handleChange} />
+                                    <Input name="website" value={formData?.website || ""} onChange={handleChange} />
                                 </FormControl>
                             </VStack>
                         </ModalBody>
