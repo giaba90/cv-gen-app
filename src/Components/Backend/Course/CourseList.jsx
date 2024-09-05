@@ -78,13 +78,13 @@ const CourseList = () => {
             <Flex justifyContent="space-between" alignItems="center" mb={4}>
                 <Heading size="lg">Corsi</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
-                    Add Job
+                    Aggiungi corso
                 </Button>
             </Flex>
             {courses.length === 0 ? (
                 <Alert status="info">
                     <AlertIcon />
-                    No courses available.
+                    Nessun corso disponibile nel database.
                 </Alert>
             ) : (
                 <List spacing={6}>
@@ -120,29 +120,29 @@ const CourseList = () => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Edit Course</ModalHeader>
+                    <ModalHeader>Aggiorna corso</ModalHeader>
                     <ModalCloseButton />
                     <form onSubmit={handleUpdate}>
                         <ModalBody>
                             <VStack spacing={4}>
                                 <FormControl>
-                                    <FormLabel>Course Title</FormLabel>
+                                    <FormLabel>Titolo del corso</FormLabel>
                                     <Input name="title" value={formData?.title || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>School Name</FormLabel>
+                                    <FormLabel>Ente di formazione</FormLabel>
                                     <Input name="school" value={formData?.school || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Start Date</FormLabel>
+                                    <FormLabel>Data di inizio</FormLabel>
                                     <Input type="date" name="start" value={formData?.start || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>End Date</FormLabel>
+                                    <FormLabel>Data di fine</FormLabel>
                                     <Input type="date" name="end" value={formData?.end || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>Descrizione </FormLabel>
                                     <Textarea name="description" value={formData?.description || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
@@ -150,16 +150,16 @@ const CourseList = () => {
                                     <Input name="link" value={formData?.link || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Website</FormLabel>
+                                    <FormLabel>Sito web</FormLabel>
                                     <Input name="website" value={formData?.website || ""} onChange={handleChange} />
                                 </FormControl>
                             </VStack>
                         </ModalBody>
                         <ModalFooter>
-                            <Button colorScheme="blue" mr={3} type="submit">
-                                Save
+                            <Button colorScheme="teal" mr={3} type="submit">
+                                Salva
                             </Button>
-                            <Button onClick={onClose}>Cancel</Button>
+                            <Button onClick={onClose}>Cancella</Button>
                         </ModalFooter>
                     </form>
                 </ModalContent>

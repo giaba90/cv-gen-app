@@ -51,16 +51,16 @@ const JobList = () => {
         try {
             if (formData.id) {
                 await updateDoc(doc(db, "db", "experience", "jobs", formData.id), formData);
-                toast({ title: "Job updated successfully", status: "success", isClosable: true });
+                toast({ title: "Esperienza aggiornata con successo", status: "success", isClosable: true });
             } else {
                 await addDoc(collection(db, "db", "experience", "jobs"), { ...formData, createdAt: new Date() });
-                toast({ title: "Job added successfully", status: "success", isClosable: true });
+                toast({ title: "Esperienza aggiunta con successo!", status: "success", isClosable: true });
             }
             onClose();
             setFormData({});
         } catch (err) {
-            console.error("Error saving job:", err);
-            toast({ title: "Error saving job", status: "error", isClosable: true });
+            console.error("Errore nel savaltaggio dell'esperienza:", err);
+            toast({ title: "Errore nel savaltaggio dell'esperienza", status: "error", isClosable: true });
         }
     };
 
@@ -82,16 +82,16 @@ const JobList = () => {
     return (
         <Box>
             <Flex justifyContent="space-between" alignItems="center" mb={4}>
-                <Heading size="lg">Job Experience</Heading>
+                <Heading size="lg">Esperienze lavorative</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
-                    Add Job
+                    Aggiungi esperienza
                 </Button>
             </Flex>
 
             {jobs.length === 0 ? (
                 <Alert status="info">
                     <AlertIcon />
-                    No job experience available.
+                    Nessuna esprienza disponibile nel database.
                 </Alert>
             ) : (
                 <List spacing={4}>
@@ -121,42 +121,42 @@ const JobList = () => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{formData.id ? 'Edit Job' : 'Add Job'}</ModalHeader>
+                    <ModalHeader>{formData.id ? 'Modifica esperienza' : 'Aggiungi esperienza'}</ModalHeader>
                     <ModalCloseButton />
                     <form onSubmit={handleSubmit}>
                         <ModalBody>
                             <VStack spacing={4}>
                                 <FormControl isRequired>
-                                    <FormLabel>Job Title</FormLabel>
+                                    <FormLabel>Ruolo ricoperto</FormLabel>
                                     <Input name="title" value={formData.title || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl isRequired>
-                                    <FormLabel>Company</FormLabel>
+                                    <FormLabel>Azienda</FormLabel>
                                     <Input name="company" value={formData.company || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl isRequired>
-                                    <FormLabel>Start Date</FormLabel>
+                                    <FormLabel>Data di inizio</FormLabel>
                                     <Input type="date" name="start" value={formData.start || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>End Date</FormLabel>
+                                    <FormLabel>Data di fine</FormLabel>
                                     <Input type="date" name="end" value={formData.end || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>Descrizione</FormLabel>
                                     <Textarea name="description" value={formData.description || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Company Website</FormLabel>
+                                    <FormLabel>Sito web aziendale</FormLabel>
                                     <Input name="website" value={formData.website || ''} onChange={handleChange} />
                                 </FormControl>
                             </VStack>
                         </ModalBody>
                         <ModalFooter>
-                            <Button type="submit" colorScheme="blue" mr={3}>
-                                Save
+                            <Button type="submit" colorScheme="teal" mr={3}>
+                                Salva
                             </Button>
-                            <Button onClick={onClose}>Cancel</Button>
+                            <Button onClick={onClose}>Cancella</Button>
                         </ModalFooter>
                     </form>
                 </ModalContent>
