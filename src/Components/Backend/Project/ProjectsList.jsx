@@ -25,14 +25,14 @@ const ProjectList = () => {
     const projectCollectionRef = collection(projectRef, 'project');
     const q = query(projectCollectionRef, orderBy('createdAt', 'desc'));
 
-    const unsubscribe = onSnapshot(q, 
+    const unsubscribe = onSnapshot(q,
       (snapshot) => {
         setProjects(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
         setLoading(false);
       },
       (err) => {
-        console.error('Error fetching projects:', err);
-        toast({ title: 'Error fetching projects', status: 'error', isClosable: true });
+        console.error('Errore durante il recupero dei progetti:', err);
+        toast({ title: 'Errore durante il recupero dei progetti', status: 'error', isClosable: true });
         setLoading(false);
       }
     );
@@ -43,10 +43,10 @@ const ProjectList = () => {
   const handleDelete = async (id) => {
     try {
       await deleteDoc(doc(db, 'db', 'Projects', 'project', id));
-      toast({ title: 'Project deleted successfully', status: 'success', isClosable: true });
+      toast({ title: 'Progetto eliminato con successo', status: 'success', isClosable: true });
     } catch (err) {
-      console.error('Error deleting project:', err);
-      toast({ title: 'Error deleting project', status: 'error', isClosable: true });
+      console.error('Errore durante l\'eliminazione del progetto:', err);
+      toast({ title: 'Errore durante l\'eliminazione del progetto', status: 'error', isClosable: true });
     }
   };
 
@@ -55,16 +55,16 @@ const ProjectList = () => {
     try {
       if (formData.id) {
         await updateDoc(doc(db, 'db', 'Projects', 'project', formData.id), formData);
-        toast({ title: 'Project updated successfully', status: 'success', isClosable: true });
+        toast({ title: 'Progetto aggiornato con successo', status: 'success', isClosable: true });
       } else {
         await addDoc(collection(db, 'db', 'Projects', 'project'), { ...formData, createdAt: new Date() });
-        toast({ title: 'Project added successfully', status: 'success', isClosable: true });
+        toast({ title: 'Progetto aggiunto con successo', status: 'success', isClosable: true });
       }
       onClose();
       setFormData({});
     } catch (err) {
-      console.error('Error saving project:', err);
-      toast({ title: 'Error saving project', status: 'error', isClosable: true });
+      console.error('Errore nel salvataggio del progetto:', err);
+      toast({ title: 'Errore nel salvataggio del progetto', status: 'error', isClosable: true });
     }
   };
 
@@ -82,9 +82,9 @@ const ProjectList = () => {
   return (
     <Container maxW="container.xl">
       <Flex justifyContent="space-between" alignItems="center" mb={6}>
-        <Heading size="xl">Projects</Heading>
+        <Heading size="xl">Progetti</Heading>
         <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
-          Add Project
+          Aggiungi progetto
         </Button>
       </Flex>
 
@@ -92,9 +92,9 @@ const ProjectList = () => {
         <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">
           <AlertIcon boxSize="40px" mr={0} />
           <Text mt={4} mb={1} fontSize="lg">
-            No projects available.
+            Nessun progetto presente nel database
           </Text>
-          <Text fontSize="md">Start by adding a new project!</Text>
+          <Text fontSize="md">Inizia aggiungendo un nuovo progetto!</Text>
         </Alert>
       ) : (
         <List spacing={6}>
@@ -113,8 +113,8 @@ const ProjectList = () => {
               </Flex>
               <Text mb={4}>{project.description}</Text>
               {project.link && (
-                <Button as={Link} href={project.link} isExternal rightIcon={<ExternalLinkIcon />} colorScheme="blue" variant="outline" size="sm">
-                  View Project
+                <Button as={Link} href={project.link} isExternal rightIcon={<ExternalLinkIcon />} colorScheme="teal" variant="outline" size="sm">
+                  Link al Progetto
                 </Button>
               )}
             </ListItem>
@@ -125,17 +125,17 @@ const ProjectList = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{formData.id ? 'Edit Project' : 'Add Project'}</ModalHeader>
+          <ModalHeader>{formData.id ? 'Modifica progetto' : 'Nuovo progetto'}</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit}>
             <ModalBody>
               <VStack spacing={4}>
                 <FormControl isRequired>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Titolo</FormLabel>
                   <Input name="title" value={formData.title || ''} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Descrizione</FormLabel>
                   <Textarea name="description" value={formData.description || ''} onChange={handleChange} />
                 </FormControl>
                 <FormControl>
@@ -145,10 +145,10 @@ const ProjectList = () => {
               </VStack>
             </ModalBody>
             <ModalFooter>
-              <Button type="submit" colorScheme="blue" mr={3}>
-                Save
+              <Button type="submit" colorScheme="teal" mr={3}>
+                Salva
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>Cancella</Button>
             </ModalFooter>
           </form>
         </ModalContent>
