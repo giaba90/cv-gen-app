@@ -1,14 +1,13 @@
-import ContactForm from "../../Components/Backend/Contact/ContactForm";
-import ContactDetail from "../../Components/Backend/Contact/ContactDetail";
+import ContactList from "../../Components/Backend/Contact/ContactList";
+import { Box, Container } from '@chakra-ui/react';
 
 export default function Contact() {
 
     return (
-        <div>
-            <h1>This is the Contact page !</h1>
-            <br /><br />
-            <ContactForm />
-            <ContactDetail />
-        </div>
+        <Container maxW='container.lg' alignItems='start' display='flex' flexDirection='column'>
+            <Box display='flex' flexDirection='row' width='100%' justifyContent='space-between' alignItems='center'>
+                <ContactList />
+            </Box>
+        </Container>
     );
 }
