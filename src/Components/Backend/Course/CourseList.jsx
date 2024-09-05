@@ -87,7 +87,7 @@ const CourseList = () => {
                     Nessun corso disponibile nel database.
                 </Alert>
             ) : (
-                <List spacing={6}>
+                <List mb={4} spacing={6}>
                     {courses.map((course) => (
                         <ListItem key={course.id} borderWidth={1} borderRadius="lg" p={4}>
                             <Flex justify="space-between" align="center" mb={4}>

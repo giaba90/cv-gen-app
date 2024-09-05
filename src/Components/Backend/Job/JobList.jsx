@@ -94,7 +94,7 @@ const JobList = () => {
                     Nessuna esprienza disponibile nel database.
                 </Alert>
             ) : (
-                <List spacing={4}>
+                <List mb={4} spacing={4}>
                     {jobs.map((job) => (
                         <ListItem key={job.id} p={4} borderWidth={1} borderRadius="md" boxShadow="md">
                             <Flex justifyContent="space-between" alignItems="flex-start">

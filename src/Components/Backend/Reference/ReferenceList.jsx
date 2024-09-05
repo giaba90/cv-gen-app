@@ -230,7 +230,7 @@ const ReferenceList = () => {
                     <Text fontSize="md">Inizia aggiungendo una nuova recensione!</Text>
                 </Alert>
             ) : (
-                <VStack spacing={6} width="100%">
+                <VStack mb={4} spacing={6} width="100%">
                     {references.map((ref) => (
                         <Card key={ref.id} bg={bgColor} borderColor={borderColor} borderWidth={1} boxShadow="md" p={4} borderRadius="md" width="100%">
                             <CardBody>
