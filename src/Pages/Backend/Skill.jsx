@@ -1,14 +1,13 @@
-import AddSkill from "../../Components/Backend/Skill/AddSkill";
+import { Box, Container } from '@chakra-ui/react';
 import SkillList from "../../Components/Backend/Skill/SkillList";
 
 export default function Skill() {
 
     return (
-        <div>
-            <h1>This is the Skill page !</h1>
-            <br /><br />
-            <AddSkill></AddSkill>
-            <SkillList></SkillList>
-        </div>
+        <Container maxW='container.lg' alignItems='start' display='flex' flexDirection='column'>
+            <Box display='flex' flexDirection='row' width='100%' justifyContent='space-between' alignItems='center'>
+                <SkillList />
+            </Box>
+        </Container>
     );
 }
