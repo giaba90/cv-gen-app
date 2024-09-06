@@ -41,7 +41,7 @@ export default function Admin() {
     return (
         <Flex flexDirection="column" minHeight="100vh">
             <Header />
-            <Container maxW='container.lg' flex="1">
+            <Container maxW='container.lg' flex="1" mt={10} mb={10}>
                 <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                     {listVoice.map((el, index) => (
                         <Box
