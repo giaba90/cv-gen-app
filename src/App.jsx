@@ -12,7 +12,7 @@ import Project from './Pages/Backend/Project'
 import Reference from './Pages/Backend/Reference'
 import Contact from './Pages/Backend/Contact'
 import Skill from './Pages/Backend/Skill'
-
+import MyProfile from './Pages/Backend/MyProfile'
 import theme from './theme'
 
 function App() {
@@ -48,6 +48,10 @@ function App() {
     {
       path: "/admin/contatti",
       element: <Protected><Contact /></Protected>
+    },
+    {
+      path: "/admin/profilo",
+      element: <Protected><MyProfile /></Protected>
     },
     {
       path: "/signin",
