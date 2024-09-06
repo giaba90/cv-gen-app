@@ -40,10 +40,10 @@ const CourseList = () => {
     const handleDelete = async (id) => {
         try {
             await deleteDoc(doc(db, "db", "education", "courses", id));
-            toast({ title: "Course deleted successfully", status: "success", isClosable: true });
+            toast({ title: "Corso eliminato con successo", status: "success", isClosable: true });
         } catch (err) {
-            console.error("Error deleting course:", err);
-            toast({ title: "Error deleting course", status: "error", isClosable: true });
+            console.error("Errore nel eliminare il corso:", err);
+            toast({ title: "Errore nel eliminare il corso", status: "error", isClosable: true });
         }
     };
 
@@ -51,11 +51,11 @@ const CourseList = () => {
         e.preventDefault();
         try {
             await updateDoc(doc(db, "db", "education", "courses", formData.id), formData);
-            toast({ title: "Course updated successfully", status: "success", isClosable: true });
+            toast({ title: "Corso aggiornato con successo", status: "success", isClosable: true });
             onClose();
         } catch (err) {
-            console.error("Error updating course:", err);
-            toast({ title: "Error updating course", status: "error", isClosable: true });
+            console.error("Errore nel aggiornare il corso:", err);
+            toast({ title: "Errore nel aggiornare il corso", status: "error", isClosable: true });
         }
     };
 
@@ -93,8 +93,8 @@ const CourseList = () => {
                             <Flex justify="space-between" align="center" mb={4}>
                                 <Heading size="md">{course.title}</Heading>
                                 <Stack direction="row">
-                                    <IconButton icon={<EditIcon />} onClick={() => handleEditClick(course)} aria-label="Edit course" />
-                                    <IconButton icon={<DeleteIcon />} onClick={() => handleDelete(course.id)} aria-label="Delete course" />
+                                    <IconButton icon={<EditIcon />} onClick={() => handleEditClick(course)} aria-label="Modifica corso" />
+                                    <IconButton icon={<DeleteIcon />} onClick={() => handleDelete(course.id)} aria-label="Elimina corso" />
                                 </Stack>
                             </Flex>
                             <VStack align="start" spacing={2}>
