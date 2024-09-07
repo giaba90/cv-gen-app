@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Box, Text } from "@chakra-ui/react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Box, Text, Container } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useLocation } from "react-router-dom";
 
@@ -8,6 +8,7 @@ const Breadcrumbs = () => {
 
   return (
     <Box bg="gray.200" p={2} borderRadius="md" align="center">
+      <Container maxW="container.lg">
       <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />}>
         <Text as="i" fontSize="sm" color="gray.500"> Ti trovi in:&nbsp;</Text>
         {pathnames.map((name, index) => {
@@ -22,6 +23,7 @@ const Breadcrumbs = () => {
           );
         })}
       </Breadcrumb>
+      </Container>
     </Box>
   );
 };
