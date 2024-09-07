@@ -1,10 +1,17 @@
-export function Homepage() {
+import { Image, Box } from '@chakra-ui/react'
+import comingSoonImage from '../../assets/coming-soon.jpg' // Add this import
+
+export default function HomePage() {
 
     return (
-        <div>
-            <h1>This is the Home page !</h1>
-            <br /><br />
-
-        </div>
+    <Box width="100vw" height="100vh" overflow="hidden">
+      <Image
+        src={comingSoonImage} // Use the imported image here
+        alt="Coming Soon"
+        width="100%"
+        height="100%"
+        objectFit="cover"
+      />
+    </Box>
     );
 }
