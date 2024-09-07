@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box, Container, Flex, VStack, HStack, Image, Text, Button, IconButton, 
+import { Box, Container, Flex, VStack, HStack, Image, Text, Button, IconButton, 
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
   FormControl, FormLabel, Input, Textarea, useDisclosure, useToast, Divider
-
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { db, storage } from '../../../fbconfig';
@@ -89,44 +87,49 @@ const Profile = () => {
   return (
     <Container maxW="container.xl">
       <Flex direction="column" gap={8} mt={10} mb={10} borderRadius="lg" p={4} borderWidth={1} padding={4}>
-        <Flex gap={8}>
-          <Box w="50%" borderRadius="lg" p={4} >
+       
+        <Flex alignItems="center">
+          <Box w="30%" borderRadius="lg" p={4} >
             {bioData.photo ? (
-              <Image src={bioData.photo} alt="Profile" borderRadius="full" boxSize="300px" objectFit="cover" />
+              <Image src={bioData.photo} alt="Profile" borderRadius="full" boxSize="150px" objectFit="cover" />
             ) : (
-              <Box bg="gray.200" borderRadius="full" boxSize="300px" display="flex" alignItems="center" justifyContent="center">
+              <Box bg="gray.200" borderRadius="full" boxSize="150px" display="flex" alignItems="center" justifyContent="center">
                 <Text>Nessuna foto</Text>
               </Box>
             )}
           </Box> 
-           <Divider orientation='vertical' size="lg"/>
-          <VStack w="50%" align="stretch" spacing={4}>
-            <HStack justify="space-between">
-              <Text fontSize="xl" fontWeight="bold">Nome: {bioData.name}</Text>
+          <VStack w="70%" spacing={4} alignItems="flex-start">
+            <HStack>
+              <Text fontSize="xl" fontWeight="bold">Nome: </Text>
+              <Text>{bioData.name}</Text>
               <IconButton icon={<EditIcon />} onClick={() => handleEdit('name')} aria-label="Edit name" />
               <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('name')} aria-label="Delete name" />
             </HStack>
-            <HStack justify="space-between">
-              <Text fontSize="xl" fontWeight="bold">Cognome: {bioData.surname}</Text>
+            <HStack>
+              <Text fontSize="xl" fontWeight="bold">Cognome: </Text>
+              <Text>{bioData.surname}</Text>
               <IconButton icon={<EditIcon />} onClick={() => handleEdit('surname')} aria-label="Edit surname" />
               <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('surname')} aria-label="Delete surname" />
             </HStack>
-            <HStack justify="space-between">
-              <Text fontSize="xl" fontWeight="bold">Qualifica: {bioData.qualification}</Text>
+            <HStack>
+              <Text fontSize="xl" fontWeight="bold">Qualifica: </Text><Text>{bioData.qualification}</Text>
               <IconButton icon={<EditIcon />} onClick={() => handleEdit('qualification')} aria-label="Edit qualification" />
               <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('qualification')} aria-label="Delete qualification" />
             </HStack>
           </VStack>
         </Flex>
+
         <Divider />
+        
         <Box>
-          <HStack justify="space-between" mb={2}>   
+          <HStack>   
             <Text fontSize="xl" fontWeight="bold">Descrizione:</Text>
             <IconButton icon={<EditIcon />} onClick={() => handleEdit('description')} aria-label="Edit description" />
             <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('description')} aria-label="Delete description" />
           </HStack>
           <Text>{bioData.description}</Text>
         </Box>
+
         <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onOpen}>
             Aggiungi Bio
         </Button>
