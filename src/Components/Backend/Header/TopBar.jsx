@@ -54,16 +54,6 @@ const TopBar = () => {
                             )}
                         </Flex>
                     </Box>
-                 {/*   <Button
-                        as="a"
-                        href="/"
-                        target="_blank"
-                        rightIcon={<ExternalLinkIcon />}
-                        colorScheme="whiteAlpha"
-                        mr={2}
-                    >
-                        Vai al sito
-                    </Button> */}
                 </Flex>
             </Container>
         </Flex>
