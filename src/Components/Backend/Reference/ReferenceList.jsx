@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import {
     Box,
+    SimpleGrid,
     VStack,
     Tooltip,
     Stack,
@@ -215,8 +216,8 @@ const ReferenceList = () => {
 
     return (
         <Container maxW="container.xl">
-            <Flex justifyContent="space-between" alignItems="center" mb={6}>
-                <Heading size="xl">Recensioni</Heading>
+            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg">Elenco recensioni</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }} >
                     Aggiungi recensione
                 </Button>
@@ -230,34 +231,35 @@ const ReferenceList = () => {
                     <Text fontSize="md">Inizia aggiungendo una nuova recensione!</Text>
                 </Alert>
             ) : (
-                <VStack spacing={6} width="100%">
+                <SimpleGrid columns={3} spacing={6} mb={4} width="100%">
                     {references.map((ref) => (
-                        <Card key={ref.id} bg={bgColor} borderColor={borderColor} borderWidth={1} boxShadow="md" p={4} borderRadius="md" width="100%">
+                        <Card key={ref.id} bg={bgColor} borderColor={borderColor} borderWidth={1} boxShadow="md" p={4} borderRadius="md">
                             <CardBody>
-                                <Flex justifyContent="space-between" alignItems="center" mb={3}>
-                                    <VStack align="start">
-                                        {ref.photo && (
-                                            <Box mt={2}>
+                                <Flex direction="column" height="100%">
+                                    <Flex justifyContent="space-between" alignItems="flex-start" mb={3}>
+                                        <VStack align="start" spacing={2}>
+                                            {ref.photo && (
                                                 <Image src={ref.photo} alt={ref.name} boxSize='100px' objectFit='cover' borderRadius='md' />
-                                            </Box>
-                                        )}
-                                        <Heading size="md">{ref.name}</Heading>
-                                        <Text as="i">{ref.job_title}</Text>
-                                    </VStack>
+                                            )}
+                                            <Heading size="md">{ref.name}</Heading>
+                                            <Text as="i">{ref.job_title}</Text>
+                                        </VStack>
+                                        
+                                    </Flex>
+                                    <Text flex={1}>{ref.description}</Text>
                                     <Stack direction="row">
-                                        <Tooltip label="Edit ref">
-                                            <IconButton icon={<EditIcon />} aria-label="Edit ref" onClick={() => openEditModal(ref)} size="sm" />
-                                        </Tooltip>
-                                        <Tooltip label="Delete ref">
-                                            <IconButton icon={<DeleteIcon />} aria-label="Delete ref" onClick={() => handleDelete(ref.id)} size="sm" />
-                                        </Tooltip>
-                                    </Stack>
+                                            <Tooltip label="Edit ref">
+                                                <IconButton icon={<EditIcon />} aria-label="Edit ref" onClick={() => openEditModal(ref)} size="sm" />
+                                            </Tooltip>
+                                            <Tooltip label="Delete ref">
+                                                <IconButton icon={<DeleteIcon />} aria-label="Delete ref" onClick={() => handleDelete(ref.id)} size="sm" />
+                                            </Tooltip>
+                                        </Stack>
                                 </Flex>
-                                <Text mb={4}>{ref.description}</Text>
                             </CardBody>
                         </Card>
                     ))}
-                </VStack>
+                </SimpleGrid>
             )}
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

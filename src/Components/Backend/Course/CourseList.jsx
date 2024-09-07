@@ -3,8 +3,8 @@ import {
     Box, VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack,
     List, ListItem, Divider, Textarea,
-    useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
-    ModalBody, ModalCloseButton, Badge
+    useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, 
+    ModalBody, ModalCloseButton, Badge, Container
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { db } from "../../../fbconfig";
@@ -40,10 +40,10 @@ const CourseList = () => {
     const handleDelete = async (id) => {
         try {
             await deleteDoc(doc(db, "db", "education", "courses", id));
-            toast({ title: "Course deleted successfully", status: "success", isClosable: true });
+            toast({ title: "Corso eliminato con successo", status: "success", isClosable: true });
         } catch (err) {
-            console.error("Error deleting course:", err);
-            toast({ title: "Error deleting course", status: "error", isClosable: true });
+            console.error("Errore nel eliminare il corso:", err);
+            toast({ title: "Errore nel eliminare il corso", status: "error", isClosable: true });
         }
     };
 
@@ -51,11 +51,11 @@ const CourseList = () => {
         e.preventDefault();
         try {
             await updateDoc(doc(db, "db", "education", "courses", formData.id), formData);
-            toast({ title: "Course updated successfully", status: "success", isClosable: true });
+            toast({ title: "Corso aggiornato con successo", status: "success", isClosable: true });
             onClose();
         } catch (err) {
-            console.error("Error updating course:", err);
-            toast({ title: "Error updating course", status: "error", isClosable: true });
+            console.error("Errore nel aggiornare il corso:", err);
+            toast({ title: "Errore nel aggiornare il corso", status: "error", isClosable: true });
         }
     };
 
@@ -74,9 +74,9 @@ const CourseList = () => {
     if (loading) return <Spinner size="xl" />;
 
     return (
-        <Box>
-            <Flex justifyContent="space-between" alignItems="center" mb={4}>
-                <Heading size="lg">Corsi</Heading>
+        <Container maxW="container.xl">
+      <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg">Elenco corsi</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
                     Aggiungi corso
                 </Button>
@@ -87,14 +87,14 @@ const CourseList = () => {
                     Nessun corso disponibile nel database.
                 </Alert>
             ) : (
-                <List spacing={6}>
+                <List mb={4} spacing={6}>
                     {courses.map((course) => (
                         <ListItem key={course.id} borderWidth={1} borderRadius="lg" p={4}>
                             <Flex justify="space-between" align="center" mb={4}>
                                 <Heading size="md">{course.title}</Heading>
                                 <Stack direction="row">
-                                    <IconButton icon={<EditIcon />} onClick={() => handleEditClick(course)} aria-label="Edit course" />
-                                    <IconButton icon={<DeleteIcon />} onClick={() => handleDelete(course.id)} aria-label="Delete course" />
+                                    <IconButton icon={<EditIcon />} onClick={() => handleEditClick(course)} aria-label="Modifica corso" />
+                                    <IconButton icon={<DeleteIcon />} onClick={() => handleDelete(course.id)} aria-label="Elimina corso" />
                                 </Stack>
                             </Flex>
                             <VStack align="start" spacing={2}>
@@ -164,7 +164,7 @@ const CourseList = () => {
                     </form>
                 </ModalContent>
             </Modal>
-        </Box>
+        </Container>
     );
 };
 

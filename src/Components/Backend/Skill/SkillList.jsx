@@ -171,8 +171,8 @@ const SkillList = () => {
 
     return (
         <Container maxW="container.xl" >
-            <Flex justifyContent="space-between" alignItems="center" mb={6}>
-                <Heading size="xl"> Elenco delle Skill</Heading>
+            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg"> Elenco delle Skill</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onAddOpen} >
                     Aggiungi Skill
                 </Button>

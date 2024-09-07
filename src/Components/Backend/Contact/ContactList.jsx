@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
 import { db } from "../../../fbconfig";
 import {
-    Box, VStack, Text, Heading, Image, Link, Button, Flex, useToast,
+    VStack, Text, Heading, Link, Button, Flex, useToast,
     List, ListItem, IconButton, Stack, 
     Spinner, Alert, AlertIcon, useDisclosure, Modal, ModalOverlay,
     ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-    FormControl, FormLabel, Input
+    FormControl, FormLabel, Input, Container
 } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 const ContactList = () => {
-    const [contactData, setContactData] = useState([]);
+    const [contactData, setContactData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({});
     const toast = useToast();
@@ -19,62 +19,35 @@ const ContactList = () => {
 
     useEffect(() => {
         const contactRef = doc(db, "db", "contacts");
-        const contactCollectionRef = collection(contactRef, "contact");
-
-        const unsubscribe = onSnapshot(
-            contactCollectionRef,
-            (snapshot) => {
-                setContactData(
-                    snapshot.docs.map((doc) => ({
-                        id: doc.id,
-                        ...doc.data(),
-                    }))
-                );
-                setLoading(false);
-            },
-            (err) => {
-                console.error("Errore durante il recupero dei contatti:", err);
-                toast({
-                    title: "Errore durante il recupero dei contatti",
-                    status: "error",
-                    isClosable: true,
-                });
-                setLoading(false);
+        const unsubscribe = onSnapshot(contactRef, (doc) => {
+            if (doc.exists()) {
+                setContactData(doc.data());
+            } else {
+                setContactData(null);
             }
-        );
+            setLoading(false);
+        });
 
         return () => unsubscribe();
-    }, [toast]);
-
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await setDoc(doc(db, 'db', 'contact'), formData);
-            toast({
-                title: "Contact updated successfully",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
+            await setDoc(doc(db, "db", "contacts"), formData);
+            toast({ title: "Contatto aggiornato con successo", status: "success", duration: 3000, isClosable: true });
             onClose();
-            fetchContactData();
         } catch (error) {
-            console.error('Error updating document:', error);
-            toast({
-                title: "Error updating contact",
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-            });
+            console.error('Error adding document:', error);
+            toast({ title: "Errore nell'aggiornamento del contatto", status: "error", duration: 3000, isClosable: true });
         }
     };
 
     const handleDelete = async () => {
         try {
-            await deleteDoc(doc(db, 'db', 'contact'));
+            await deleteDoc(doc(db, 'db', 'contacts'));
             toast({
-                title: "Contact deleted successfully",
+                title: "Contatto eliminato con successo",
                 status: "success",
                 duration: 3000,
                 isClosable: true,
@@ -83,7 +56,7 @@ const ContactList = () => {
         } catch (error) {
             console.error('Error deleting document:', error);
             toast({
-                title: "Error deleting contact",
+                title: "Errore nell'eliminazione del contatto",
                 status: "error",
                 duration: 3000,
                 isClosable: true,
@@ -98,59 +71,64 @@ const ContactList = () => {
     }
 
     return (
-        <Box>
-             <Flex justifyContent="space-between" alignItems="center" mb={4}>
-                <Heading size="lg">Contatti</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
-                    Aggiungi contatto
+        <Container maxW="container.xl">
+            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg">Informazioni di Contatto</Heading>
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onOpen}>
+                    Aggiungi Contatto
                 </Button>
             </Flex>
 
-
-            {contactData.length === 0 ? (
+            {contactData ? (
+                <List spacing={3} borderWidth={1} borderRadius="lg" p={4}>
+                    <ListItem>
+                        <Text><strong>Indirizzo:</strong> {contactData.address}</Text>
+                    </ListItem>
+                    <ListItem>
+                        <Text><strong>Email:</strong> {contactData.email}</Text>
+                    </ListItem>
+                    <ListItem>
+                        <Text><strong>Telefono:</strong> {contactData.tel}</Text>
+                    </ListItem>
+                    <ListItem>
+                        <Text>
+                            <strong>LinkedIn:</strong>
+                            <Link href={contactData.linkedin_profile} isExternal ml={2}>
+                                {contactData.linkedin_profile}
+                            </Link>
+                        </Text>
+                    </ListItem>
+                    <ListItem>
+                        <Stack direction="row" spacing={4} mt={4}>
+                            <IconButton
+                                icon={<EditIcon />}
+                                
+                                aria-label="Modifica contatto"
+                                onClick={() => {
+                                    setFormData(contactData);
+                                    onOpen();
+                                }}
+                            />
+                            <IconButton
+                                icon={<DeleteIcon />}
+                             
+                                aria-label="Elimina contatto"
+                                onClick={handleDelete}
+                            />
+                        </Stack>
+                    </ListItem>
+                </List>
+            ) : (
                 <Alert status="info">
                     <AlertIcon />
-                    Nessun contatto disponibile nel database.
+                    Nessuna informazione di contatto disponibile.
                 </Alert>
-            ) : (
-                <List spacing={6}>
-                    {contactData.map((contact) => (
-                        <ListItem key={contact.id} borderWidth={1} borderRadius="lg" p={4}>
-                            <Flex justify="space-between" align="center" mb={4}>
-                            {contactData.profile_image_url && (
-                        <Image
-                            src={contact.profile_image_url}
-                            alt="Profile"
-                            boxSize="150px"
-                            borderRadius="full"
-                            objectFit="cover"
-                                    />
-                                )}
-                                <Stack direction="row">
-                                    <IconButton icon={<EditIcon />} onClick={() => handleEditClick(contact)} aria-label="Edit contact" />
-                                    <IconButton icon={<DeleteIcon />} onClick={() => handleDelete(contact.id)} aria-label="Delete contact" />
-                                </Stack>
-                            </Flex>
-                            <VStack align="start" spacing={2}>
-                            <Text><strong>Indirizzo:</strong> {contact.address}</Text>
-                    <Text><strong>Email:</strong> {contact.email}</Text>
-                    <Text><strong>Telefono:</strong> {contact.tel}</Text>
-                    <Text>
-                        <strong>Linkedin:</strong>
-                        <Link href={contactData.linkedin_profile} isExternal ml={2}>
-                            {contactData.linkedin_profile}
-                                    </Link>
-                                </Text>
-                            </VStack>
-                        </ListItem>
-                    ))}
-                </List>
             )}
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{formData.id ? 'Edit Contact' : 'Add Contact'}</ModalHeader>
+                    <ModalHeader>{contactData ? 'Modifica Contatto' : 'Aggiungi Contatto'}</ModalHeader>
                     <ModalCloseButton />
                     <form onSubmit={handleSubmit}>
                         <ModalBody>
@@ -171,10 +149,6 @@ const ContactList = () => {
                                     <FormLabel>LinkedIn</FormLabel>
                                     <Input name="linkedin_profile" value={formData.linkedin_profile || ''} onChange={handleChange} />
                                 </FormControl>
-                                <FormControl>
-                                    <FormLabel>Immagine profilo</FormLabel>
-                                    <Input name="profile_image_url" value={formData.profile_image_url || ''} onChange={handleChange} />
-                                </FormControl>
                             </VStack>
                         </ModalBody>
                         <ModalFooter>
@@ -186,7 +160,7 @@ const ContactList = () => {
                     </form>
                 </ModalContent>
             </Modal>
-        </Box>
+        </Container>
     );
 };
 

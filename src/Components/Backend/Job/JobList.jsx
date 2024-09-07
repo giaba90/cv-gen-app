@@ -3,7 +3,7 @@ import {
     Box, VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack, Textarea,
     useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
-    ModalBody, ModalCloseButton, List, ListItem, Badge
+    ModalBody, ModalCloseButton, List, ListItem, Badge, Container
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import { db } from "../../../fbconfig";
@@ -80,9 +80,9 @@ const JobList = () => {
     if (loading) return <Spinner size="xl" />;
 
     return (
-        <Box>
-            <Flex justifyContent="space-between" alignItems="center" mb={4}>
-                <Heading size="lg">Esperienze lavorative</Heading>
+        <Container maxW="container.xl">
+      <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg">Elenco esperienze lavorative</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
                     Aggiungi esperienza
                 </Button>
@@ -94,7 +94,7 @@ const JobList = () => {
                     Nessuna esprienza disponibile nel database.
                 </Alert>
             ) : (
-                <List spacing={4}>
+                <List mb={4} spacing={4}>
                     {jobs.map((job) => (
                         <ListItem key={job.id} p={4} borderWidth={1} borderRadius="md" boxShadow="md">
                             <Flex justifyContent="space-between" alignItems="flex-start">
@@ -161,7 +161,7 @@ const JobList = () => {
                     </form>
                 </ModalContent>
             </Modal>
-        </Box>
+        </Container>
     );
 };
 

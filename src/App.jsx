@@ -2,7 +2,7 @@ import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthContext } from './Context/AuthContext'
-import { Homepage } from './Pages/Frontend/HomePage'
+import HomePage from './Pages/Frontend/HomePage'
 import { Protected } from './Pages/Frontend/Protected'
 import { Signin } from './Pages/Backend/Signin'
 import Admin from './Pages/Backend/Admin'
@@ -12,42 +12,46 @@ import Project from './Pages/Backend/Project'
 import Reference from './Pages/Backend/Reference'
 import Contact from './Pages/Backend/Contact'
 import Skill from './Pages/Backend/Skill'
-
+import MyProfile from './Pages/Backend/MyProfile'
 import theme from './theme'
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Homepage />
+      element: <HomePage />
     },
     {
       path: "/admin",
       element: <Protected><Admin /></Protected>
     },
     {
-      path: "/admin/course",
+      path: "/admin/istruzione",
       element: <Protected><Course /></Protected>
     },
     {
-      path: "/admin/job",
+      path: "/admin/esperienze",
       element: <Protected><Job /></Protected>
     },
     {
-      path: "/admin/project",
+      path: "/admin/progetti",
       element: <Protected><Project /></Protected>
     },
     {
-      path: "/admin/reference",
+      path: "/admin/recensioni",
       element: <Protected><Reference /></Protected>
     },
     {
-      path: "/admin/skill",
+      path: "/admin/competenze",
       element: <Protected><Skill /></Protected>
     },
     {
-      path: "/admin/contact",
+      path: "/admin/contatti",
       element: <Protected><Contact /></Protected>
+    },
+    {
+      path: "/admin/profilo",
+      element: <Protected><MyProfile /></Protected>
     },
     {
       path: "/signin",
