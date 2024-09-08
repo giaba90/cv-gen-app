@@ -2,3 +2,5 @@
   for = "/*.js"
   [headers.values]
     Content-Type = "application/javascript"
+[build]
+  publish = "dist"
