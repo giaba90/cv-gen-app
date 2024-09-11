@@ -30,7 +30,6 @@ npm run build
 
 # 4. Sposta il contenuto delle cartelle indietro di una directory
 echo "Sposta il contenuto della cartella dist/ nella root del sito"
-rm -r ../assets/*
 mv dist/* ../
 
 # 5. Conferma lo spostamento riuscito
