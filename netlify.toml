@@ -4,3 +4,9 @@
     Content-Type = "application/javascript"
 [build]
   publish = "dist"
+  command = "vite build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
