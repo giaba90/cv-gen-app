@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import {
     Box, VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack,
@@ -10,10 +10,27 @@ import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icon
 import { db } from "../../../fbconfig";
 import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
 
+const initialState = {
+    courses: [],
+    loading: true,
+    formData: {}
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_COURSES':
+            return { ...state, courses: action.payload, loading: false };
+        case 'SET_LOADING':
+            return { ...state, loading: action.payload };
+        case 'SET_FORM_DATA':
+            return { ...state, formData: action.payload };
+        default:
+            return state;
+    }
+}
+
 const CourseList = () => {
-    const [courses, setCourses] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({});
+    const [state, dispatch] = useReducer(reducer, initialState);
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -24,13 +41,12 @@ const CourseList = () => {
 
         const unsubscribe = onSnapshot(q,
             (snapshot) => {
-                setCourses(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                setLoading(false);
+                dispatch({ type: 'SET_COURSES', payload: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) });
             },
             (err) => {
                 console.error("Error fetching courses:", err);
                 toast({ title: "Error fetching courses", status: "error", isClosable: true });
-                setLoading(false);
+                dispatch({ type: 'SET_LOADING', payload: false });
             }
         );
 
@@ -50,7 +66,7 @@ const CourseList = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            await updateDoc(doc(db, "db", "education", "courses", formData.id), formData);
+            await updateDoc(doc(db, "db", "education", "courses", state.formData.id), state.formData);
             toast({ title: "Corso aggiornato con successo", status: "success", isClosable: true });
             onClose();
         } catch (err) {
@@ -59,36 +75,37 @@ const CourseList = () => {
         }
     };
 
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e) => dispatch({ type: 'SET_FORM_DATA', payload: { ...state.formData, [e.target.name]: e.target.value } });
 
     const handleEditClick = (course) => {
-        setFormData(course);
+        dispatch({ type: 'SET_FORM_DATA', payload: course });
         onOpen();
     };
+
     const formatDate = (dateString) => {
         if (!dateString) return "";
         const date = new Date(dateString);
         return date.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
     };
 
-    if (loading) return <Spinner size="xl" />;
+    if (state.loading) return <Spinner size="xl" />;
 
     return (
         <Container maxW="container.xl">
-      <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
                 <Heading size="lg">Elenco corsi</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }}>
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }}>
                     Aggiungi corso
                 </Button>
             </Flex>
-            {courses.length === 0 ? (
+            {state.courses.length === 0 ? (
                 <Alert status="info">
                     <AlertIcon />
                     Nessun corso disponibile nel database.
                 </Alert>
             ) : (
                 <List mb={4} spacing={6}>
-                    {courses.map((course) => (
+                    {state.courses.map((course) => (
                         <ListItem key={course.id} borderWidth={1} borderRadius="lg" p={4}>
                             <Flex justify="space-between" align="center" mb={4}>
                                 <Heading size="md">{course.title}</Heading>
@@ -127,31 +144,31 @@ const CourseList = () => {
                             <VStack spacing={4}>
                                 <FormControl>
                                     <FormLabel>Titolo del corso</FormLabel>
-                                    <Input name="title" value={formData?.title || ""} onChange={handleChange} />
+                                    <Input name="title" value={state.formData?.title || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Ente di formazione</FormLabel>
-                                    <Input name="school" value={formData?.school || ""} onChange={handleChange} />
+                                    <Input name="school" value={state.formData?.school || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Data di inizio</FormLabel>
-                                    <Input type="date" name="start" value={formData?.start || ""} onChange={handleChange} />
+                                    <Input type="date" name="start" value={state.formData?.start || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Data di fine</FormLabel>
-                                    <Input type="date" name="end" value={formData?.end || ""} onChange={handleChange} />
+                                    <Input type="date" name="end" value={state.formData?.end || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Descrizione </FormLabel>
-                                    <Textarea name="description" value={formData?.description || ""} onChange={handleChange} />
+                                    <Textarea name="description" value={state.formData?.description || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Link</FormLabel>
-                                    <Input name="link" value={formData?.link || ""} onChange={handleChange} />
+                                    <Input name="link" value={state.formData?.link || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Sito web</FormLabel>
-                                    <Input name="website" value={formData?.website || ""} onChange={handleChange} />
+                                    <Input name="website" value={state.formData?.website || ""} onChange={handleChange} />
                                 </FormControl>
                             </VStack>
                         </ModalBody>

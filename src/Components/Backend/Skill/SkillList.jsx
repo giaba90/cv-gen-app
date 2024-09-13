@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { db } from "../../../fbconfig";
 import { doc, collection, onSnapshot, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
 import {
@@ -31,12 +31,35 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons";
 
+const initialState = {
+    skills: [],
+    loading: true,
+    error: null,
+    editingSkill: null,
+    newSkillName: "",
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_SKILLS':
+            return { ...state, skills: action.payload, loading: false };
+        case 'SET_LOADING':
+            return { ...state, loading: action.payload };
+        case 'SET_ERROR':
+            return { ...state, error: action.payload };
+        case 'SET_EDITING_SKILL':
+            return { ...state, editingSkill: action.payload };
+        case 'SET_NEW_SKILL_NAME':
+            return { ...state, newSkillName: action.payload };
+        case 'DELETE_SKILL':
+            return { ...state, skills: state.skills.filter(skill => skill.id !== action.payload) };
+        default:
+            return state;
+    }
+}
+
 const SkillList = () => {
-    const [skills, setSkills] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [editingSkill, setEditingSkill] = useState(null);
-    const [newSkillName, setNewSkillName] = useState("");
+    const [state, dispatch] = useReducer(reducer, initialState);
     const toast = useToast();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
     const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
@@ -54,13 +77,11 @@ const SkillList = () => {
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setSkills(skillsData);
-                setLoading(false);
+                dispatch({ type: 'SET_SKILLS', payload: skillsData });
             },
             (err) => {
                 console.error("Errore durante il recupero delle skill:", err);
-                setError("Errore durante il recupero delle skill");
-                setLoading(false);
+                dispatch({ type: 'SET_ERROR', payload: "Errore durante il recupero delle skill" });
             }
         );
 
@@ -72,6 +93,7 @@ const SkillList = () => {
             const skillsDocRef = doc(db, "db", "skills");
             const skillRef = doc(collection(skillsDocRef, "skill"), id);
             await deleteDoc(skillRef);
+            dispatch({ type: 'DELETE_SKILL', payload: id });
             toast({
                 title: "Skill eliminata",
                 status: "success",
@@ -80,6 +102,7 @@ const SkillList = () => {
             });
         } catch (error) {
             console.error("Errore durante l'eliminazione della skill:", error);
+            dispatch({ type: 'SET_ERROR', payload: "Errore durante l'eliminazione della skill" });
             toast({
                 title: "Errore durante l'eliminazione",
                 status: "error",
@@ -90,15 +113,15 @@ const SkillList = () => {
     };
 
     const handleEdit = (skill) => {
-        setEditingSkill(skill);
+        dispatch({ type: 'SET_EDITING_SKILL', payload: skill });
         onEditOpen();
     };
 
     const handleUpdate = async () => {
         try {
             const skillsDocRef = doc(db, "db", "skills");
-            const skillRef = doc(collection(skillsDocRef, "skill"), editingSkill.id);
-            await updateDoc(skillRef, { name: editingSkill.name });
+            const skillRef = doc(collection(skillsDocRef, "skill"), state.editingSkill.id);
+            await updateDoc(skillRef, { name: state.editingSkill.name });
             onEditClose();
             toast({
                 title: "Skill aggiornata",
@@ -118,7 +141,7 @@ const SkillList = () => {
     };
 
     const handleAddSkill = async () => {
-        if (!newSkillName.trim()) {
+        if (!state.newSkillName.trim()) {
             toast({
                 title: "Errore",
                 description: "Il nome della skill non può essere vuoto",
@@ -132,8 +155,8 @@ const SkillList = () => {
         try {
             const skillsDocRef = doc(db, "db", "skills");
             const skillCollectionRef = collection(skillsDocRef, "skill");
-            await addDoc(skillCollectionRef, { name: newSkillName });
-            setNewSkillName("");
+            await addDoc(skillCollectionRef, { name: state.newSkillName });
+            dispatch({ type: 'SET_NEW_SKILL_NAME', payload: "" });
             onAddClose();
             toast({
                 title: "Skill aggiunta",
@@ -152,7 +175,7 @@ const SkillList = () => {
         }
     };
 
-    if (loading) {
+    if (state.loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
                 <Spinner size="xl" />
@@ -160,11 +183,11 @@ const SkillList = () => {
         );
     }
 
-    if (error) {
+    if (state.error) {
         return (
             <Alert status="error">
                 <AlertIcon />
-                {error}
+                {state.error}
             </Alert>
         );
     }
@@ -177,7 +200,7 @@ const SkillList = () => {
                     Aggiungi Skill
                 </Button>
             </Flex>
-            {skills.length === 0 ? (
+            {state.skills.length === 0 ? (
                 <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">
                     <AlertIcon boxSize="40px" mr={0} />
                     <Text mt={4} mb={1} fontSize="lg">
@@ -187,7 +210,7 @@ const SkillList = () => {
                 </Alert>
             ) : (
                 <HStack spacing={4} flexWrap="wrap" bg={bgColor} borderColor={borderColor} borderWidth={1} boxShadow="md" p={4} borderRadius="md">
-                    {skills.map((skill) => (
+                    {state.skills.map((skill) => (
                         <Box key={skill.id}>
                             <Tag
                                 size="lg"
@@ -225,9 +248,9 @@ const SkillList = () => {
                         <FormControl>
                             <FormLabel>Nome Skill</FormLabel>
                             <Input
-                                value={editingSkill?.name || ""}
+                                value={state.editingSkill?.name || ""}
                                 onChange={(e) =>
-                                    setEditingSkill({ ...editingSkill, name: e.target.value })
+                                    dispatch({ type: 'SET_EDITING_SKILL', payload: { ...state.editingSkill, name: e.target.value } })
                                 }
                             />
                         </FormControl>
@@ -250,8 +273,8 @@ const SkillList = () => {
                         <FormControl>
                             <FormLabel>Nome Skill</FormLabel>
                             <Input
-                                value={newSkillName}
-                                onChange={(e) => setNewSkillName(e.target.value)}
+                                value={state.newSkillName}
+                                onChange={(e) => dispatch({ type: 'SET_NEW_SKILL_NAME', payload: e.target.value })}
                                 placeholder="Inserisci il nome della nuova skill"
                             />
                         </FormControl>
