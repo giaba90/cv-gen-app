@@ -66,7 +66,7 @@ CMS: custom realizzato con le tecnologie sopracitate
 
 Design/ Prototipazione : Figma
 
-Server: VPS personale (si pensa al passaggio su aws o google cloud in secondo momento)
+Server: netlify
 
 CI/CD: Github Actions + VPS
 
