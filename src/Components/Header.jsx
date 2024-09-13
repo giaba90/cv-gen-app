@@ -1,13 +1,13 @@
-import { Heading, Text, VStack } from '@chakra-ui/react';
-
+import { Heading, Text, VStack, Box } from '@chakra-ui/react';
 
 function Header() {
     return (
-        <VStack align="center" spacing={4} >
-            <Heading as="h1" size="2xl">RICHARD SCOTT</Heading>
-            <Text fontSize="xl" fontWeight="bold" color="gray.600">WEB DEVELOPER</Text>
-
-        </VStack>
+        <Box bg="gray.100" p={4} borderRadius="md" mb={4}>
+            <VStack align="center" spacing={4}>
+                <Heading as="h1" size="2xl" borderBottom="2px solid" paddingBottom={2}>RICHARD SCOTT</Heading>
+                <Text fontSize="xl" fontWeight="bold" color="gray.600">WEB DEVELOPER</Text>
+            </VStack>
+        </Box>
     );
 }
 

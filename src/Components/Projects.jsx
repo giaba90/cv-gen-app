@@ -1,4 +1,4 @@
-import { VStack, Text, Box, Heading, UnorderedList, ListItem } from '@chakra-ui/react';
+import { VStack, Text, Box, Heading, Flex } from '@chakra-ui/react';
 
 const projects = [
     {
@@ -37,14 +37,12 @@ function Projects() {
         <VStack align="start" spacing={6} mb={8}>
             <Heading as="h2" size="lg" color="#2c5282">PROJECTS</Heading>
             {projects.map((project, index) => (
-                <Box key={index}>
-                    <Text fontWeight="bold">{project.name}</Text>
-                    <Text color="gray.500">{project.period}</Text>
-                    <UnorderedList mt={2}>
-                        {project.details.map((detail, detailIndex) => (
-                            <ListItem key={detailIndex}>{detail}</ListItem>
-                        ))}
-                    </UnorderedList>
+                <Box key={index} width="100%">
+                    <Flex justify="space-between" align="center">
+                        <Text fontWeight="bold">{project.name}</Text>
+                        <Text color="#2c5282" fontWeight="bold">{project.period}</Text>
+                    </Flex>
+                    <Text mt={2}>{project.details.join(' ')}</Text>
                 </Box>
             ))}
         </VStack>

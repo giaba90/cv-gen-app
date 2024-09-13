@@ -1,4 +1,4 @@
-import { VStack, Text, HStack, Circle } from '@chakra-ui/react';
+import { VStack, Text, HStack, Circle, Heading } from '@chakra-ui/react';
 
 const languages = [
     { name: 'English', level: 5 },
@@ -10,7 +10,7 @@ const languages = [
 function Languages() {
     return (
         <VStack align="start" spacing={4}>
-            <Text fontWeight="bold" fontSize="xl">LANGUAGES</Text>
+            <Heading as="h2" size="lg">LANGUAGES</Heading>
             {languages.map((lang, index) => (
                 <HStack key={index} justify="space-between" width="100%">
                     <Text>{lang.name}</Text>

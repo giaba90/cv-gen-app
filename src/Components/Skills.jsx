@@ -1,4 +1,4 @@
-import { VStack, Text, Progress, Box } from '@chakra-ui/react';
+import { VStack, Text, Progress, Box, Heading } from '@chakra-ui/react';
 
 const skills = [
   { name: 'PHP OOPs', level: 100 },
@@ -18,7 +18,7 @@ const skills = [
 function Skills() {
   return (
     <VStack align="start" spacing={4} mb={8}>
-      <Text fontWeight="bold" fontSize="xl">SKILLS</Text>
+      <Heading as="h2" size="lg">SKILLS</Heading>
       {skills.map((skill, index) => (
         <Box key={index} width="100%">
           <Text mb={1}>{skill.name}</Text>

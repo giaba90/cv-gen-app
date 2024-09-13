@@ -23,7 +23,7 @@ function Experience() {
                 <Box key={index} width="100%">
                     <Flex justify="space-between" align="center">
                         <Text fontWeight="bold">{exp.title}</Text>
-                        <Text color="#2c5282">{exp.period}</Text>
+                        <Text color="#2c5282" fontWeight="bold">{exp.period}</Text>
                     </Flex>
                     <Text>{exp.company}</Text>
                     <Text mt={2}>{exp.description}</Text>
