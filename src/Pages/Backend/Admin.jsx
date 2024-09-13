@@ -5,40 +5,40 @@ import Footer from '../../Components/Backend/Footer/Footer';
 import Header from '../../Components/Backend/Header/Header';
 import { motion } from "framer-motion";
 
-export default function Admin() {
+const listVoice = [
+    {
+        path: "/admin/istruzione",
+        name: "Istruzione e Formazione",
+        icon: FaBookOpenReader
+    },
+    {
+        path: "/admin/esperienze",
+        name: "Esperienze Lavorative",
+        icon: FaBriefcase
+    },
+    {
+        path: "/admin/progetti",
+        name: "Progetti",
+        icon: FaMedapps
+    },
+    {
+        path: "/admin/competenze",
+        name: "Competenze",
+        icon: FaMicrochip
+    },
+    {
+        path: "/admin/recensioni",
+        name: "Recensioni",
+        icon: FaComments
+    },
+    {
+        path: "/admin/contatti",
+        name: "Contatti",
+        icon: FaAddressBook
+    }
+];
 
-    const listVoice = [
-        {
-            path: "/admin/istruzione",
-            name: "Istruzione e Formazione",
-            icon: FaBookOpenReader
-        },
-        {
-            path: "/admin/esperienze",
-            name: "Esperienze Lavorative",
-            icon: FaBriefcase
-        },
-        {
-            path: "/admin/progetti",
-            name: "Progetti",
-            icon: FaMedapps
-        },
-        {
-            path: "/admin/competenze",
-            name: "Competenze",
-            icon: FaMicrochip
-        },
-        {
-            path: "/admin/recensioni",
-            name: "Recensioni",
-            icon: FaComments
-        },
-        {
-            path: "/admin/contatti",
-            name: "Contatti",
-            icon: FaAddressBook
-        }
-    ];
+export default function Admin() {
 
     return (
         <Flex flexDirection="column" minHeight="100vh">
