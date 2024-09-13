@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { db, storage } from "../../../fbconfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
@@ -44,15 +44,38 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
 
+const initialState = {
+    references: [],
+    formData: {},
+    loading: true,
+    error: null,
+    uploading: false,
+    uploadProgress: 0
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_REFERENCES':
+            return { ...state, references: action.payload, loading: false };
+        case 'SET_FORM_DATA':
+            return { ...state, formData: action.payload };
+        case 'SET_LOADING':
+            return { ...state, loading: action.payload };
+        case 'SET_ERROR':
+            return { ...state, error: action.payload };
+        case 'SET_UPLOADING':
+            return { ...state, uploading: action.payload };
+        case 'SET_UPLOAD_PROGRESS':
+            return { ...state, uploadProgress: action.payload };
+        default:
+            return state;
+    }
+}
+
 const ReferenceList = () => {
-    const [references, setReferences] = useState([]);
-    const [formData, setFormData] = useState({});
+    const [state, dispatch] = useReducer(reducer, initialState);
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
 
     const bgColor = useColorModeValue('white', 'gray.700');
     const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -64,13 +87,13 @@ const ReferenceList = () => {
         const unsubscribe = onSnapshot(
             refCollectionRef,
             (snapshot) => {
-                setReferences(
-                    snapshot.docs.map((doc) => ({
+                dispatch({
+                    type: 'SET_REFERENCES',
+                    payload: snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data(),
                     }))
-                );
-                setLoading(false);
+                });
             },
             (err) => {
                 console.error("Errore durante il recupero delle recensioni:", err);
@@ -79,7 +102,7 @@ const ReferenceList = () => {
                     status: "error",
                     isClosable: true,
                 });
-                setLoading(false);
+                dispatch({ type: 'SET_LOADING', payload: false });
             }
         );
 
@@ -88,31 +111,34 @@ const ReferenceList = () => {
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: files ? files[0] : value,
-        }));
+        dispatch({
+            type: 'SET_FORM_DATA',
+            payload: {
+                ...state.formData,
+                [name]: files ? files[0] : value,
+            }
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setUploading(true);
+        dispatch({ type: 'SET_UPLOADING', payload: true });
 
         try {
-            let photoURL = formData.photo ? await uploadPhoto(formData.photo) : "";
+            let photoURL = state.formData.photo ? await uploadPhoto(state.formData.photo) : "";
 
             const referenceData = {
-                job_title: formData.job_title,
-                description: formData.description,
-                name: formData.name,
+                job_title: state.formData.job_title,
+                description: state.formData.description,
+                name: state.formData.name,
                 photo: photoURL,
             };
 
             const referenceRef = doc(db, "db", "reference");
             const refCollectionRef = collection(referenceRef, "ref");
 
-            if (formData.id) {
-                await updateDoc(doc(refCollectionRef, formData.id), referenceData);
+            if (state.formData.id) {
+                await updateDoc(doc(refCollectionRef, state.formData.id), referenceData);
                 toast({
                     title: "Successo",
                     description: "Recensione aggiornata con successo!",
@@ -131,7 +157,7 @@ const ReferenceList = () => {
                 });
             }
 
-            setFormData({ job_title: "", description: "", name: "", photo: null });
+            dispatch({ type: 'SET_FORM_DATA', payload: { job_title: "", description: "", name: "", photo: null } });
             onClose();
         } catch (err) {
             console.error("Errore durante il caricamento/aggiornamento dei dati:", err);
@@ -143,8 +169,8 @@ const ReferenceList = () => {
                 isClosable: true,
             });
         } finally {
-            setUploading(false);
-            setUploadProgress(0);
+            dispatch({ type: 'SET_UPLOADING', payload: false });
+            dispatch({ type: 'SET_UPLOAD_PROGRESS', payload: 0 });
         }
     };
 
@@ -157,7 +183,7 @@ const ReferenceList = () => {
                 "state_changed",
                 (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    setUploadProgress(progress);
+                    dispatch({ type: 'SET_UPLOAD_PROGRESS', payload: progress });
                 },
                 (error) => {
                     reject(new Error(`Errore durante il caricamento dell'immagine: ${error.message}`));
@@ -171,7 +197,7 @@ const ReferenceList = () => {
     };
 
     const openEditModal = (ref) => {
-        setFormData(ref);
+        dispatch({ type: 'SET_FORM_DATA', payload: ref });
         onOpen();
     };
 
@@ -197,7 +223,7 @@ const ReferenceList = () => {
         }
     };
 
-    if (loading) {
+    if (state.loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
                 <Spinner size="xl" />
@@ -205,11 +231,11 @@ const ReferenceList = () => {
         );
     }
 
-    if (error) {
+    if (state.error) {
         return (
             <Alert status="error">
                 <AlertIcon />
-                {error}
+                {state.error}
             </Alert>
         );
     }
@@ -218,11 +244,11 @@ const ReferenceList = () => {
         <Container maxW="container.xl">
             <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
                 <Heading size="lg">Elenco recensioni</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { setFormData({}); onOpen(); }} >
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }} >
                     Aggiungi recensione
                 </Button>
             </Flex>
-            {references.length === 0 ? (
+            {state.references.length === 0 ? (
                 <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">
                     <AlertIcon boxSize="40px" mr={0} />
                     <Text mt={4} mb={1} fontSize="lg">
@@ -232,7 +258,7 @@ const ReferenceList = () => {
                 </Alert>
             ) : (
                 <SimpleGrid columns={3} spacing={6} mb={4} width="100%">
-                    {references.map((ref) => (
+                    {state.references.map((ref) => (
                         <Card key={ref.id} bg={bgColor} borderColor={borderColor} borderWidth={1} boxShadow="md" p={4} borderRadius="md">
                             <CardBody>
                                 <Flex direction="column" height="100%">
@@ -264,7 +290,7 @@ const ReferenceList = () => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{formData.id ? "Modifica recensione" : "Nuova recensione"}</ModalHeader>
+                    <ModalHeader>{state.formData.id ? "Modifica recensione" : "Nuova recensione"}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <form onSubmit={handleSubmit}>
@@ -273,7 +299,7 @@ const ReferenceList = () => {
                                     <FormLabel>Nome del cliente</FormLabel>
                                     <Input
                                         name="name"
-                                        value={formData.name || ""}
+                                        value={state.formData.name || ""}
                                         onChange={handleChange}
                                         placeholder="Inserisci il nome del cliente"
                                     />
@@ -282,7 +308,7 @@ const ReferenceList = () => {
                                     <FormLabel>Qualifica del cliente</FormLabel>
                                     <Input
                                         name="job_title"
-                                        value={formData.job_title || ""}
+                                        value={state.formData.job_title || ""}
                                         onChange={handleChange}
                                         placeholder="Inserisci la qualifica del cliente"
                                     />
@@ -291,7 +317,7 @@ const ReferenceList = () => {
                                     <FormLabel>Testo recensione</FormLabel>
                                     <Textarea
                                         name="description"
-                                        value={formData.description || ""}
+                                        value={state.formData.description || ""}
                                         onChange={handleChange}
                                         placeholder="Inserisci il testo della recensione"
                                     />
@@ -305,8 +331,8 @@ const ReferenceList = () => {
                                         onChange={handleChange}
                                     />
                                 </FormControl>
-                                {uploadProgress > 0 && (
-                                    <Progress value={uploadProgress} width="100%" />
+                                {state.uploadProgress > 0 && (
+                                    <Progress value={state.uploadProgress} width="100%" />
                                 )}
                             </VStack>
                         </form>
@@ -315,12 +341,12 @@ const ReferenceList = () => {
                         <Button
                             type="submit"
                             colorScheme="blue"
-                            isLoading={uploading}
+                            isLoading={state.uploading}
                             loadingText="Caricamento in corso..."
                             onClick={handleSubmit}
                             mr={3}
                         >
-                            {formData.id ? "Aggiorna" : "Carica"} Recensione
+                            {state.formData.id ? "Aggiorna" : "Carica"} Recensione
                         </Button>
                         <Button variant="ghost" onClick={onClose}>
                             Annulla

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Container, Flex, VStack, HStack, Image, Text, Button, IconButton, 
+import { useState, useEffect } from 'react';
+import {
+  Box, Container, Flex, VStack, HStack, Image, Text, Button, IconButton,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
   FormControl, FormLabel, Input, Textarea, useDisclosure, useToast, Divider
 } from '@chakra-ui/react';
@@ -20,10 +21,20 @@ const Profile = () => {
   }, []);
 
   const fetchBioData = async () => {
-    const docRef = doc(db, 'Bio', 'summary');
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      setBioData(docSnap.data());
+    try {
+      const docRef = doc(db, 'Bio', 'summary');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setBioData(docSnap.data());
+      }
+    } catch (error) {
+      console.error("Error fetching bio data:", error);
+      toast({
+        title: 'Error fetching bio data',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -51,7 +62,7 @@ const Profile = () => {
     }
 
     await setDoc(docRef, updatedData, { merge: true });
-    fetchBioData();
+    await fetchBioData();
     onClose();
     toast({
       title: 'Bio aggiornata.',
@@ -75,7 +86,7 @@ const Profile = () => {
       const storageRef = ref(storage, 'profile_photos/photo');
       await deleteObject(storageRef);
     }
-    fetchBioData();
+    await fetchBioData();
     toast({
       title: `${field} eliminato.`,
       status: 'info',
@@ -87,7 +98,7 @@ const Profile = () => {
   return (
     <Container maxW="container.xl">
       <Flex direction="column" gap={8} mt={10} mb={10} borderRadius="lg" p={4} borderWidth={1} padding={4}>
-       
+
         <Flex alignItems="center">
           <Box w="30%" borderRadius="lg" p={4} >
             {bioData.photo ? (
@@ -97,7 +108,7 @@ const Profile = () => {
                 <Text>Nessuna foto</Text>
               </Box>
             )}
-          </Box> 
+          </Box>
           <VStack w="70%" spacing={4} alignItems="flex-start">
             <HStack>
               <Text fontSize="xl" fontWeight="bold">Nome: </Text>
@@ -120,9 +131,9 @@ const Profile = () => {
         </Flex>
 
         <Divider />
-        
+
         <Box>
-          <HStack>   
+          <HStack>
             <Text fontSize="xl" fontWeight="bold">Descrizione:</Text>
             <IconButton icon={<EditIcon />} onClick={() => handleEdit('description')} aria-label="Edit description" />
             <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('description')} aria-label="Delete description" />
@@ -130,9 +141,11 @@ const Profile = () => {
           <Text>{bioData.description}</Text>
         </Box>
 
-        <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onOpen}>
+        {Object.keys(bioData).length === 0 && (
+          <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onOpen}>
             Aggiungi Bio
-        </Button>
+          </Button>
+        )}
       </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose}>

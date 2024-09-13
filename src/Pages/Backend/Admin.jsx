@@ -5,57 +5,70 @@ import Footer from '../../Components/Backend/Footer/Footer';
 import Header from '../../Components/Backend/Header/Header';
 import { motion } from "framer-motion";
 
-export default function Admin() {
+const listVoice = [
+    {
+        path: "/admin/istruzione",
+        name: "Istruzione e Formazione",
+        icon: FaBookOpenReader
+    },
+    {
+        path: "/admin/esperienze",
+        name: "Esperienze Lavorative",
+        icon: FaBriefcase
+    },
+    {
+        path: "/admin/progetti",
+        name: "Progetti",
+        icon: FaMedapps
+    },
+    {
+        path: "/admin/competenze",
+        name: "Competenze",
+        icon: FaMicrochip
+    },
+    {
+        path: "/admin/recensioni",
+        name: "Recensioni",
+        icon: FaComments
+    },
+    {
+        path: "/admin/contatti",
+        name: "Contatti",
+        icon: FaAddressBook
+    }
+];
 
-    const listVoice = [
-        {
-            path: "/admin/istruzione",
-            name: "Istruzione e Formazione",
-            icon: FaBookOpenReader
-        },
-        {
-            path: "/admin/esperienze",
-            name: "Esperienze Lavorative",
-            icon: FaBriefcase
-        },
-        {
-            path: "/admin/progetti",
-            name: "Progetti",
-            icon: FaMedapps
-        },
-        {
-            path: "/admin/competenze",
-            name: "Competenze",
-            icon: FaMicrochip
-        },
-        {
-            path: "/admin/recensioni",
-            name: "Recensioni",
-            icon: FaComments
-        },
-        {
-            path: "/admin/contatti",
-            name: "Contatti",
-            icon: FaAddressBook
-        }
-    ];
+const containerMotion = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+};
+
+const itemMotion = {
+    whileHover: { scale: 1.05 },
+    whileTap: { scale: 0.95 }
+};
+
+const iconMotion = (index) => ({
+    initial: { scale: 0 },
+    animate: { scale: 1 },
+    transition: { delay: index * 0.1, type: "spring", stiffness: 260, damping: 20 }
+});
+
+export default function Admin() {
 
     return (
         <Flex flexDirection="column" minHeight="100vh">
             <Header />
             <Container maxW='container.lg' flex="1" mt={10} mb={10}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
+                <motion.div {...containerMotion}>
                     <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                         {listVoice.map((el, index) => (
                             <motion.div
                                 key={index}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                {...itemMotion}
                             >
+                                <Link href={el.path}>
                                 <Box
                                     overflow="hidden"
                                     textAlign="center"
@@ -63,11 +76,7 @@ export default function Admin() {
                                     borderRadius="lg"
                                     p={4}
                                 >
-                                    <motion.div
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ delay: index * 0.1, type: "spring", stiffness: 260, damping: 20 }}
-                                    >
+                                    <motion.div {...iconMotion(index)}>
                                         <Icon color='teal' mt={6} boxSize={24} as={el.icon} />
                                     </motion.div>
                                     <Box p={4}>
@@ -75,7 +84,7 @@ export default function Admin() {
                                             <Link href={el.path}> {el.name}</Link>
                                         </Text>
                                     </Box>
-                                </Box>
+                                </Box></Link>
                             </motion.div>
                         ))}
                     </Grid>
