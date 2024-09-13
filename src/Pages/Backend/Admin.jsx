@@ -56,6 +56,7 @@ export default function Admin() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
+                                <Link href={el.path}>
                                 <Box
                                     overflow="hidden"
                                     textAlign="center"
@@ -75,7 +76,7 @@ export default function Admin() {
                                             <Link href={el.path}> {el.name}</Link>
                                         </Text>
                                     </Box>
-                                </Box>
+                                </Box></Link>
                             </motion.div>
                         ))}
                     </Grid>
