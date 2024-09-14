@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { db } from "../../../fbconfig";
-import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
+import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
 
 const initialState = {
     courses: [],
@@ -63,15 +63,29 @@ const CourseList = () => {
         }
     };
 
-    const handleUpdate = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateDoc(doc(db, "db", "education", "courses", state.formData.id), state.formData);
-            toast({ title: "Corso aggiornato con successo", status: "success", isClosable: true });
+            const educationRef = doc(db, "db", "education");
+            const coursesCollectionRef = collection(educationRef, "courses");
+            
+            const formattedData = {
+                ...state.formData,
+                start: formatDateForFirebase(state.formData.start),
+                end: formatDateForFirebase(state.formData.end)
+            };
+
+            if (state.formData.id) {
+                await updateDoc(doc(coursesCollectionRef, state.formData.id), formattedData);
+                toast({ title: "Corso aggiornato con successo", status: "success", isClosable: true });
+            } else {
+                await addDoc(coursesCollectionRef, formattedData);
+                toast({ title: "Corso aggiunto con successo", status: "success", isClosable: true });
+            }
             onClose();
         } catch (err) {
-            console.error("Errore nel aggiornare il corso:", err);
-            toast({ title: "Errore nel aggiornare il corso", status: "error", isClosable: true });
+            console.error("Errore nel salvare il corso:", err);
+            toast({ title: "Errore nel salvare il corso", status: "error", isClosable: true });
         }
     };
 
@@ -82,10 +96,16 @@ const CourseList = () => {
         onOpen();
     };
 
-    const formatDate = (dateString) => {
+    const formatDateForFirebase = (dateString) => {
         if (!dateString) return "";
         const date = new Date(dateString);
-        return date.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    };
+
+    const formatDateForDisplay = (dateString) => {
+        if (!dateString) return "";
+        const [year, month] = dateString.split('-');
+        return `${month}/${year}`;
     };
 
     if (state.loading) return <Spinner size="xl" />;
@@ -116,7 +136,7 @@ const CourseList = () => {
                             </Flex>
                             <VStack align="start" spacing={2}>
                                 <Badge colorScheme="teal">
-                                    {formatDate(course.start)} - {formatDate(course.end)}
+                                    {formatDateForDisplay(course.start)} - {formatDateForDisplay(course.end)}
                                 </Badge>
                                 <Text as="i">
                                     <Link href={course.website} isExternal>{course.school} <ExternalLinkIcon mx="2px" /></Link>
@@ -137,9 +157,9 @@ const CourseList = () => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Aggiorna corso</ModalHeader>
+                    <ModalHeader>{state.formData.id ? 'Aggiorna corso' : 'Aggiungi corso'}</ModalHeader>
                     <ModalCloseButton />
-                    <form onSubmit={handleUpdate}>
+                    <form onSubmit={handleSubmit}>
                         <ModalBody>
                             <VStack spacing={4}>
                                 <FormControl>
@@ -151,12 +171,12 @@ const CourseList = () => {
                                     <Input name="school" value={state.formData?.school || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Data di inizio</FormLabel>
-                                    <Input type="date" name="start" value={state.formData?.start || ""} onChange={handleChange} />
+                                    <FormLabel>Data di inizio (MM/YYYY)</FormLabel>
+                                    <Input type="month" name="start" value={state.formData?.start || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel>Data di fine</FormLabel>
-                                    <Input type="date" name="end" value={state.formData?.end || ""} onChange={handleChange} />
+                                    <FormLabel>Data di fine (MM/YYYY)</FormLabel>
+                                    <Input type="month" name="end" value={state.formData?.end || ""} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Descrizione </FormLabel>

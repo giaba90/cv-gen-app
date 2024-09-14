@@ -35,7 +35,7 @@ function HomePage() {
             </Box>
             <Box bg="white" p={6}>
               <Header />
-              <Summary></Summary>
+              <Summary/>
               <Experience />
               <Projects />
               <Education />

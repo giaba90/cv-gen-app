@@ -62,21 +62,33 @@ const JobList = () => {
         }
     };
 
+    const formatDateForFirebase = (dateString) => {
+        if (!dateString) return null;
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const formattedData = {
+                ...state.formData,
+                start: formatDateForFirebase(state.formData.start),
+                end: formatDateForFirebase(state.formData.end)
+            };
+
             if (state.formData.id) {
-                await updateDoc(doc(db, "db", "experience", "jobs", state.formData.id), state.formData);
+                await updateDoc(doc(db, "db", "experience", "jobs", state.formData.id), formattedData);
                 toast({ title: "Esperienza aggiornata con successo", status: "success", isClosable: true });
             } else {
-                await addDoc(collection(db, "db", "experience", "jobs"), { ...state.formData, createdAt: new Date() });
+                await addDoc(collection(db, "db", "experience", "jobs"), { ...formattedData, createdAt: new Date() });
                 toast({ title: "Esperienza aggiunta con successo!", status: "success", isClosable: true });
             }
             onClose();
             dispatch({ type: 'SET_FORM_DATA', payload: {} });
         } catch (err) {
-            console.error("Errore nel savaltaggio dell'esperienza:", err);
-            toast({ title: "Errore nel savaltaggio dell'esperienza", status: "error", isClosable: true });
+            console.error("Errore nel salvataggio dell'esperienza:", err);
+            toast({ title: "Errore nel salvataggio dell'esperienza", status: "error", isClosable: true });
         }
     };
 
@@ -90,7 +102,7 @@ const JobList = () => {
     const formatDate = (dateString) => {
         if (!dateString) return "Present";
         const date = new Date(dateString);
-        return date.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
+        return date.toLocaleDateString("it-IT", { month: "2-digit", year: "numeric" });
     };
 
     if (state.loading) return <Spinner size="xl" />;
@@ -107,7 +119,7 @@ const JobList = () => {
             {state.jobs.length === 0 ? (
                 <Alert status="info">
                     <AlertIcon />
-                    Nessuna esprienza disponibile nel database.
+                    Nessuna esperienza disponibile nel database.
                 </Alert>
             ) : (
                 <List mb={4} spacing={4}>
@@ -152,11 +164,11 @@ const JobList = () => {
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel>Data di inizio</FormLabel>
-                                    <Input type="date" name="start" value={state.formData.start || ''} onChange={handleChange} />
+                                    <Input type="month" name="start" value={state.formData.start || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Data di fine</FormLabel>
-                                    <Input type="date" name="end" value={state.formData.end || ''} onChange={handleChange} />
+                                    <Input type="month" name="end" value={state.formData.end || ''} onChange={handleChange} />
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel>Descrizione</FormLabel>
