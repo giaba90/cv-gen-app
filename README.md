@@ -64,11 +64,9 @@ Backend: Firebase
 
 CMS: custom realizzato con le tecnologie sopracitate
 
-Design/ Prototipazione : Figma
-
 Server: netlify
 
-CI/CD: Github Actions + VPS
+CI/CD: Github
 
 # AUTENTICAZIONE
 
