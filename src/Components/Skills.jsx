@@ -1,28 +1,33 @@
-import { VStack, Text, Progress, Box, Heading } from '@chakra-ui/react';
-
-const skills = [
-  { name: 'PHP OOPs', level: 100 },
-  { name: 'Yii 2 MVC', level: 90 },
-  { name: 'PHPUnit', level: 100 },
-  { name: 'JavaScript', level: 85 },
-  { name: 'Node.js', level: 95 },
-  { name: 'JavaSE Opp\'s', level: 100 },
-  { name: 'C#, C++', level: 80 },
-  { name: 'MySQL, SQL Server', level: 100 },
-  { name: 'Transact SQL', level: 100 },
-  { name: 'Json, Rest API', level: 85 },
-  { name: 'SW Pattern', level: 100 },
-  { name: 'Git', level: 90 },
-];
+import { VStack, Box, Heading, Spinner, Tag } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { db } from '../fbconfig';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 function Skills() {
+  const fetchSkills = async () => {
+    const skillsDocRef = doc(db, "db", "skills");
+    const skillsRef = collection(skillsDocRef, "skill");
+    const q = query(skillsRef, orderBy('level', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  };
+
+  const { data: skills, isLoading, error } = useQuery({
+    queryKey: ['skills'],
+    queryFn: fetchSkills,
+  });
+
+  if (isLoading) return <Spinner />;
+  if (error) return <Tag colorScheme="red">Error loading skills: {error.message}</Tag>;
+
   return (
     <VStack align="start" spacing={4} mb={8}>
       <Heading as="h2" size="lg">SKILLS</Heading>
-      {skills.map((skill, index) => (
-        <Box key={index} width="100%">
-          <Text mb={1}>{skill.name}</Text>
-          <Progress value={skill.level} size="sm" colorScheme="blue" />
+      {skills && skills.map((skill) => (
+        <Box key={skill.id} width="100%">
+          <Tag size="lg" variant="subtle" colorScheme="blue" width="100%">
+            {skill.name}
+          </Tag>
         </Box>
       ))}
     </VStack>

@@ -102,7 +102,7 @@ const JobList = () => {
     const formatDate = (dateString) => {
         if (!dateString) return "Present";
         const date = new Date(dateString);
-        return date.toLocaleDateString("it-IT", { month: "2-digit", year: "numeric" });
+        return date.toLocaleDateString("it-IT", { month: "short", year: "numeric" });
     };
 
     if (state.loading) return <Spinner size="xl" />;

@@ -1,5 +1,5 @@
 import { ChakraProvider, Box, Grid, Container, theme, extendTheme } from '@chakra-ui/react';
-import Header from '../../Components/Header';
+import Hero from '../../Components/Hero';
 import Summary from '../../Components/Summary';
 import Contact from '../../Components/Contact';
 import Skills from '../../Components/Skills';
@@ -7,6 +7,7 @@ import Experience from '../../Components/Experience';
 import Projects from '../../Components/Projects';
 import Education from '../../Components/Education';
 import Languages from '../../Components/Languages';
+import Footer from '../../Components/Footer';
 
 const customTheme = extendTheme({
   ...theme,
@@ -34,7 +35,7 @@ function HomePage() {
               <Languages />
             </Box>
             <Box bg="white" p={6}>
-              <Header />
+              <Hero />
               <Summary/>
               <Experience />
               <Projects />
@@ -42,6 +43,7 @@ function HomePage() {
             </Box>
           </Grid>
         </Container>
+        <Footer />
       </Box>
     </ChakraProvider>
   );

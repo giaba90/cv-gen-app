@@ -102,10 +102,10 @@ const CourseList = () => {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
     };
 
-    const formatDateForDisplay = (dateString) => {
-        if (!dateString) return "";
-        const [year, month] = dateString.split('-');
-        return `${month}/${year}`;
+    const formatDate = (dateString) => {
+        if (!dateString) return "Present";
+        const date = new Date(dateString);
+        return date.toLocaleDateString("it-IT", { month: "short", year: "numeric" });
     };
 
     if (state.loading) return <Spinner size="xl" />;
@@ -136,7 +136,7 @@ const CourseList = () => {
                             </Flex>
                             <VStack align="start" spacing={2}>
                                 <Badge colorScheme="teal">
-                                    {formatDateForDisplay(course.start)} - {formatDateForDisplay(course.end)}
+                                    {formatDate(course.start)} - {formatDate(course.end)}
                                 </Badge>
                                 <Text as="i">
                                     <Link href={course.website} isExternal>{course.school} <ExternalLinkIcon mx="2px" /></Link>
@@ -145,7 +145,7 @@ const CourseList = () => {
                             </VStack>
                             <Divider my={4} />
                             {course.link && (
-                                <Button as={Link} href={course.link} isExternal colorScheme="teal" rightIcon={<ExternalLinkIcon />}>
+                                <Button as={Link} href={course.link} isExternal colorScheme="teal" variant="outline" size="sm" rightIcon={<ExternalLinkIcon />}>
                                     Allegato
                                 </Button>
                             )}
