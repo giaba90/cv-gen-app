@@ -1,12 +1,15 @@
 import { useMemo } from "react";
-import { FaCog } from "react-icons/fa";
+import { FaCog, FaArrowLeft } from "react-icons/fa";
 import { db } from "../../../fbconfig";
 import { doc, getDoc } from "firebase/firestore";
-import { Flex, Text, Box, Avatar, Link, Icon, Container } from "@chakra-ui/react";
+import { Flex, Text, Box, Avatar, Link, Icon, Container, Button } from "@chakra-ui/react";
 import Menu from "./Menu";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const TopBar = () => {
+    const navigate = useNavigate();
+
     const fetchBioData = async () => {
         const docRef = doc(db, 'Bio', 'summary');
         const docSnap = await getDoc(docRef);
@@ -31,10 +34,24 @@ const TopBar = () => {
         }
     }, [error]);
 
+    const handleGoBack = () => {
+        navigate(-1);
+    };
+
     return (
         <Flex bg="teal.500" p={2} alignItems="center" >
             <Container maxWidth="container.lg" display="flex" justifyContent="space-between" alignItems="center">
-                <Menu aria-label="Menu" />
+                <Flex>
+                    <Menu aria-label="Menu" />
+                    <Button
+                        onClick={handleGoBack}
+                        aria-label="Go back"
+                        colorScheme="whiteAlpha" 
+                        ml={2}
+                    >
+                        <Icon as={FaArrowLeft} />&nbsp; Indietro
+                    </Button>
+                </Flex>
                 <Text as="h1" fontSize="xl" fontWeight="bold" color="white">CV Generator App</Text>
                 <Flex >
                     <Box>
