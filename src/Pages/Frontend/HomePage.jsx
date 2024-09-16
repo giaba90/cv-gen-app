@@ -6,7 +6,6 @@ import Skills from '../../Components/Skills';
 import Experience from '../../Components/Experience';
 import Projects from '../../Components/Projects';
 import Education from '../../Components/Education';
-import Languages from '../../Components/Languages';
 import Footer from '../../Components/Footer';
 
 const customTheme = extendTheme({
@@ -32,7 +31,6 @@ function HomePage() {
             <Box bg="#005C85" color="white" p={6}>
               <Contact />
               <Skills />
-              <Languages />
             </Box>
             <Box bg="white" p={6}>
               <Hero />
