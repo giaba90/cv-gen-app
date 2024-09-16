@@ -28,8 +28,8 @@ function HomePage() {
     <ChakraProvider theme={customTheme}>
       <Box minHeight="100vh" bg="gray.100" py={8}>
         <Container maxW="container.xl">
-          <Grid templateColumns="40% 60%">
-            <Box bg="blue.700" color="white" p={6}>
+          <Grid templateColumns="30% 70%">
+            <Box bg="#005C85" color="white" p={6}>
               <Contact />
               <Skills />
               <Languages />
@@ -37,9 +37,9 @@ function HomePage() {
             <Box bg="white" p={6}>
               <Hero />
               <Summary/>
-              <Experience />
-              <Projects />
+              <Experience />      
               <Education />
+              <Projects />
             </Box>
           </Grid>
         </Container>

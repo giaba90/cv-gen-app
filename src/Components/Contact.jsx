@@ -1,60 +1,94 @@
-import { VStack, Text, Link, Icon, Heading, Spinner } from '@chakra-ui/react';
+import { VStack, Text, Link, Icon, Heading, Spinner, Avatar, Box } from '@chakra-ui/react';
 import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md';
 import { FaLinkedin } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../fbconfig';
 
+const initialState = {
+    contactData: null,
+    profilePhoto: null,
+    loading: true,
+    error: null
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'FETCH_SUCCESS':
+            return {
+                ...state,
+                contactData: action.payload.contactData,
+                profilePhoto: action.payload.profilePhoto,
+                loading: false
+            };
+        case 'FETCH_ERROR':
+            return { ...state, error: action.payload, loading: false };
+        default:
+            return state;
+    }
+}
+
 function Contact() {
-    const [contactData, setContactData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
-        const fetchContactData = async () => {
+        const fetchData = async () => {
             try {
-                const docRef = doc(db, 'db', 'contacts');
-                const docSnap = await getDoc(docRef);
+                const contactDocRef = doc(db, 'db', 'contacts');
+                const bioDocRef = doc(db, 'Bio', 'summary');
                 
-                if (docSnap.exists()) {
-                    setContactData(docSnap.data());
+                const [contactDocSnap, bioDocSnap] = await Promise.all([
+                    getDoc(contactDocRef),
+                    getDoc(bioDocRef)
+                ]);
+                
+                if (contactDocSnap.exists() && bioDocSnap.exists()) {
+                    dispatch({
+                        type: 'FETCH_SUCCESS',
+                        payload: {
+                            contactData: contactDocSnap.data(),
+                            profilePhoto: bioDocSnap.data().photo
+                        }
+                    });
                 } else {
-                    setError('No contact data found');
+                    dispatch({ type: 'FETCH_ERROR', payload: 'Nessun dato trovato' });
                 }
             } catch (err) {
-                setError('Error fetching contact data');
+                dispatch({ type: 'FETCH_ERROR', payload: 'Errore durante il recupero dei dati' });
                 console.error(err);
-            } finally {
-                setLoading(false);
             }
         };
 
-        fetchContactData();
+        fetchData();
     }, []);
 
-    if (loading) return <Spinner />;
-    if (error) return <Text color="red.500">{error}</Text>;
+    if (state.loading) return <Spinner />;
+    if (state.error) return <Text color="red.500">{state.error}</Text>;
 
     return (
         <VStack align="start" spacing={3} mb={8}>
-            <Heading as="h2" size="lg">CONTACT</Heading>
-            {contactData && (
-                <>
-                    <Link href={`mailto:${contactData.email}`} isExternal>
+            {state.profilePhoto && (
+                <Box width="100%" display="flex" justifyContent="center" mb={4}>
+                    <Avatar showBorder={true} size="2xl" src={state.profilePhoto} />
+                </Box>
+            )}
+            {state.contactData && (
+                <><Heading as="h2" size="lg">CONTACT</Heading>
+                    <Link href={`mailto:${state.contactData.email}`} isExternal>
                         <Icon as={MdEmail} mr={2} />
-                        {contactData.email}
+                        {state.contactData.email}
                     </Link>
                     <Text>
                         <Icon as={MdPhone} mr={2} />
-                        {contactData.tel}
+                        {state.contactData.tel}
                     </Text>
                     <Text>
                         <Icon as={MdLocationOn} mr={2} />
-                        {contactData.address}
+                        {state.contactData.address}
                     </Text>
-                    <Link href={contactData.linkedinUrl} isExternal>
+                    <Link href={state.contactData.linkedinUrl} isExternal>
                         <Icon as={FaLinkedin} mr={2} />
-                        {contactData.linkedin_profile}
+                        {state.contactData.linkedin_profile.replace('https://www.', '')}
                     </Link>
                 </>
             )}

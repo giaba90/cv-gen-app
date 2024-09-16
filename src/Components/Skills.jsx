@@ -1,35 +1,66 @@
-import { VStack, Box, Heading, Spinner, Tag } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { db } from '../fbconfig';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { VStack, Heading, Tag, TagLabel, HStack } from '@chakra-ui/react';
+import { useEffect, useReducer } from "react";
+import { db } from "../fbconfig";
+import { doc, collection, onSnapshot   } from "firebase/firestore";
+
+const initialState = {
+  skills: [],
+  loading: true,
+  error: null,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'GET_SKILLS':
+      return { ...state, skills: action.payload, loading: false };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    case 'SET_ERROR':
+      return { ...state, error: action.payload };
+  }
+  return state;
+}
 
 function Skills() {
-  const fetchSkills = async () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
     const skillsDocRef = doc(db, "db", "skills");
-    const skillsRef = collection(skillsDocRef, "skill");
-    const q = query(skillsRef, orderBy('level', 'desc'));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  };
+    const skillCollectionRef = collection(skillsDocRef, "skill");
 
-  const { data: skills, isLoading, error } = useQuery({
-    queryKey: ['skills'],
-    queryFn: fetchSkills,
-  });
+    const unsubscribe = onSnapshot(
+      skillCollectionRef,
+      (snapshot) => { 
+        const skillsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        dispatch({ type: 'GET_SKILLS', payload: skillsData });
+      },
+      (err) => {
+        console.error("Errore durante il recupero delle skill:", err);
+        dispatch({ type: 'SET_ERROR', payload: "Errore durante il recupero delle skill" }); 
+      }
+    );
 
-  if (isLoading) return <Spinner />;
-  if (error) return <Tag colorScheme="red">Error loading skills: {error.message}</Tag>;
+    return () => unsubscribe();
+  }, []);
+
+  const { skills, loading, error } = state;
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <VStack align="start" spacing={4} mb={8}>
       <Heading as="h2" size="lg">SKILLS</Heading>
-      {skills && skills.map((skill) => (
-        <Box key={skill.id} width="100%">
-          <Tag size="lg" variant="subtle" colorScheme="blue" width="100%">
-            {skill.name}
-          </Tag>
-        </Box>
+      <HStack>
+      {skills.map((skill, index) => (
+        <Tag size="md" key={skill.id} variant="solid" colorScheme="blue" mb={1}>
+          <TagLabel>{skill.name}</TagLabel>
+        </Tag>
       ))}
+      </HStack>
     </VStack>
   );
 }

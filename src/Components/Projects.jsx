@@ -1,48 +1,64 @@
-import { VStack, Text, Box, Heading, Flex } from '@chakra-ui/react';
+import { VStack, Text, Box, Heading, Flex, Button, Link } from '@chakra-ui/react';
+import { useReducer, useEffect } from 'react';
+import { db } from '../fbconfig';
+import { doc, collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-const projects = [
-    {
-        name: 'Costs Calculator for a socks company',
-        period: 'Jan 2017 - Apr 2017',
-        details: [
-            'Developed in PHP & MySql (Yii 2 framework Adv-template)',
-            'Calculate the price of socks products and to issue price lists and invoices.',
-            'Customers who visit the online showroom can ask for a price list.',
-            'The sales representative, by logging in, can provide the price list, add new products, and issue invoices with shipping cost fees and commission fees if they are required.',
-        ],
-    },
-    {
-        name: 'Website similar to YouTube',
-        period: 'Nov 2016 - Dec 2016',
-        details: [
-            'Developed in PHP & Mysql ( Yii 2 framework basic template):',
-            'Registered users can add videos, like, dislike, comment.',
-            'Admin manage the whole website.',
-        ],
-    },
-    {
-        name: 'Medicine E-commerce',
-        period: 'Apr 2015 - Apr 2015',
-        details: [
-            'Developed in OOP, ADO.NET in C#',
-            'The user can add, delete, and update a medicine & a customer.',
-            'Also, the user can issue the sales invoice.',
-            'Multiple users can login to this application and only the administrator can see a report to know the login and logout (date & time) for each user.',
-        ],
-    },
-];
+const initialState = {
+    projects: [],
+    loading: true,
+    formData: {}
+  };
+  
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'SET_PROJECTS':
+        return { ...state, projects: action.payload, loading: false };
+      case 'SET_LOADING':
+        return { ...state, loading: action.payload };
+      case 'SET_FORM_DATA':
+        return { ...state, formData: action.payload };
+      default:
+        return state;
+    }
+}
 
 function Projects() {
+    const [state, dispatch] = useReducer(reducer, initialState);
+  
+    useEffect(() => {
+      const projectRef = doc(db, 'db', 'Projects');
+      const projectCollectionRef = collection(projectRef, 'project');
+      const q = query(projectCollectionRef, orderBy('createdAt', 'desc'));
+  
+      const unsubscribe = onSnapshot(q,
+        (snapshot) => {
+          dispatch({ type: 'SET_PROJECTS', payload: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) });
+        },
+        (err) => {
+          console.error('Errore durante il recupero dei progetti:', err);
+          toast({ title: 'Errore durante il recupero dei progetti', status: 'error', isClosable: true });
+          dispatch({ type: 'SET_LOADING', payload: false });
+        }
+      );
+  
+      return () => unsubscribe();
+    }, []);
+
     return (
         <VStack align="start" spacing={6} mb={8}>
-            <Heading as="h2" size="lg" color="#2c5282">PROJECTS</Heading>
-            {projects.map((project, index) => (
+            <Heading as="h2" size="lg" color="#055C80">PROJECTS</Heading>
+            {state.projects.map((project, index) => (
                 <Box key={index} width="100%">
                     <Flex justify="space-between" align="center">
-                        <Text fontWeight="bold">{project.name}</Text>
-                        <Text color="#2c5282" fontWeight="bold">{project.period}</Text>
+                        <Text fontWeight="bold">{project.title}</Text>
+                        {project.link && (
+                <Button as={Link} href={project.link} isExternal rightIcon={<ExternalLinkIcon />} colorScheme="teal" variant="outline" size="sm">
+                  Link al Progetto
+                </Button>
+              )}
                     </Flex>
-                    <Text mt={2}>{project.details.join(' ')}</Text>
+                    <Text mt={2}>{project.description}</Text>
                 </Box>
             ))}
         </VStack>
