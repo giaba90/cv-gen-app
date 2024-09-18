@@ -1,6 +1,6 @@
 import { VStack, Text, Box, Heading, Flex, Spinner, Link } from '@chakra-ui/react';
 import { useReducer, useEffect } from 'react';
-import { db } from '../fbconfig';
+import { db } from '../../services/firebase';
 import { doc, collection, query, orderBy, onSnapshot } from "firebase/firestore";
 
 const initialState = {

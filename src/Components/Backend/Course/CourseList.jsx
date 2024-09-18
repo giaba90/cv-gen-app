@@ -1,13 +1,12 @@
 import { useEffect, useReducer } from "react";
-import {
-    Box, VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
+import { VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack,
     List, ListItem, Divider, Textarea,
     useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, 
     ModalBody, ModalCloseButton, Badge, Container
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { db } from "../../../fbconfig";
+import { db } from "../../../services/firebase";
 import { doc, collection, query, orderBy, onSnapshot, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
 
 const initialState = {

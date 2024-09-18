@@ -3,7 +3,7 @@ import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md';
 import { FaLinkedin } from 'react-icons/fa';
 import { useEffect, useReducer } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../fbconfig';
+import { db } from '../../services/firebase';
 
 const initialState = {
     contactData: null,

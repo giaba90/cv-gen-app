@@ -13,7 +13,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 
-export function Signin() {
+export default function Signin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(""); // Stato per gestire errori di autenticazione

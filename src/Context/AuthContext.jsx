@@ -4,7 +4,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 export const Context = createContext();
 
 // eslint-disable-next-line react/prop-types
-export function AuthContext({ children }) {
+export default function AuthContext({ children }) {
     const auth = getAuth();
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true)

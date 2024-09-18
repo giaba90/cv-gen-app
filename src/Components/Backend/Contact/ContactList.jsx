@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import { doc, setDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
-import { db } from "../../../fbconfig";
+import { db } from "../../../services/firebase";
 import {
     VStack, Text, Heading, Link, Button, Flex, useToast,
     List, ListItem, IconButton, Stack, 

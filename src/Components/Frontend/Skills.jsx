@@ -1,6 +1,6 @@
 import { VStack, Heading, Tag, TagLabel, HStack } from '@chakra-ui/react';
 import { useEffect, useReducer } from "react";
-import { db } from "../fbconfig";
+import { db } from "../../services/firebase";
 import { doc, collection, onSnapshot   } from "firebase/firestore";
 
 const initialState = {

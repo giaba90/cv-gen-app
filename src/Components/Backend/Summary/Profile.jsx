@@ -5,7 +5,7 @@ import {
   FormControl, FormLabel, Input, Textarea, useDisclosure, useToast, Divider
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import { db, storage } from '../../../fbconfig';
+import { db, storage } from '../../../services/firebase';
 import { doc, getDoc, setDoc, updateDoc, deleteField } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
