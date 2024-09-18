@@ -6,7 +6,7 @@ import {
     ModalBody, ModalCloseButton, List, ListItem, Badge, Container
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
-import { db } from "../../../fbconfig";
+import { db } from "../../../services/firebase";
 import { collection, doc, query, orderBy, onSnapshot, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
 
 const initialState = {

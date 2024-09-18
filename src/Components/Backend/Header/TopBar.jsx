@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { FaCog, FaArrowLeft } from "react-icons/fa";
-import { db } from "../../../fbconfig";
+import { db } from "../../../services/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { Flex, Text, Box, Avatar, Link, Icon, Container, Button } from "@chakra-ui/react";
 import Menu from "./Menu";

@@ -7,7 +7,7 @@ import {
   Container, Tooltip, useColorModeValue
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { db } from '../../../fbconfig';
+import { db } from '../../../services/firebase';
 import { collection, doc, query, orderBy, onSnapshot, deleteDoc, updateDoc, addDoc } from 'firebase/firestore';
 
 const initialState = {

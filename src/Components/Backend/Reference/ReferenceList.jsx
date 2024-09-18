@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import { db, storage } from "../../../fbconfig";
+import { db, storage } from "../../../services/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
     collection,

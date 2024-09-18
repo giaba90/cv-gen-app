@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import { db } from "../../../fbconfig";
+import { db } from "../../../services/firebase";
 import { doc, collection, onSnapshot, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
 import {
     Box,
