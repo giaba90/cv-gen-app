@@ -1,7 +1,7 @@
 import { VStack, Heading, Tag, TagLabel, HStack } from '@chakra-ui/react';
 import { useEffect, useReducer } from "react";
 import { db } from "../../services/firebase";
-import { doc, collection, onSnapshot   } from "firebase/firestore";
+import { doc, collection, onSnapshot } from "firebase/firestore";
 
 const initialState = {
   skills: [],
@@ -30,7 +30,7 @@ function Skills() {
 
     const unsubscribe = onSnapshot(
       skillCollectionRef,
-      (snapshot) => { 
+      (snapshot) => {
         const skillsData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -39,7 +39,7 @@ function Skills() {
       },
       (err) => {
         console.error("Errore durante il recupero delle skill:", err);
-        dispatch({ type: 'SET_ERROR', payload: "Errore durante il recupero delle skill" }); 
+        dispatch({ type: 'SET_ERROR', payload: "Errore durante il recupero delle skill" });
       }
     );
 
@@ -53,13 +53,13 @@ function Skills() {
 
   return (
     <VStack align="start" spacing={4} mb={8}>
-      <Heading as="h2" size="lg">SKILLS</Heading>
+      <Heading as="h2" size="lg">COMPETENZE</Heading>
       <HStack>
-      {skills.map((skill, index) => (
-        <Tag size="md" key={skill.id} variant="solid" colorScheme="blue" mb={1}>
-          <TagLabel>{skill.name}</TagLabel>
-        </Tag>
-      ))}
+        {skills.map((skill) => (
+          <Tag size="md" key={skill.id} variant="solid" colorScheme="blue" mb={1}>
+            <TagLabel>{skill.name}</TagLabel>
+          </Tag>
+        ))}
       </HStack>
     </VStack>
   );
