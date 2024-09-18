@@ -1,8 +1,8 @@
 import { Container, Box, Grid, Text, Link, Flex } from "@chakra-ui/react";
 import { Icon } from '@chakra-ui/react'
 import { FaAddressBook, FaBriefcase, FaComments, FaBookOpenReader, FaMedapps, FaMicrochip } from "react-icons/fa6";
-import Footer from '../../Components/Backend/Footer/Footer';
-import Header from '../../Components/Backend/Header/Header';
+import Footer from '../../components/Backend/Footer/Footer';
+import Header from '../../components/Backend/Header/Header';
 import { motion } from "framer-motion";
 
 const listVoice = [
@@ -69,22 +69,22 @@ export default function Admin() {
                                 {...itemMotion}
                             >
                                 <Link href={el.path}>
-                                <Box
-                                    overflow="hidden"
-                                    textAlign="center"
-                                    borderWidth={1}
-                                    borderRadius="lg"
-                                    p={4}
-                                >
-                                    <motion.div {...iconMotion(index)}>
-                                        <Icon color='teal' mt={6} boxSize={24} as={el.icon} />
-                                    </motion.div>
-                                    <Box p={4}>
-                                        <Text fontWeight="bold" fontSize="xl" textAlign="center">
-                                            <Link href={el.path}> {el.name}</Link>
-                                        </Text>
-                                    </Box>
-                                </Box></Link>
+                                    <Box
+                                        overflow="hidden"
+                                        textAlign="center"
+                                        borderWidth={1}
+                                        borderRadius="lg"
+                                        p={4}
+                                    >
+                                        <motion.div {...iconMotion(index)}>
+                                            <Icon color='teal' mt={6} boxSize={24} as={el.icon} />
+                                        </motion.div>
+                                        <Box p={4}>
+                                            <Text fontWeight="bold" fontSize="xl" textAlign="center">
+                                                <Link href={el.path}> {el.name}</Link>
+                                            </Text>
+                                        </Box>
+                                    </Box></Link>
                             </motion.div>
                         ))}
                     </Grid>
