@@ -1,6 +1,6 @@
 # PREVIEW
 
-Backend : [https://incandescent-torrone-cd887f.netlify.app](https://symphonious-cranachan-e2e2a2.netlify.app/admin)
+Backend : [Dashboard](https://symphonious-cranachan-e2e2a2.netlify.app/admin)
 
 E-mail : admi@example.com
 
