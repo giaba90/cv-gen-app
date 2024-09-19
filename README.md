@@ -1,7 +1,3 @@
-# PREVIEW
-
-Backend : https://incandescent-torrone-cd887f.netlify.app/admin
-
 # DESCRIZIONE
 
 Questa è una semplice SPA per la generazione di un curriculum vitae sotto forma di sito web.
