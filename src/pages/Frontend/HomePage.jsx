@@ -1,6 +1,6 @@
 import { ChakraProvider, Box, Grid, Container, theme, extendTheme } from '@chakra-ui/react';
-import Hero from '../../components/Hero'
-import Summary from '../../components/Summary';
+import Hero from '../../components/Frontend/Hero'
+import Summary from '../../components/Frontend/Summary';
 import Contact from '../../components/Frontend/Contact';
 import Skills from '../../components/Frontend/Skills';
 import Experience from '../../components/Frontend/Experience';
@@ -34,8 +34,8 @@ function HomePage() {
             </Box>
             <Box bg="white" p={6}>
               <Hero />
-              <Summary/>
-              <Experience />      
+              <Summary />
+              <Experience />
               <Education />
               <Projects />
             </Box>
