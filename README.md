@@ -1,6 +1,6 @@
 # PREVIEW
 
-Backend : [Dashboard](https://symphonious-cranachan-e2e2a2.netlify.app/admin)
+Backend : [Dashboard](https://cv-gen-app-preview.netlify.app/admin)
 
 E-mail : admi@example.com
 
