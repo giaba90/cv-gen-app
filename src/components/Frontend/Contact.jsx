@@ -73,7 +73,7 @@ function Contact() {
                 </Box>
             )}
             {state.contactData && (
-                <><Heading as="h2" size="lg">CONTATTI</Heading>GGG
+                <><Heading as="h2" size="lg">CONTATTI</Heading>
                     <Link href={`mailto:${state.contactData.email}`} isExternal>
                         <Icon as={MdEmail} mr={2} />
                         {state.contactData.email}
