@@ -84,12 +84,6 @@ All'interno di un file yml è stata inserita la procedura che al push di una mod
 
 # MAGGIORI DETTAGLI
 
-La sezione intro conterrà una breve descrizione su di me. Ci sarà una foto profilo; queste info saranno scritte direttamente dentro il tema
-
-Le sezioni istruzione, esperienza e progetti saranno delle tabs una di fianco all’altra. Al click cambierà il testo del contenuto. Ognuna di queste sezioni sarà collegata con gli elementi della sezione competenze
-
-Da decidere se le recensioni sarà fatte con un carousel o saranno fisse con un popup in hover sul nome del candidato.
-
 Le skills saranno realizzate con il componente tag
 
 Per la sezione contatti i dati saranno prelevati da database, preceduti da icona e cliccabili.
