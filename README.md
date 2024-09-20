@@ -6,12 +6,12 @@ E-mail : admi@example.com
 
 Password: password
 
-# DESCRIZIONE
+# DESCRIZIONE DEL PROGETTO
 
 Questa è una semplice SPA per la generazione di un curriculum vitae sotto forma di sito web.
 L'intera applicazione è realizzata con l'uso di ReactJS. Per la parte di backend mi sono affidato a Firebase che gestisce l'autenticazione ed un database NOSQL che contiene i vari dati presenti in un classico CV.
 
-# SEZIONI
+# SEZIONI DEL SITO
 
 1. INTRO
 2. ISTRUZIONE E FORMAZIONE
@@ -21,7 +21,7 @@ L'intera applicazione è realizzata con l'uso di ReactJS. Per la parte di backen
 6. RECENSIONI
 7. CONTATTI
 
-# DESCRIZIONE SEZIONI
+# DESCRIZIONE DATABASE
 
 1. INTRO (summary)
    1. Breve descrizione
