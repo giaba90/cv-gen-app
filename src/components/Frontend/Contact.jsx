@@ -36,12 +36,12 @@ function Contact() {
             try {
                 const contactDocRef = doc(db, 'db', 'contacts');
                 const bioDocRef = doc(db, 'Bio', 'summary');
-                
+
                 const [contactDocSnap, bioDocSnap] = await Promise.all([
                     getDoc(contactDocRef),
                     getDoc(bioDocRef)
                 ]);
-                
+
                 if (contactDocSnap.exists() && bioDocSnap.exists()) {
                     dispatch({
                         type: 'FETCH_SUCCESS',
@@ -73,7 +73,7 @@ function Contact() {
                 </Box>
             )}
             {state.contactData && (
-                <><Heading as="h2" size="lg">CONTACT</Heading>
+                <><Heading as="h2" size="lg">CONTATTI</Heading>
                     <Link href={`mailto:${state.contactData.email}`} isExternal>
                         <Icon as={MdEmail} mr={2} />
                         {state.contactData.email}

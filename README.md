@@ -1,3 +1,11 @@
+# PREVIEW
+
+Backend : [Dashboard](https://symphonious-cranachan-e2e2a2.netlify.app/admin)
+
+E-mail : admi@example.com
+
+Password: password
+
 # DESCRIZIONE
 
 Questa è una semplice SPA per la generazione di un curriculum vitae sotto forma di sito web.

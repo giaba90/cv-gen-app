@@ -18,7 +18,7 @@ function Summary() {
 
     return (
         <VStack align="start" spacing={4} mb={8}>
-            <Heading as="h2" size="lg" color="#005C85">SUMMARY</Heading>
+            <Heading as="h2" size="lg" color="#005C85">BIO</Heading>
             <Box>
                 <Text>{summaryText}</Text>
             </Box>
