@@ -50,10 +50,10 @@ function Experience() {
         const date = new Date(dateString);
         return date.toLocaleDateString("it-IT", { month: "short", year: "numeric" });
     };
-    
+
     return (
         <VStack align="start" spacing={6} mb={8}>
-            <Heading as="h2" size="lg" color="#055C80">EXPERIENCE</Heading>
+            <Heading as="h2" size="lg" color="#055C80">ESPERIENZE LAVORATIVE</Heading>
             {state.jobs.map((job, index) => (
                 <Box key={index} width="100%">
                     <Flex justify="space-between" align="center">

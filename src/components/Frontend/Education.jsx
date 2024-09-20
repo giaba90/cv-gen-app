@@ -54,20 +54,20 @@ function Education() {
 
     return (
         <VStack align="start" spacing={6} mb={8}>
-            <Heading as="h2" size="lg" color="#055C80">EDUCATION</Heading>
+            <Heading as="h2" size="lg" color="#055C80">ISTRUZIONE</Heading>
             {
-            state.courses.map((course, index) => (
-                <Box key={index} width="100%">
-                    <Flex justify="space-between" align="center">
-                        <Text fontWeight="bold">{course.title}</Text>
-                        <Text color="#055C80" fontWeight="bold">  {formatDate(course.start)} - {formatDate(course.end)}</Text>
-                    </Flex>
-                    <Text as="i">
-                        <Link href={course.website} isExternal>{course.school}</Link>
-                    </Text>
-                    <Text mt={2}>{course.description}</Text>
-                </Box>
-            ))}
+                state.courses.map((course, index) => (
+                    <Box key={index} width="100%">
+                        <Flex justify="space-between" align="center">
+                            <Text fontWeight="bold">{course.title}</Text>
+                            <Text color="#055C80" fontWeight="bold">  {formatDate(course.start)} - {formatDate(course.end)}</Text>
+                        </Flex>
+                        <Text as="i">
+                            <Link href={course.website} isExternal>{course.school}</Link>
+                        </Text>
+                        <Text mt={2}>{course.description}</Text>
+                    </Box>
+                ))}
         </VStack>
     );
 }
