@@ -7,9 +7,16 @@ E-mail : admi@example.com
 Password: password
 
 # DESCRIZIONE DEL PROGETTO
+Applicazione SPA per la generazione di curriculum vitae
 
-Questa è una semplice SPA per la generazione di un curriculum vitae sotto forma di sito web.
-L'intera applicazione è realizzata con l'uso di ReactJS. Per la parte di backend mi sono affidato a Firebase che gestisce l'autenticazione ed un database NOSQL che contiene i vari dati presenti in un classico CV.
+Questo progetto consiste in una Single Page Application (SPA) creata per generare curriculum vitae in formato sito web. L'applicazione è sviluppata interamente utilizzando ReactJS per la gestione del frontend e garantire un'interfaccia utente reattiva e interattiva.
+
+#Caratteristiche principali del progetto:
+Implementazione del frontend con ReactJS, sfruttando componenti modulari per organizzare le varie sezioni del curriculum.
+Utilizzo di Firebase per la gestione del backend, inclusi:
+Autenticazione sicura degli utenti per permettere l'accesso e la modifica dei propri dati.
+Integrazione di un database NoSQL in Firebase per memorizzare e recuperare i dati strutturati, come le informazioni personali, esperienze lavorative, competenze e progetti presenti nel CV.
+L'applicazione permette di visualizzare e modificare i contenuti del curriculum vitae in tempo reale, con aggiornamenti dinamici grazie alla sinergia tra ReactJS e Firebase.
 
 # SEZIONI DEL SITO
 
