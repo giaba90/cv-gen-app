@@ -4,6 +4,8 @@ Backend : [Dashboard](https://cv-gen-app-preview.netlify.app/admin)
 
 E-mail : admi@example.com
 
+[![kitufF.preview.th.jpeg](https://i.im.ge/2024/10/05/kitufF.preview.th.jpeg)](https://im.ge/i/preview.kitufF)
+
 Password: password
 
 # Applicazione SPA per la generazione di curriculum vitae
