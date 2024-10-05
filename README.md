@@ -6,7 +6,7 @@ E-mail : admi@example.com
 
 Password: password
 
-[![App Platorm](https://imgur.com/Z6BCHof)](https://www.digitalocean.com/products/app-platform)
+![Alt text](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
 
 
 # Applicazione SPA per la generazione di curriculum vitae
