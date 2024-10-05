@@ -6,7 +6,7 @@ E-mail : admi@example.com
 
 Password: password
 
-![Alt text](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
+![Preview](https://github.com/giaba90/cv-gen-app/blob/main/preview.jpg "Preview")
 
 
 # Applicazione SPA per la generazione di curriculum vitae
