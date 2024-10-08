@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import { VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack, Textarea,
     useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
-    ModalBody, ModalCloseButton, List, ListItem, Badge, Container
+    ModalBody, ModalCloseButton, List, ListItem, Badge, Container, Box
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import { db } from "../../../services/firebase";
@@ -108,12 +108,12 @@ const JobList = () => {
 
     return (
         <Container maxW="container.xl">
-            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
-                <Heading size="lg">Elenco esperienze lavorative</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }}>
+            <Box display={{ base: "block", md: "flex" }} justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg" mb={{ base: 2, md: 0 }}>Elenco esperienze</Heading>
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }} display={{ base: "block", md: "inline-flex" }}>
                     Aggiungi esperienza
                 </Button>
-            </Flex>
+            </Box>
 
             {state.jobs.length === 0 ? (
                 <Alert status="info">

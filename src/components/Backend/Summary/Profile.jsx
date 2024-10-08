@@ -98,9 +98,8 @@ const Profile = () => {
   return (
     <Container maxW="container.xl">
       <Flex direction="column" gap={8} mt={10} mb={10} borderRadius="lg" p={4} borderWidth={1} padding={4}>
-
-        <Flex alignItems="center">
-          <Box w="30%" borderRadius="lg" p={4} >
+        <Flex alignItems="center" flexDirection='row' flexWrap="nowrap" justifyContent="space-around" display={{ base: "block", md: "flex" }} >
+          <Box borderRadius="lg" p={4} >
             {bioData.photo ? (
               <Image src={bioData.photo} alt="Profile" borderRadius="full" boxSize="150px" objectFit="cover" />
             ) : (
@@ -109,32 +108,32 @@ const Profile = () => {
               </Box>
             )}
           </Box>
-          <VStack w="70%" spacing={4} alignItems="flex-start">
+          <Box alignItems="flex-start">
             <HStack>
-              <Text fontSize="xl" fontWeight="bold">Nome: </Text>
+              <Text fontSize="lg" fontWeight="bold">Nome: </Text>
               <Text>{bioData.name}</Text>
               <IconButton icon={<EditIcon />} onClick={() => handleEdit('name')} aria-label="Edit name" />
               <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('name')} aria-label="Delete name" />
             </HStack>
             <HStack>
-              <Text fontSize="xl" fontWeight="bold">Cognome: </Text>
+              <Text fontSize="lg" fontWeight="bold">Cognome: </Text>
               <Text>{bioData.surname}</Text>
               <IconButton icon={<EditIcon />} onClick={() => handleEdit('surname')} aria-label="Edit surname" />
               <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('surname')} aria-label="Delete surname" />
             </HStack>
             <HStack>
-              <Text fontSize="xl" fontWeight="bold">Qualifica: </Text><Text>{bioData.qualification}</Text>
+              <Text fontSize="lg" fontWeight="bold">Qualifica: </Text><Text>{bioData.qualification}</Text>
               <IconButton icon={<EditIcon />} onClick={() => handleEdit('qualification')} aria-label="Edit qualification" />
               <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('qualification')} aria-label="Delete qualification" />
             </HStack>
-          </VStack>
+          </Box>
         </Flex>
 
         <Divider />
 
         <Box>
           <HStack>
-            <Text fontSize="xl" fontWeight="bold">Descrizione:</Text>
+            <Text fontSize="lg" fontWeight="bold">Descrizione:</Text>
             <IconButton icon={<EditIcon />} onClick={() => handleEdit('description')} aria-label="Edit description" />
             <IconButton icon={<DeleteIcon />} onClick={() => handleDelete('description')} aria-label="Delete description" />
           </HStack>

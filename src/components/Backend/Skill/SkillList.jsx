@@ -194,12 +194,12 @@ const SkillList = () => {
 
     return (
         <Container maxW="container.xl" >
-            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
-                <Heading size="lg"> Elenco delle Skill</Heading>
+            <Box display={{ base: "block", md: "flex" }} justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg" mb={{ base: 2, md: 0 }}>Elenco delle Skill</Heading>
                 <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onAddOpen} >
                     Aggiungi Skill
                 </Button>
-            </Flex>
+            </Box>
             {state.skills.length === 0 ? (
                 <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">
                     <AlertIcon boxSize="40px" mr={0} />
@@ -256,7 +256,7 @@ const SkillList = () => {
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleUpdate}>
+                        <Button colorScheme="teal" mr={3} onClick={handleUpdate}>
                             Salva
                         </Button>
                         <Button onClick={onEditClose}>Annulla</Button>
@@ -280,7 +280,7 @@ const SkillList = () => {
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleAddSkill}>
+                        <Button colorScheme="teal" mr={3} onClick={handleAddSkill}>
                             Aggiungi
                         </Button>
                         <Button onClick={onAddClose}>Annulla</Button>

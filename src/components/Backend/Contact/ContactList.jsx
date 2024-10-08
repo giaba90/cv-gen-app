@@ -6,7 +6,8 @@ import {
     List, ListItem, IconButton, Stack, 
     Spinner, Alert, AlertIcon, useDisclosure, Modal, ModalOverlay,
     ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
-    FormControl, FormLabel, Input, Container
+    FormControl, FormLabel, Input, Container,
+    Box
 } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
@@ -94,12 +95,12 @@ const ContactList = () => {
 
     return (
         <Container maxW="container.xl">
-            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
-                <Heading size="lg">Informazioni di Contatto</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'RESET_FORM_DATA' }); onOpen(); }}>
+            <Box direction={{ base: "block", md: "flex" }} justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg" mb={{ base: 2, md: 0 }}>Informazioni di Contatto</Heading>
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'RESET_FORM_DATA' }); onOpen(); }} mt={{ base: 2, md: 0 }}>
                     Aggiungi Contatto
                 </Button>
-            </Flex>
+            </Box>
 
             {state.contactData ? (
                 <List spacing={3} borderWidth={1} borderRadius="lg" p={4}>

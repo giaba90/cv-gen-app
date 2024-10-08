@@ -97,12 +97,12 @@ const ProjectList = () => {
 
   return (
     <Container maxW="container.xl">
-      <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
-        <Heading size="lg">Elenco progetti</Heading>
-        <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }}>
+      <Box display={{ base: "block", md: "flex" }} justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+        <Heading size="lg" mb={{ base: 2, md: 0 }}>Elenco progetti</Heading>
+        <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }} display={{ base: "block", md: "inline-flex" }}>
           Aggiungi progetto
         </Button>
-      </Flex>
+      </Box>
 
       {state.projects.length === 0 ? (
         <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">

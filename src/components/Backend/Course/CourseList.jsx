@@ -3,7 +3,7 @@ import { VStack, Text, Heading, Link, Button, IconButton, Input, FormControl,
     FormLabel, Flex, Spinner, useToast, Alert, AlertIcon, Stack,
     List, ListItem, Divider, Textarea,
     useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, 
-    ModalBody, ModalCloseButton, Badge, Container
+    ModalBody, ModalCloseButton, Badge, Container, Box
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { db } from "../../../services/firebase";
@@ -111,12 +111,12 @@ const CourseList = () => {
 
     return (
         <Container maxW="container.xl">
-            <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
-                <Heading size="lg">Elenco corsi</Heading>
-                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }}>
+            <Box display={{ base: "block", md: "flex" }} justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+                <Heading size="lg" mb={{ base: 2, md: 0 }}>Elenco corsi</Heading>
+                <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={() => { dispatch({ type: 'SET_FORM_DATA', payload: {} }); onOpen(); }} display={{ base: "block", md: "inline-flex" }}>
                     Aggiungi corso
                 </Button>
-            </Flex>
+            </Box>
             {state.courses.length === 0 ? (
                 <Alert status="info">
                     <AlertIcon />
