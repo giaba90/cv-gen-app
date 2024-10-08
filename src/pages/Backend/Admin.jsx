@@ -62,11 +62,12 @@ export default function Admin() {
             <Header />
             <Container maxW='container.lg' flex="1" mt={10} mb={10}>
                 <motion.div {...containerMotion}>
-                    <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+                    <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={6}>
                         {listVoice.map((el, index) => (
                             <motion.div
                                 key={index}
                                 {...itemMotion}
+                                flexBasis={{ base: "100%", md: "auto" }}
                             >
                                 <Link href={el.path}>
                                     <Box

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { FaCog, FaArrowLeft } from "react-icons/fa";
 import { db } from "../../../services/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { Flex, Text, Box, Avatar, Link, Icon, Container, Button } from "@chakra-ui/react";
+import { Flex, Text, Box, Hide,Avatar, Link, Icon, Container, Button } from "@chakra-ui/react";
 import Menu from "./Menu";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ const TopBar = () => {
     };
 
     return (
-        <Flex bg="teal.500" p={2} alignItems="center" >
+        <Flex flexDirection="row" flexWrap="wrap" bg="teal.500" p={2} alignItems="center" >
             <Container maxWidth="container.lg" display="flex" justifyContent="space-between" alignItems="center">
                 <Flex>
                     <Menu aria-label="Menu" />
@@ -49,7 +49,7 @@ const TopBar = () => {
                         colorScheme="whiteAlpha" 
                         ml={2}
                     >
-                        <Icon as={FaArrowLeft} />&nbsp; Indietro
+                        <Icon as={FaArrowLeft} /> <Hide below='md'> &nbsp; Indietro </Hide>
                     </Button>
                 </Flex>
                 <Text as="h1" fontSize="xl" fontWeight="bold" color="white">CV Generator App</Text>
@@ -60,10 +60,10 @@ const TopBar = () => {
                                 <Text color="white">Loading...</Text>
                             ) : (
                                 <>
-                                    <Avatar size="sm" src={bioData?.photo} mr={2} />
+                                  <Hide below='md'> <Avatar size="sm" src={bioData?.photo} mr={2} />
                                     <Text color="white" fontWeight="bold" mr={2}>
                                         Benvenuto {bioData?.name}
-                                    </Text>
+                                    </Text> </Hide>  
                                     <Link href="/admin/profilo">
                                         <Icon as={FaCog} color="white" />
                                     </Link>

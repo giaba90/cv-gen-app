@@ -1,4 +1,4 @@
-import { Icon, HStack,VStack, Button, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure } from "@chakra-ui/react";
+import { Icon, HStack, VStack, Button, Drawer, Hide, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { signOut, getAuth } from "firebase/auth";
@@ -21,27 +21,37 @@ const Menu = () => {
 
   const handleSignOut = async () => {
     try {
-        await signOut(auth);
-        navigate("/signin");
+      await signOut(auth);
+      navigate("/signin");
     } catch (error) {
-        console.error("Error signing out:", error);
+      console.error("Error signing out:", error);
     }
-};
+  };
 
 
   return (
     <>
       <Button
         onClick={onOpen}
-        colorScheme="whiteAlpha" 
+        colorScheme="whiteAlpha"
         aria-label="Open menu"
-      ><Icon as={HamburgerIcon} /> &nbsp; Menu
+      ><Icon as={HamburgerIcon} /> <Hide below='md'> &nbsp; Menu </Hide>
       </Button>
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth={1} borderBottomColor="gray.200" fontSize="2xl" fontWeight="bold">Menu</DrawerHeader>
+         
+          <DrawerHeader borderBottomWidth={1} borderBottomColor="gray.200" fontSize="2xl" fontWeight="bold">
+            <Button
+              as="a"
+              href="/"
+              target="_blank"
+              width="100%"
+            >
+              Vedi CV
+            </Button>
+            <DrawerCloseButton />
+          </DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="start">
               {menuItems.map((item) => (
@@ -67,14 +77,7 @@ const Menu = () => {
               borderColor="gray.200"
               spacing={4}
             >
-              <Button
-                as="a"
-                href="/"
-                target="_blank"
-                width="100%"
-              >
-                Visita il sito
-              </Button>
+
               <Button
                 onClick={() => {
                   onClose();

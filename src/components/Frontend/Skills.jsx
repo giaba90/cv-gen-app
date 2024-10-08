@@ -1,4 +1,4 @@
-import { VStack, Heading, Tag, TagLabel, HStack } from '@chakra-ui/react';
+import { VStack, Heading, Tag, TagLabel, HStack, Flex } from '@chakra-ui/react';
 import { useEffect, useReducer } from "react";
 import { db } from "../../services/firebase";
 import { doc, collection, onSnapshot } from "firebase/firestore";
@@ -54,13 +54,13 @@ function Skills() {
   return (
     <VStack align="start" spacing={4} mb={8}>
       <Heading as="h2" size="lg">COMPETENZE</Heading>
-      <HStack>
+   <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="start">
         {skills.map((skill) => (
           <Tag size="md" key={skill.id} variant="solid" colorScheme="blue" mb={1}>
             <TagLabel>{skill.name}</TagLabel>
           </Tag>
         ))}
-      </HStack>
+        </Flex>
     </VStack>
   );
 }
